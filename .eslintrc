@@ -1,0 +1,23 @@
+{
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "eslint-plugin-react-hooks"],
+  "rules": {
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "react/react-in-jsx-scope": 0,
+    "react-native/no-inline-styles": 0,
+    "@typescript-eslint/no-unused-vars": 1,
+    "react-hooks/exhaustive-deps": 1,
+    "react-hooks/rules-of-hooks": 1,
+    "@typescript-eslint/explicit-module-boundary-types": 0
+  }
+}

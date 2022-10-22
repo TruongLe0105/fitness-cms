@@ -1,0 +1,1 @@
+ssh -i C:\\playground\\keyDeploy\\chts-game-test-13.215.221.208.pem ubuntu@13.215.221.208 "cd /var/www/html/cms.creaturehunters.world/ && sudo mv ~/dist.zip . && sudo unzip -o dist.zip"
