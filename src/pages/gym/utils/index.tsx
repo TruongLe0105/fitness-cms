@@ -4,8 +4,8 @@ import { formatDate } from "helpers/util";
 import {
   NotificationDetail,
   STATUS_NOTIFICATION,
-  UserCharacterDetail,
   ClientDetail,
+  GymDetail,
 } from "../types";
 import DefaultButtonIcon from "components/ButtonIcon/DefaultButtonIcon";
 import StatusCard from "components/Status/StatusCard";
@@ -48,43 +48,8 @@ export function dataHeaderUser(
       ),
     },
     {
-      title: "Email",
-      field: "email",
-      styleHeader: {
-        textTransform: "capitalize",
-        paddingRight: 10,
-        paddingLeft: 10,
-        width: 300,
-        minWidth: 300,
-        maxWidth: 300,
-      },
-      styleBody: {
-        paddingRight: 10,
-        paddingLeft: 10,
-        width: 300,
-        minWidth: 300,
-        maxWidth: 300,
-      },
-      sort: true,
-
-      renderBody: (value: ClientDetail) => (
-        <p
-          style={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            WebkitLineClamp: 3,
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-          }}
-          className="whitespace-pre-line"
-        >
-          {value.email}
-        </p>
-      ),
-    },
-    {
-      title: "Client Name",
-      field: "clientName",
+      title: "Name",
+      field: "name",
       styleHeader: {
         textTransform: "capitalize",
 
@@ -95,7 +60,7 @@ export function dataHeaderUser(
         minWidth: 200,
         maxWidth: 400,
       },
-      renderBody: (value: ClientDetail) => (
+      renderBody: (value: GymDetail) => (
         <p
           style={{
             overflow: "hidden",
@@ -106,11 +71,10 @@ export function dataHeaderUser(
           }}
           className="whitespace-pre-line"
         >
-          {value.clientName}
+          {value.name}
         </p>
       ),
     },
-
     {
       title: "Phone",
       field: "phone",

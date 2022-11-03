@@ -55,23 +55,23 @@ export const listMenuPage: MenuItemDetail[] = [
     label: "User",
   },
   {
-    path: PATH.singleGameHistory,
-    label: "PVC Mode History",
+    path: PATH.gym,
+    label: "Gym",
   },
   {
-    path: PATH.battleGameHistory,
-    label: "PVP Mode History",
+    path: PATH.merchant,
+    label: "Merchant",
   },
   {
-    path: PATH.transaction,
-    label: "Transaction",
+    path: PATH.package,
+    label: "Package",
   },
 ];
 export const listMenuSettings: MenuItemDetail[] = [
-  {
-    path: PATH.dailyReport,
-    label: "Daily Report",
-  },
+  // {
+  //   path: PATH.dailyReport,
+  //   label: "Daily Report",
+  // },
   // {
   //   path: PATH.legalPage,
   //   label: "Legal Page",

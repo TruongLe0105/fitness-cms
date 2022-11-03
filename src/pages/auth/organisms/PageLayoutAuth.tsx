@@ -18,7 +18,7 @@ const PageLayoutAuth = (props: PageLayoutAuthProps): JSX.Element => {
           textColor="text-black"
           textClass="mb-16"
         >
-          PMG CMS
+          FITNESS CMS
         </Typography>
         <div className="bg-white rounded-2xl w-400-custom p-8 flex flex-col relative">
           <Typography

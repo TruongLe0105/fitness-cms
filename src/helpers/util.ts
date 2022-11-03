@@ -2,13 +2,8 @@ import { toast } from "react-toastify";
 import { format, isValid, parseISO } from "date-fns";
 import Web3 from "web3";
 import { capitalize, round } from "lodash";
-import { MarketDetail, OwnerDetail } from "pages/stars/types";
 import IconDefaultAvatar from "assets/images/icons/default-avatar.svg";
-import { SystemKeywordDetail } from "pages/keywords/types";
-import {
-  DEFAULT_THUMBNAIL_MINOR_PLANET_IMAGE,
-  DEFAULT_THUMBNAIL_STAR_IMAGE,
-} from "pages/stars/utils";
+
 import {
   FiledFilterItem,
   LINK_WITH_STAR_FILTER,
@@ -18,7 +13,6 @@ import {
 } from "components/Filter/types";
 import { CURRENCY_SYMBOL_WEB, TESTNET_WEB } from "config/environments";
 import { STATUS_EVENT, STATUS_REFERRAL_CODE } from "components/Status/types";
-import { ReferralCodeRewardDetail } from "pages/referral-code/types";
 import { formatValue } from "react-currency-input-field";
 
 // eslint-disable-next-line
@@ -117,39 +111,39 @@ export const formatETH = (n: number | string | null = "0") => {
   });
 };
 
-export const showAvatarOwnerStar = (
-  owner?: OwnerDetail,
-  market?: MarketDetail
-): string => {
-  if (owner && owner.avatar) {
-    return owner.avatar;
-  }
-  if (market && market.seller && market.seller.avatar) {
-    return market.seller.avatar;
-  }
-  return IconDefaultAvatar;
-};
+// export const showAvatarOwnerStar = (
+//   owner?: OwnerDetail,
+//   market?: MarketDetail
+// ): string => {
+//   if (owner && owner.avatar) {
+//     return owner.avatar;
+//   }
+//   if (market && market.seller && market.seller.avatar) {
+//     return market.seller.avatar;
+//   }
+//   return IconDefaultAvatar;
+// };
 
-export const showFullNameOwnerStar = (
-  owner?: OwnerDetail,
-  market?: MarketDetail
-): string => {
-  const defaultName = "Spaceman";
-  if (owner) {
-    if (!owner.firstName && !owner.lastName) {
-      return defaultName;
-    }
-    return `${owner.firstName ?? ""} ${owner.lastName ?? ""}`;
-  }
+// export const showFullNameOwnerStar = (
+//   owner?: OwnerDetail,
+//   market?: MarketDetail
+// ): string => {
+//   const defaultName = "Spaceman";
+//   if (owner) {
+//     if (!owner.firstName && !owner.lastName) {
+//       return defaultName;
+//     }
+//     return `${owner.firstName ?? ""} ${owner.lastName ?? ""}`;
+//   }
 
-  if (market && market.seller) {
-    if (!market.seller.firstName && !market.seller.lastName) {
-      return defaultName;
-    }
-    return `${market.seller.firstName ?? ""} ${market.seller.lastName ?? ""}`;
-  }
-  return defaultName;
-};
+//   if (market && market.seller) {
+//     if (!market.seller.firstName && !market.seller.lastName) {
+//       return defaultName;
+//     }
+//     return `${market.seller.firstName ?? ""} ${market.seller.lastName ?? ""}`;
+//   }
+//   return defaultName;
+// };
 
 export function msToTime(duration: number): string {
   const seconds = Math.floor((duration / 1000) % 60);
@@ -171,19 +165,19 @@ export const validateURL = (url: string): boolean => {
   return !!url.match(regex);
 };
 
-export const getPurchasePriceKeyword = (value: SystemKeywordDetail): string => {
-  if (!value.nftId && !value.market) {
-    return "";
-  }
-  return value.purchasePrice ? value.purchasePrice : "";
-};
+// export const getPurchasePriceKeyword = (value: SystemKeywordDetail): string => {
+//   if (!value.nftId && !value.market) {
+//     return "";
+//   }
+//   return value.purchasePrice ? value.purchasePrice : "";
+// };
 
-export const getDefaultImageStar = (model: string): string => {
-  if (model === "mpc_asteroid") {
-    return DEFAULT_THUMBNAIL_MINOR_PLANET_IMAGE;
-  }
-  return DEFAULT_THUMBNAIL_STAR_IMAGE;
-};
+// export const getDefaultImageStar = (model: string): string => {
+//   if (model === "mpc_asteroid") {
+//     return DEFAULT_THUMBNAIL_MINOR_PLANET_IMAGE;
+//   }
+//   return DEFAULT_THUMBNAIL_STAR_IMAGE;
+// };
 export const getNameModal = (value: string): string => {
   if (!value) {
     return "";
@@ -245,58 +239,58 @@ export const getTitleFilter = (filed: string): string => {
   }
 };
 
-export const getPriceKeyword = (value: SystemKeywordDetail): string => {
-  if (value.purchasePrice) {
-    return `${formatETH(value.purchasePrice)} ${CURRENCY_SYMBOL_WEB}`;
-  }
-  if (!value.nftId && value.mintPrice) {
-    return `${value.mintPrice} ${CURRENCY_SYMBOL_WEB}`;
-  }
-  if (!value.nftId && !value.market) {
-    return "";
-  }
-  let newPrice = "";
-  if (!value.nftId && value.market) {
-    newPrice = value.market.price;
-  }
-  return `${formatETH(newPrice)} ${CURRENCY_SYMBOL_WEB}`;
-};
+// export const getPriceKeyword = (value: SystemKeywordDetail): string => {
+//   if (value.purchasePrice) {
+//     return `${formatETH(value.purchasePrice)} ${CURRENCY_SYMBOL_WEB}`;
+//   }
+//   if (!value.nftId && value.mintPrice) {
+//     return `${value.mintPrice} ${CURRENCY_SYMBOL_WEB}`;
+//   }
+//   if (!value.nftId && !value.market) {
+//     return "";
+//   }
+//   let newPrice = "";
+//   if (!value.nftId && value.market) {
+//     newPrice = value.market.price;
+//   }
+//   return `${formatETH(newPrice)} ${CURRENCY_SYMBOL_WEB}`;
+// };
 
-export const getNameStatusEvent = (
-  startDate: string,
-  endDate: string
-): string => {
-  const newStartDate = isValidDate(startDate.replace(" ", "T"))
-    ? startDate.replace(" ", "T")
-    : startDate;
-  const newEndDate = isValidDate(endDate.replace(" ", "T"))
-    ? endDate.replace(" ", "T")
-    : endDate;
-  const getTimeNow = new Date().getTime();
-  const getTimeStartDate = new Date(newStartDate).getTime();
-  const getTimeEndDate = new Date(newEndDate).getTime();
-  if (getTimeNow < getTimeStartDate) {
-    return STATUS_EVENT.SCHEDULED;
-  }
-  if (getTimeNow > getTimeEndDate) {
-    return STATUS_EVENT.ENDED;
-  }
+// export const getNameStatusEvent = (
+//   startDate: string,
+//   endDate: string
+// ): string => {
+//   const newStartDate = isValidDate(startDate.replace(" ", "T"))
+//     ? startDate.replace(" ", "T")
+//     : startDate;
+//   const newEndDate = isValidDate(endDate.replace(" ", "T"))
+//     ? endDate.replace(" ", "T")
+//     : endDate;
+//   const getTimeNow = new Date().getTime();
+//   const getTimeStartDate = new Date(newStartDate).getTime();
+//   const getTimeEndDate = new Date(newEndDate).getTime();
+//   if (getTimeNow < getTimeStartDate) {
+//     return STATUS_EVENT.SCHEDULED;
+//   }
+//   if (getTimeNow > getTimeEndDate) {
+//     return STATUS_EVENT.ENDED;
+//   }
 
-  return STATUS_EVENT.ACTIVATING;
-};
+//   return STATUS_EVENT.ACTIVATING;
+// };
 
-export const getNameClaimReferralCode = (
-  isReward: boolean,
-  referralReward: ReferralCodeRewardDetail
-): string => {
-  if (referralReward && referralReward.status) {
-    return capitalize(referralReward.status);
-  }
-  if (isReward) {
-    return STATUS_REFERRAL_CODE.CLAIMED;
-  }
-  return STATUS_REFERRAL_CODE.NOT_CLAIM_YET;
-};
+// export const getNameClaimReferralCode = (
+//   isReward: boolean,
+//   referralReward: ReferralCodeRewardDetail
+// ): string => {
+//   if (referralReward && referralReward.status) {
+//     return capitalize(referralReward.status);
+//   }
+//   if (isReward) {
+//     return STATUS_REFERRAL_CODE.CLAIMED;
+//   }
+//   return STATUS_REFERRAL_CODE.NOT_CLAIM_YET;
+// };
 
 // eslint-disable-next-line
 export const onRedirectTestnet = (address: string) => (event) => {

@@ -4,7 +4,7 @@ export interface PageLayoutAuthProps {
   subtitle: string;
 }
 export interface LoginRequest {
-  username: string;
+  phone: string;
   password: string;
 }
 export interface ForgotPasswordRequest {

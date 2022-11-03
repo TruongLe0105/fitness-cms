@@ -8,10 +8,8 @@ import { STATUS_RESPONSE_CODE } from "types";
 import {
   ClientDetail,
   FormRequest,
-  InventoryDetail,
   NotificationDetail,
   ParamsRequest,
-  UserDetail,
 } from "../types";
 // eslint-disable-next-line
 export const getNotificationsMiddleware = async (
@@ -30,7 +28,7 @@ export const getNotificationsMiddleware = async (
   return response.data.data;
 };
 
-export const getUserMiddleware = async (
+export const getGymMiddleware = async (
   params: ParamsRequest,
   source?: CancelTokenSource
 ) => {
@@ -48,7 +46,7 @@ export const getUserMiddleware = async (
     };
     message: string;
     statusCode: number;
-  }> = await Axios.get(`/client/admin`, {
+  }> = await Axios.get(`/gym/admin`, {
     params,
     headers: {
       "x-access-token": accessToken,

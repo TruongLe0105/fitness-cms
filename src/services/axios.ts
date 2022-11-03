@@ -6,6 +6,7 @@ export const initialInterceptor = () => {
     const token = localStorage.getItem("access_token") || "";
     const tokenType = localStorage.getItem("token_type") || "Bearer";
     config.url = API_URL + config.url;
+
     if (token && tokenType && config.headers) {
       config.headers.Authorization = `${tokenType} ${token}`;
     }

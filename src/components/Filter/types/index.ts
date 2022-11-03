@@ -1,5 +1,4 @@
 import { PLACEHOLDER_INPUT } from "components/Input/types";
-import { KeywordCategory } from "pages/keywords/types";
 
 export interface QueryFilterProps {
   owner_status?: string[];
@@ -17,11 +16,6 @@ export interface FilterTableProps {
     filedTitle: string,
     filedChecked: string
   ) => () => void;
-  category?: {
-    categories: KeywordCategory[];
-    filterCategory: KeywordCategory[];
-    setFilterCategory: (value: KeywordCategory[]) => void;
-  };
 
   // placeholder?: PLACEHOLDER_INPUT
   placeholder?: string;

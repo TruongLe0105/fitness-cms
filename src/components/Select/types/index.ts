@@ -1,4 +1,3 @@
-import { StarDetail } from "pages/stars/types";
 import React from "react";
 
 export interface SelectDefaultProps {
@@ -16,5 +15,5 @@ export interface SelectDefaultProps {
   defaultValue?: any;
   isMulti?: boolean;
   labelStyle?: React.CSSProperties;
-  dataTreasure?: any[]
+  dataTreasure?: any[];
 }

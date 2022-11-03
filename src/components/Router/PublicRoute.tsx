@@ -8,7 +8,7 @@ const PublicRoute = ({ component: Component, ...rest }: any): JSX.Element => {
   return (
     <Route
       {...rest}
-      render={() => (!isLogin() ? Component : <Redirect to={PATH.stars} />)}
+      render={() => (!isLogin() ? Component : <Redirect to={PATH.login} />)}
     />
   );
 };

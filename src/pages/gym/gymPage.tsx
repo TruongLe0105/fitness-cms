@@ -3,14 +3,8 @@ import Table from "components/Table/Table";
 import { useBoolean, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
 import { useEffect, useState } from "react";
-import {
-  NotificationDetail,
-  ParamsRequest,
-  UserDetail,
-  ListPointSelect,
-  ClientDetail,
-} from "./types";
-import { getUserMiddleware } from "./services/api";
+import { ParamsRequest, ClientDetail } from "./types";
+import { getGymMiddleware } from "./services/api";
 import { dataHeaderUser } from "./utils";
 import FilterTable from "components/Filter/FilterTable";
 import ButtonDefault from "components/Button/ButtonDefault";
@@ -20,8 +14,8 @@ import { cloneDeep } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
 
-const userPage = (): JSX.Element => {
-  const [user, setUser] = useState<ClientDetail[]>([]);
+const gymPage = (): JSX.Element => {
+  const [gym, setGym] = useState<ClientDetail[]>([]);
 
   const openFormUpdate = useBoolean();
   const openFormDestroy = useBoolean();
@@ -43,13 +37,13 @@ const userPage = (): JSX.Element => {
   useEffect(() => {
     const source: CancelTokenSource = Axios.CancelToken.source();
 
-    getUser(source);
+    getGym(source);
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page.value, orderBy.value]);
 
-  const getUser = async (source?: CancelTokenSource) => {
+  const getGym = async (source?: CancelTokenSource) => {
     try {
       const params: ParamsRequest = {
         limit: limit.value,
@@ -59,10 +53,10 @@ const userPage = (): JSX.Element => {
       //   params.sort = orderBy.value;
       // }
 
-      const dataRes = await getUserMiddleware(params, source);
+      const dataRes = await getGymMiddleware(params, source);
 
       if (dataRes?.data?.length) {
-        setUser(dataRes.data);
+        setGym(dataRes.data);
 
         total.setValue(dataRes.total);
       }
@@ -116,7 +110,7 @@ const userPage = (): JSX.Element => {
         headers={dataHeaderUser(handleOpenUpdateList)}
         handleChangePage={handleChangePage}
         // data={notifications.length ? notifications : []}
-        data={user.length ? user : []}
+        data={gym.length ? gym : []}
         handleChangeSort={handleChangeSort}
         orderBy={orderBy.value}
         orderDirection={orderDirection.value}
@@ -128,4 +122,4 @@ const userPage = (): JSX.Element => {
   );
 };
 
-export default userPage;
+export default gymPage;

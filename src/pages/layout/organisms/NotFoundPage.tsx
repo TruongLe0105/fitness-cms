@@ -6,7 +6,7 @@ import { pushTo } from "helpers/history";
 
 const NotFoundPage = (): JSX.Element => {
   const onSubmitGoHome = () => {
-    pushTo(PATH.stars);
+    pushTo(PATH.login);
   };
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center">

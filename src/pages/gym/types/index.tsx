@@ -16,7 +16,6 @@ export enum TYPE_NOTIFICATION {
   IOS = "ios",
   ANDROID = "android",
 }
-
 export interface NotificationDetail {
   createdAt: string;
   updatedAt: string;
@@ -27,51 +26,6 @@ export interface NotificationDetail {
   description: string;
   send: boolean;
   startDate: string;
-}
-
-export interface NotificationDetail {
-  createdAt: string;
-  updatedAt: string;
-  id: number;
-  type: TYPE_NOTIFICATION;
-  name: string;
-  url: string;
-  description: string;
-  send: boolean;
-  startDate: string;
-}
-
-export interface IInventoryDetail {
-  point: number;
-  pendingPoint: number;
-  ticket: number;
-  ticketMax: number;
-  exp: number;
-  level: number;
-  maxExp: number;
-  vsVictory: number;
-  singleVictoryMax: number;
-  vsVictoryMax: number;
-  vip: number;
-
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface UserDetail {
-  id: string;
-  email: string;
-  login_type: string;
-  wallet: string;
-  name: string;
-  created_at: number;
-  total_coin: number;
-  pending_coin: number;
-  is_online: boolean;
-  coin_earned_today: number;
-  coin_earned_week: number;
-  coin_earned_month: number;
 }
 
 export interface ClientDetail {
@@ -83,49 +37,13 @@ export interface ClientDetail {
   clientName: string;
 }
 
-export interface InventoryDetail {
-  userName: string;
-  walletAddress: string;
-  sign: string;
-  tokenCount: number;
-  inventory: IInventoryDetail | null;
-
-  createdAt: string;
-  updatedAt: string;
-  id: number;
-}
-
-export interface CharacterDetail {
-  id: number;
-  image: string;
-  type: number;
-  krName: string;
+export interface GymDetail {
+  id: string;
+  email: string;
+  phone: string;
+  status: string;
+  createdAt: number;
   name: string;
-  rarity: string;
-  attack: number;
-  amour: number;
-  maxHp: number;
-  dex: number;
-  moveCount: number;
-  moveTime: number;
-  skill: string;
-  numberOfUses: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface UserCharacterDetail {
-  user: UserDetail | null;
-  character: CharacterDetail | null;
-
-  id: number;
-  isSelect: boolean;
-  isPlay: boolean;
-  playNum: number;
-  maxPlayNum: number;
-
-  createdAt: string;
-  updatedAt: string;
 }
 
 export const emptyNotificationDetail: NotificationDetail = {
@@ -153,32 +71,6 @@ export const emptyUserDetail = {
   coin_earned_today: 0,
   coin_earned_week: 0,
   coin_earned_month: 0,
-};
-
-export const emptyUserCharacterDetail: UserCharacterDetail = {
-  user: null,
-  character: null,
-
-  id: 0,
-  isSelect: false,
-  isPlay: false,
-  playNum: 0,
-  maxPlayNum: 0,
-
-  createdAt: "",
-  updatedAt: "",
-};
-
-export const emptyInventoryDetail: InventoryDetail = {
-  userName: "",
-  walletAddress: "",
-  sign: "",
-  tokenCount: 0,
-  inventory: null,
-
-  createdAt: "",
-  updatedAt: "",
-  id: 0,
 };
 
 export enum STATUS_NOTIFICATION {

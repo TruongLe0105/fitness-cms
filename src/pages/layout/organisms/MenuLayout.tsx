@@ -3,8 +3,8 @@ import { listMenuPage, listMenuSettings, MenuLayoutProps } from "../types";
 import IconChangeMenu from "assets/images/icons/change-menu.svg";
 // import IconLogoClose from "assets/images/menu-logo-close.png";
 // import IconLogoOpen from "assets/images/menu-logo-open.png";
-import IconLogoClose from "assets/images/favicon-16x16.webp";
-import IconLogoOpen from "assets/images/favicon-16x16.webp";
+import IconLogoClose from "assets/images/Logo.png";
+import IconLogoOpen from "assets/images/Logo.png";
 
 const MenuLayout = (props: MenuLayoutProps): JSX.Element => {
   const { handleChangeMenu, openMenu } = props;
@@ -34,6 +34,10 @@ const MenuLayout = (props: MenuLayoutProps): JSX.Element => {
       <div className="h-100-custom flex justify-center">
         <img
           src={openMenu ? IconLogoOpen : IconLogoClose}
+          style={{
+            width: "160px",
+            height: "60px",
+          }}
           alt="icon"
           // className="h-50-custom"
           className="h-80-custom"

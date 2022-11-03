@@ -4,8 +4,8 @@ import {
 } from "components/DateRanges/types";
 import { FiledFilterItem, QueryFilterProps } from "components/Filter/types";
 import { cloneDeep, debounce, includes, remove, throttle } from "lodash";
-import { KeywordCategory } from "pages/keywords/types";
-import {} from "pages/stars/types";
+// import { KeywordCategory } from "pages/keywords/types";
+// import {} from "pages/stars/types";
 import React, { useCallback, useEffect, useState } from "react";
 import { ORDER_DIRECTION } from "types";
 
@@ -169,8 +169,8 @@ export const useFilter = (
   isLoadingTable: {
     value: boolean;
     setValue: React.Dispatch<React.SetStateAction<boolean>>;
-  },
-  setFilterCategory?: (value: KeywordCategory[]) => void
+  }
+  // setFilterCategory?: (value: KeywordCategory[]) => void
 ) => {
   const [filter, setFilter] = useState<QueryFilterProps>({
     market_status: [],
@@ -204,19 +204,19 @@ export const useFilter = (
         link_with_star: [],
         tokens: [], //treasure page
       });
-      setFilterCategory?.([]);
+      // setFilterCategory?.([]);
       handleChangePage();
       return;
     }
 
-    if (filedTitle === FiledFilterItem.CATEGORY) {
-      setFilterCategory?.([]);
-    } else {
-      setFilter({
-        ...filter,
-        [filedTitle]: [],
-      });
-    }
+    // if (filedTitle === FiledFilterItem.CATEGORY) {
+    //   setFilterCategory?.([]);
+    // } else {
+    setFilter({
+      ...filter,
+      [filedTitle]: [],
+    });
+    // }
 
     handleChangePage();
   };

@@ -60,9 +60,12 @@ const LoginPage = (): JSX.Element => {
 
   const onSubmitLogin = () => {
     const dataRequest: LoginRequest = {
-      username: username.value,
+      phone: username.value,
       password: password.value,
     };
+
+    console.log(dataRequest);
+
     isLoadingSubmit.setValue(true);
     loginMiddleware(
       dataRequest,

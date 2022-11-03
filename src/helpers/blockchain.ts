@@ -256,9 +256,6 @@ export const subscribingWallet = async () => {
   if (!window.ethereum) {
     return;
   }
-  // window.ethereum.on("chainChanged", () => {
-  //   window.location.reload();
-  // });
 
   window.ethereum.on("accountsChanged", (accounts: string[]) => {
     stateStore.dispatch(
@@ -267,12 +264,6 @@ export const subscribingWallet = async () => {
       })
     );
   });
-  // window.ethereum.on("disconnect", (error) => {
-  //   console.log("disconnect", error);
-  // });
-  // window.ethereum.on("connect", ({ chainId }) => {
-  //   console.log("on-connect", chainId);
-  // });
 };
 
 export const convertDonationFee = (fee: number): number => {

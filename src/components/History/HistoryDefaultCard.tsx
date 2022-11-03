@@ -1,11 +1,7 @@
 import { ReactComponent as IconHistory } from "assets/images/icons/history.svg";
 import Tooltip from "components/Tooltip";
 import Typography from "components/Typography";
-import {
-  formatDate,
-  onRedirectTestnet,
-  showFullNameOwnerStar,
-} from "helpers/util";
+import { formatDate, onRedirectTestnet } from "helpers/util";
 import { HashLoader } from "react-spinners";
 import { HistoryDefaultCardProps } from "./types";
 const HistoryDefaultCard = (props: HistoryDefaultCardProps): JSX.Element => {
@@ -57,14 +53,6 @@ const HistoryDefaultCard = (props: HistoryDefaultCardProps): JSX.Element => {
                   </Typography>
                 </div>
 
-                <div className="px-4 flex items-center ">
-                  <Typography
-                    textColor="text-black-04-custom"
-                    fontWeight="font-normal"
-                  >
-                    {el.owner ? showFullNameOwnerStar(el.owner) : null}
-                  </Typography>
-                </div>
                 <div className="px-4 flex items-center ">
                   <Typography
                     textColor="text-primary-custom"

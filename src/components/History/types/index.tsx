@@ -1,9 +1,9 @@
-import { OwnerDetail } from "pages/stars/types";
+// import { OwnerDetail } from "pages/stars/types";
 
 export interface HistoryDefaultDetail {
   purchasePrice: string;
   ownerBoughtAt: string;
-  owner: OwnerDetail;
+  // owner: OwnerDetail;
   txHash: string;
 }
 export interface HistoryDefaultCardProps {
