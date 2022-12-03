@@ -27,30 +27,14 @@ export interface NotificationDetail {
   send: boolean;
   startDate: string;
 }
-
-export interface ClientDetail {
+export interface MerchantDetail {
   id: string;
-  email: string;
-  phone: string;
-  status: string;
-  createdAt: number;
-  clientName: string;
-}
-
-export interface GymDetail {
-  id: string;
-  email: string;
-  phone: string;
-  status: string;
-  createdAt: number;
   name: string;
-  openingTime: {
-    from: number;
-    to: number;
-  };
-  merchant: any;
-  long: number;
-  lat: number;
+  email: string;
+  phone: string;
+  status: string;
+  createdAt: number;
+  updatedAt: number;
 }
 
 export const emptyNotificationDetail: NotificationDetail = {

@@ -12,6 +12,7 @@ import NotFoundPage from "pages/layout/organisms/NotFoundPage";
 // import UserPage from "pages/user/UserPage";
 import UserPage from "pages/user-data/userPage";
 import GymPage from "pages/gym/gymPage";
+import MerchantPage from "pages/merchant/merchantPage";
 
 const AppRoutes = (): JSX.Element => {
   useEffect(() => {
@@ -46,6 +47,7 @@ const AppRoutes = (): JSX.Element => {
         /> */}
         <PrivateRoute exact path={PATH.user} component={<UserPage />} />
         <PrivateRoute exact path={PATH.gym} component={<GymPage />} />
+        <PrivateRoute exact path={PATH.merchant} component={<MerchantPage />} />
         {/* <PrivateRoute
           exact
           path={PATH.manageVersions}

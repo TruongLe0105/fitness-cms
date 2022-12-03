@@ -3,8 +3,8 @@ import Table from "components/Table/Table";
 import { useBoolean, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
 import { useEffect, useState } from "react";
-import { ParamsRequest, ClientDetail, GymDetail } from "./types";
-import { getGymMiddleware } from "./services/api";
+import { ParamsRequest, PackageDetail } from "./types";
+import { getMerchantMiddleware } from "./services/api";
 import { dataHeaderUser } from "./utils";
 import FilterTable from "components/Filter/FilterTable";
 import ButtonDefault from "components/Button/ButtonDefault";
@@ -14,8 +14,8 @@ import { cloneDeep } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
 
-const gymPage = (): JSX.Element => {
-  const [gym, setGym] = useState<ClientDetail[]>([]);
+const packagePage = (): JSX.Element => {
+  const [gymPackage, setPackage] = useState<PackageDetail[]>([]);
 
   const openFormUpdate = useBoolean();
   const openFormDestroy = useBoolean();
@@ -37,13 +37,13 @@ const gymPage = (): JSX.Element => {
   useEffect(() => {
     const source: CancelTokenSource = Axios.CancelToken.source();
 
-    getGym(source);
+    getMerchant(source);
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page.value, orderBy.value]);
 
-  const getGym = async (source?: CancelTokenSource) => {
+  const getMerchant = async (source?: CancelTokenSource) => {
     try {
       const params: ParamsRequest = {
         limit: limit.value,
@@ -53,10 +53,10 @@ const gymPage = (): JSX.Element => {
       //   params.sort = orderBy.value;
       // }
 
-      const dataRes = await getGymMiddleware(params, source);
+      const dataRes = await getMerchantMiddleware(params, source);
 
       if (dataRes?.data?.length) {
-        setGym(dataRes.data);
+        setPackage(dataRes.data);
 
         total.setValue(dataRes.total);
       }
@@ -76,7 +76,7 @@ const gymPage = (): JSX.Element => {
   };
 
   const handleOpenUpdateList =
-    (key: "edit" | "delete" | "view-detail", value: GymDetail) => () => {
+    (key: "edit" | "delete" | "view-detail", value: PackageDetail) => () => {
       if (key !== "view-detail" && value.id) {
         return;
       }
@@ -110,7 +110,7 @@ const gymPage = (): JSX.Element => {
         headers={dataHeaderUser(handleOpenUpdateList)}
         handleChangePage={handleChangePage}
         // data={notifications.length ? notifications : []}
-        data={gym.length ? gym : []}
+        data={gymPackage.length ? gymPackage : []}
         handleChangeSort={handleChangeSort}
         orderBy={orderBy.value}
         orderDirection={orderDirection.value}
@@ -122,4 +122,4 @@ const gymPage = (): JSX.Element => {
   );
 };
 
-export default gymPage;
+export default packagePage;
