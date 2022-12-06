@@ -14,12 +14,15 @@ import { cloneDeep } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
 
+import '../../components/form/form.css';
+
 const gymPage = (): JSX.Element => {
   const [gym, setGym] = useState<ClientDetail[]>([]);
 
   const openFormUpdate = useBoolean();
   const openFormDestroy = useBoolean();
   const openViewDetail = useBoolean();
+
   const {
     handleChangeInputSearch,
     handleChangePage,
@@ -99,10 +102,13 @@ const gymPage = (): JSX.Element => {
       title="Client"
       childrenAction={
         <div className="flex items-center justify-between h-full pr-8">
-          <div className="flex items-center">{/*  */}</div>
+          <div className="flex items-center">
+            {/* {} */}
+          </div>
         </div>
       }
     >
+
       <Table
         limit={limit.value}
         page={page.value}

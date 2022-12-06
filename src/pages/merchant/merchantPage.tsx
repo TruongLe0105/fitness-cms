@@ -13,6 +13,7 @@ import SelectDefault from "components/Select/SelectDefault";
 import { cloneDeep } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
+import FormAddNewClient from "components/form/FormAddNewClient";
 
 const merchantPage = (): JSX.Element => {
   const [merchant, setMerchant] = useState<MerchantDetail[]>([]);
@@ -20,6 +21,9 @@ const merchantPage = (): JSX.Element => {
   const openFormUpdate = useBoolean();
   const openFormDestroy = useBoolean();
   const openViewDetail = useBoolean();
+  const openFormAdd = useBoolean(false);
+  const updateMerchant = useBoolean(false);
+
   const {
     handleChangeInputSearch,
     handleChangePage,
@@ -41,7 +45,11 @@ const merchantPage = (): JSX.Element => {
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page.value, orderBy.value]);
+  }, [page.value, orderBy.value, updateMerchant.value]);
+
+  const handleUpdate = () => {
+    updateMerchant.setValue(true);
+  }
 
   const getMerchant = async (source?: CancelTokenSource) => {
     try {
@@ -75,6 +83,14 @@ const merchantPage = (): JSX.Element => {
     isLoadingTable.setValue(false);
   };
 
+  const openFormAddNewClient = () => {
+    openFormAdd.setValue(true);
+  };
+
+  const closeFormAddNewClient = () => {
+    openFormAdd.setValue(false);
+  };
+
   const handleOpenUpdateList =
     (key: "edit" | "delete" | "view-detail", value: MerchantDetail) => () => {
       if (key !== "view-detail" && value.id) {
@@ -99,7 +115,14 @@ const merchantPage = (): JSX.Element => {
       title="Client"
       childrenAction={
         <div className="flex items-center justify-between h-full pr-8">
-          <div className="flex items-center">{/*  */}</div>
+          <div className="flex items-center">
+            <ButtonDefault
+              onClick={openFormAddNewClient}
+              buttonClass="form-btn"
+            >
+              Add New Client
+            </ButtonDefault>
+          </div>
         </div>
       }
     >
@@ -118,6 +141,12 @@ const merchantPage = (): JSX.Element => {
       />
 
       {isLoadingPage.value ? <BackdropCustomize /> : null}
+      {openFormAdd.value ?
+        <FormAddNewClient
+          onClose={closeFormAddNewClient}
+          openFormChange={openFormAdd.value}
+          handleUpdateList={handleUpdate}
+        /> : null}
     </PageLayout>
   );
 };

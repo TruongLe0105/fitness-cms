@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "PORT=3001 craco start --watch",
+    "start": "craco start --watch",
     "build": "craco build && cp .env ./build/.env",
     "test": "craco test",
     "eject": "react-scripts eject",

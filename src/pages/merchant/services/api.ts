@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Axios, { AxiosResponse, CancelTokenSource } from "axios";
+import { InputClient } from "components/form/type";
 import { access } from "fs";
 import { PATH } from "helpers/constant";
 import { pushTo } from "helpers/history";
@@ -112,3 +113,26 @@ export const updateNotificationMiddleware = (
       callBack(STATUS_RESPONSE_CODE.ERROR);
     });
 };
+
+export const addNewClientMiddleware = (
+  request: InputClient,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.post(`/admin/createMerchant`, request)
+    .then((response: any) => {
+      if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
+        showNotification("success", "Create new Merchant successfully!");
+        callBack(response.data.statusCode);
+        return;
+      }
+      showNotification(
+        "error",
+        response.data.data ? response.data.data.errors : response.data.message
+      );
+
+      callBack(response.data.statusCode);
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR)
+    })
+}
