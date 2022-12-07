@@ -4,7 +4,7 @@ import IconInputPassword from "components/Input/IconInputPassword";
 import InputDefault from "components/Input/InputDefault";
 import { STATUS_INPUT } from "components/Input/types";
 import { useBoolean } from "helpers/hooks";
-import { isValidEmail } from "helpers/util";
+import { isValidEmail, isValidMerchantName, isValidPassword, isValidPhone } from "helpers/util";
 import { addNewClientMiddleware } from "pages/merchant/services/api";
 import React, { FC, useState } from "react";
 import { STATUS_RESPONSE_CODE } from "types";
@@ -33,10 +33,10 @@ const FormAddNewClient: FC<FormAddClient> = (props) => {
 
     const isDisabledButton = () => {
         if (
-            !formInput.merchantName ||
-            !formInput.phone ||
+            !isValidMerchantName(formInput.merchantName) ||
+            !isValidPhone(formInput.phone) ||
             formInput.password !== formInput.passwordConfirm ||
-            !formInput.password
+            !isValidPassword(formInput.password)
         ) {
             return true;
         }

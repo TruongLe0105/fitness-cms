@@ -90,8 +90,8 @@ export const formatDate = (
     typeof date === "number" || typeof date !== "string"
       ? date
       : isValidDate(date.replace(" ", "T"))
-      ? date.replace(" ", "T")
-      : date;
+        ? date.replace(" ", "T")
+        : date;
 
   return format(new Date(typedDate), typeFormat ? typeFormat : "dd MMM yyyy");
 };
@@ -353,4 +353,22 @@ export const getImageSize = (
     }
   );
   return promise;
+};
+
+export const isValidPassword = (password: string) => {
+  if (password.length <= 8)
+    return false;
+  return true;
+};
+
+export const isValidMerchantName = (password: string) => {
+  if (password.length <= 8)
+    return false;
+  return true;
+};
+
+export const isValidPhone = (password: string) => {
+  if (password.length <= 10)
+    return false;
+  return true;
 };
