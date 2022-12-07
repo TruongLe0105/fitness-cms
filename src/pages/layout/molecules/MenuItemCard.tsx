@@ -27,15 +27,18 @@ const MenuItemCard = (props: MenuItemCardProps): JSX.Element => {
         return <IconMenuMerchant />;
       case PATH.package:
         return <IconMenuPackage />;
+      case PATH.subject:
+        return <IconMenuPackage />;
+      case PATH.convenience:
+        return <IconMenuPackage />;
     }
   };
 
   return (
     <div
       onClick={handleMenuPage}
-      className={`h-50-custom pl-8 flex items-center relative mb-3 cursor-pointer hover-menu-item ${
-        activeMenu ? "bg-primary-custom content-menu-item svg-icon-menu" : ""
-      }`}
+      className={`h-50-custom pl-8 flex items-center relative mb-3 cursor-pointer hover-menu-item ${activeMenu ? "bg-primary-custom content-menu-item svg-icon-menu" : ""
+        }`}
     >
       {renderIconMenu()}
       {openMenu ? (

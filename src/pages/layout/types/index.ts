@@ -66,6 +66,14 @@ export const listMenuPage: MenuItemDetail[] = [
     path: PATH.package,
     label: "Package",
   },
+  {
+    path: PATH.subject,
+    label: "Subject",
+  },
+  {
+    path: PATH.convenience,
+    label: "Convenience",
+  },
 ];
 export const listMenuSettings: MenuItemDetail[] = [
   // {
