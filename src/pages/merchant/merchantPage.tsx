@@ -13,7 +13,7 @@ import SelectDefault from "components/Select/SelectDefault";
 import { cloneDeep } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
-import FormAddNewClient from "components/form/FormAddNewClient";
+import FormAddNewClient from "pages/merchant/organisms/FormAddNewClient";
 
 const merchantPage = (): JSX.Element => {
   const [merchant, setMerchant] = useState<MerchantDetail[]>([]);
@@ -46,10 +46,6 @@ const merchantPage = (): JSX.Element => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page.value, orderBy.value, updateMerchant.value]);
-
-  const handleUpdate = () => {
-    updateMerchant.setValue(true);
-  }
 
   const getMerchant = async (source?: CancelTokenSource) => {
     try {
@@ -89,6 +85,10 @@ const merchantPage = (): JSX.Element => {
 
   const closeFormAddNewClient = () => {
     openFormAdd.setValue(false);
+  };
+
+  const handleUpdate = () => {
+    updateMerchant.setValue(true);
   };
 
   const handleOpenUpdateList =

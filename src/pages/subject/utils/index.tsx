@@ -8,10 +8,6 @@ import {
 } from "../types";
 
 export function dataHeaderUser(
-  // handleOpenUpdateList: (
-  //   key: "edit" | "delete" | "view-detail",
-  //   value: NotificationDetail
-  // ) => () => void
   handleOpenUpdateList: (
     key: "edit" | "delete" | "view-detail",
     value: SubjectDetail
@@ -91,7 +87,7 @@ export function dataHeaderUser(
       },
       sort: true,
       renderBody: (value: SubjectDetail) => (
-        <img src={value?.logo} alt="logo" />
+        <img src={value.logo} alt="logo" />
       ),
     },
 

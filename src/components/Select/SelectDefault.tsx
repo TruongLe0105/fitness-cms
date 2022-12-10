@@ -101,15 +101,13 @@ const SelectDefault = (props: SelectDefaultProps): JSX.Element => {
             const data = optionProps.data;
             return (
               <div
-                className={`${
-                  optionProps.isSelected ? 'bg-primary-custom' : ''
-                } min-h-30-custom flex items-center mb-1 pl-3 pr-3 cursor-pointer`}
+                className={`${optionProps.isSelected ? 'bg-primary-custom' : ''
+                  } min-h-30-custom flex items-center mb-1 pl-3 pr-3 cursor-pointer`}
                 {...optionProps.innerProps}
               >
                 <span
-                  className={`${
-                    optionProps.isSelected ? 'text-primary-custom' : 'text-gray'
-                  } text-sm select-text font-normal`}
+                  className={`${optionProps.isSelected ? 'text-primary-custom' : 'text-gray'
+                    } text-sm select-text font-normal`}
                 >
                   {data.label}
                 </span>

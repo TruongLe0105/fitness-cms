@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Axios, { AxiosResponse, CancelTokenSource } from "axios";
-import { InputClient } from "components/form/type";
 import { access } from "fs";
 import { PATH } from "helpers/constant";
 import { pushTo } from "helpers/history";
 import { showNotification } from "helpers/util";
+import { InputClient } from "pages/merchant/types";
 import { STATUS_RESPONSE_CODE } from "types";
 import {
   FormRequest,
   ConvenienceDetail,
   NotificationDetail,
   ParamsRequest,
+  InputConvenience,
 } from "../types";
 // eslint-disable-next-line
 export const getNotificationsMiddleware = async (
@@ -114,14 +115,14 @@ export const updateNotificationMiddleware = (
     });
 };
 
-export const addNewClientMiddleware = (
-  request: InputClient,
+export const addConvenienceMiddleware = (
+  formInput: InputConvenience,
   callBack: (status: STATUS_RESPONSE_CODE) => void,
 ) => {
-  Axios.post(`/admin/createMerchant`, request)
+  Axios.post(`/convenience/admin/create`, formInput)
     .then((response: any) => {
       if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
-        showNotification("success", "Create new Merchant successfully!");
+        showNotification("success", "Create new Convenience successfully!");
         callBack(response.data.statusCode);
         return;
       }
@@ -135,4 +136,11 @@ export const addNewClientMiddleware = (
     .catch(() => {
       callBack(STATUS_RESPONSE_CODE.ERROR)
     })
+}
+
+
+export const uploadImageMiddleware = (
+  formData: FormData,
+) => {
+  return Axios.post(`/media/admin/uploadImage`, formData);
 }

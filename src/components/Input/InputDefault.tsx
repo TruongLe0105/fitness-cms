@@ -37,7 +37,13 @@ const InputDefault = (props: InputDefaultProps): JSX.Element => {
     <div className={`flex flex-col relative ${rootClass}`} style={rootStyle}>
       <div className={`${Boolean(tooltipId) && "flex items-center"}`}>
         {label ? (
-          <Typography textColor="text-black" textClass="text-xs">
+          <Typography
+            // textColor="text-black"
+            // textClass="text-xs"
+            fontWeight="font-semibold"
+            textColor="text-gray-custom"
+            textClass="text-xs"
+          >
             {label}
             {required && <span className="text-red-500"> (*)</span>}
           </Typography>

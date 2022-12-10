@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Axios, { AxiosResponse, CancelTokenSource } from "axios";
-import { InputClient } from "components/form/type";
 import { access } from "fs";
 import { PATH } from "helpers/constant";
 import { pushTo } from "helpers/history";
@@ -8,6 +7,7 @@ import { showNotification } from "helpers/util";
 import { STATUS_RESPONSE_CODE } from "types";
 import {
   FormRequest,
+  InputClient,
   MerchantDetail,
   NotificationDetail,
   ParamsRequest,

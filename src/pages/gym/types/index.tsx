@@ -28,31 +28,6 @@ export interface NotificationDetail {
   startDate: string;
 }
 
-export interface ClientDetail {
-  id: string;
-  email: string;
-  phone: string;
-  status: string;
-  createdAt: number;
-  clientName: string;
-}
-
-export interface GymDetail {
-  id: string;
-  email: string;
-  phone: string;
-  status: string;
-  createdAt: number;
-  name: string;
-  openingTime: {
-    from: number;
-    to: number;
-  };
-  merchant: any;
-  long: number;
-  lat: number;
-}
-
 export const emptyNotificationDetail: NotificationDetail = {
   createdAt: "",
   updatedAt: "",
@@ -176,4 +151,80 @@ export interface TypographyItemCardProps {
   title: string;
   label: string;
   rootClass?: string;
+}
+
+export interface FormAddHostProps {
+  onClose: () => void;
+  openFormChange?: boolean;
+  handleUpdateList: () => void;
+  dataItem: GymDetail;
+}
+
+export interface InputHost {
+  name: string;
+  phone: string;
+  description: string;
+  segment: string;
+  address: string;
+  openingTime: {
+    from: number,
+    to: number
+  };
+  long: string;
+  lat: string;
+  // images: Array<string>;
+  merchantId: Array<string>;
+  subjects: Array<string>;
+  basicConvenience: Array<string>;
+  favoriteConvenience: Array<string>;
+  highClassConvenience: Array<string>;
+  safeConvenience: Array<string>;
+  rule: Array<any>;
+  medicalAndSafe: Array<any>;
+}
+
+export interface ClientDetail {
+  id: string;
+  name: string;
+  phone: string;
+  status: string;
+  createdAt: number;
+  clientName: string;
+}
+
+export interface GymDetail {
+  id: string;
+  email?: string;
+  phone: string;
+  status: string;
+  createdAt: number;
+  name: string;
+  openingTime: {
+    from: number;
+    to: number;
+  };
+  merchant: any;
+  long: number;
+  lat: number;
+}
+
+export const emptySubjectDetail: GymDetail = {
+  id: "0",
+  name: "",
+  phone: "",
+  status: "",
+  createdAt: 0,
+  // updatedAt: 0,
+  openingTime: {
+    from: 0,
+    to: 0,
+  },
+  merchant: "",
+  long: 0,
+  lat: 0,
+};
+
+export interface SegmentModelOption {
+  label: string;
+  value: string;
 }

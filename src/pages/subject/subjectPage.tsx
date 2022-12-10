@@ -6,12 +6,15 @@ import { useBoolean, useTable } from 'helpers/hooks';
 import { showNotification } from 'helpers/util';
 import PageLayout from 'pages/layout/organisms/PageLayout';
 import React, { useEffect, useState } from 'react'
+import FormAddNewSubject from './organisms/FormAddNewSubject';
 import { getSubjectMiddleware } from './services/api';
-import { ParamsRequest, SubjectDetail } from './types';
+import { emptySubjectDetail, ParamsRequest, SubjectDetail } from './types';
 import { dataHeaderUser } from './utils';
 
 const subjectPage = (): JSX.Element => {
     const [subject, setSubject] = useState<SubjectDetail[]>([]);
+    const [formDataSubject, setFormDataSubject] =
+        useState<SubjectDetail>(emptySubjectDetail);
 
     const updateSubject = useBoolean(false);
     const openFormAdd = useBoolean(false);
@@ -43,6 +46,17 @@ const subjectPage = (): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page.value, orderBy.value, updateSubject.value]);
 
+    const handleUpdate = () => {
+        updateSubject.setValue(true);
+    };
+
+    const openFormAddNewSubject = () => {
+        openFormAdd.setValue(true);
+    };
+
+    const closeFormAddNewSubject = () => {
+        openFormAdd.setValue(false);
+    };
 
     const getSubject = async (source?: CancelTokenSource) => {
         try {
@@ -81,7 +95,7 @@ const subjectPage = (): JSX.Element => {
             if (key !== "view-detail" && value.id) {
                 return;
             }
-            // setFormDataUser(value);
+            setFormDataSubject(value);
             switch (key) {
                 case "edit":
                     openFormUpdate.setValue(true);
@@ -102,7 +116,7 @@ const subjectPage = (): JSX.Element => {
                 <div className="flex items-center justify-between h-full pr-8">
                     <div className="flex items-center">
                         <ButtonDefault
-                            // onClick={openFormAddNewClient}
+                            onClick={openFormAddNewSubject}
                             buttonClass="form-btn"
                         >
                             Add New Subject
@@ -126,12 +140,13 @@ const subjectPage = (): JSX.Element => {
             />
 
             {isLoadingPage.value ? <BackdropCustomize /> : null}
-            {/* {openFormAdd.value ?
-      <FormAddNewClient
-        onClose={closeFormAddNewClient}
-        openFormChange={openFormAdd.value}
-        handleUpdateList={handleUpdate}
-      /> : null} */}
+            {openFormAdd.value ?
+                <FormAddNewSubject
+                    onClose={closeFormAddNewSubject}
+                    openFormChange={openFormAdd.value}
+                    handleUpdateList={handleUpdate}
+                    dataItem={formDataSubject}
+                /> : null}
         </PageLayout>
     )
 }

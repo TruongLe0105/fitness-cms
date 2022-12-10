@@ -27,15 +27,6 @@ export interface NotificationDetail {
   send: boolean;
   startDate: string;
 }
-export interface ConvenienceDetail {
-  id: string;
-  name: string;
-  logo: any;
-  type: string;
-  status: string;
-  createdAt: number;
-  updatedAt: number;
-}
 
 export const emptyNotificationDetail: NotificationDetail = {
   createdAt: "",
@@ -160,4 +151,53 @@ export interface TypographyItemCardProps {
   title: string;
   label: string;
   rootClass?: string;
+}
+
+export interface ConvenienceDetail {
+  id: string;
+  name: string;
+  type: string;
+  logo: string;
+  status: string;
+  createdAt: number;
+  updatedAt: number;
+  url: string;
+}
+
+export interface InputConvenience {
+  name: string;
+  type: string;
+  logo: string;
+}
+
+export interface FormAddConvenience {
+  openFormChange?: boolean;
+  onClose: () => void;
+  convenience?: InputConvenience;
+  handleUpdateList: () => void;
+  dataItem: ConvenienceDetail;
+}
+
+export interface ImageEventCardProps {
+  fileInput: any;
+  fileSelectedImageURL: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  keyInputFile: string;
+  handleRemoveFileInput: (event) => void;
+  originImage: string;
+}
+
+export const emptyConvenienceDetail: ConvenienceDetail = {
+  id: "0",
+  name: "",
+  type: "",
+  logo: "",
+  status: "",
+  createdAt: 0,
+  updatedAt: 0,
+  url: ""
+};
+
+export interface TypeModelOption {
+  label: string;
+  value: string;
 }

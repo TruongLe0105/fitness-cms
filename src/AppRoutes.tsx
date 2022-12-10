@@ -16,6 +16,8 @@ import MerchantPage from "pages/merchant/merchantPage";
 import SubjectPage from "pages/subject/subjectPage";
 import ConvenienPage from "pages/convenience/conveniencePage";
 
+import './form.css';
+
 const AppRoutes = (): JSX.Element => {
   useEffect(() => {
     subscribingWallet();

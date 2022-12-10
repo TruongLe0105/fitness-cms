@@ -6,10 +6,11 @@ import { pushTo } from "helpers/history";
 import { showNotification } from "helpers/util";
 import { STATUS_RESPONSE_CODE } from "types";
 import {
-  ClientDetail,
+  GymDetail,
   FormRequest,
   NotificationDetail,
   ParamsRequest,
+  InputHost,
 } from "../types";
 // eslint-disable-next-line
 export const getNotificationsMiddleware = async (
@@ -40,7 +41,7 @@ export const getGymMiddleware = async (
 
   const response: AxiosResponse<{
     data: {
-      data: ClientDetail[];
+      data: GymDetail[];
       total: number;
       totalPage: number;
     };
@@ -112,3 +113,26 @@ export const updateNotificationMiddleware = (
       callBack(STATUS_RESPONSE_CODE.ERROR);
     });
 };
+
+export const addNewHostMiddleware = (
+  request: InputHost,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.post(`/gym/admin/create`, request)
+    .then((response: any) => {
+      if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
+        showNotification("success", "Create new Merchant successfully!");
+        callBack(response.data.statusCode);
+        return;
+      }
+      showNotification(
+        "error",
+        response.data.data ? response.data.data.errors : response.data.message
+      );
+
+      callBack(response.data.statusCode);
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR)
+    })
+}

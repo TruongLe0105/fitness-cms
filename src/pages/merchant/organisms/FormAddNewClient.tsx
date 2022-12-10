@@ -8,7 +8,7 @@ import { isValidEmail, isValidMerchantName, isValidPassword, isValidPhone } from
 import { addNewClientMiddleware } from "pages/merchant/services/api";
 import React, { FC, useState } from "react";
 import { STATUS_RESPONSE_CODE } from "types";
-import { FormAddClient, InputClient } from "./type";
+import { FormAddClient, InputClient } from "../types";
 
 const FormAddNewClient: FC<FormAddClient> = (props) => {
     const { onClose, openFormChange, handleUpdateList } = props;
@@ -146,7 +146,6 @@ const FormAddNewClient: FC<FormAddClient> = (props) => {
             />
             <ButtonDefault
                 widthButton="w-140-custom"
-                buttonClass=""
                 disabled={isDisabledButton()}
                 onClick={onSubmitButton}
             >

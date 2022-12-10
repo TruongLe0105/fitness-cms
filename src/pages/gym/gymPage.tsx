@@ -3,7 +3,7 @@ import Table from "components/Table/Table";
 import { useBoolean, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
 import { useEffect, useState } from "react";
-import { ParamsRequest, ClientDetail, GymDetail } from "./types";
+import { ParamsRequest, ClientDetail, GymDetail, emptySubjectDetail } from "./types";
 import { getGymMiddleware } from "./services/api";
 import { dataHeaderUser } from "./utils";
 import FilterTable from "components/Filter/FilterTable";
@@ -13,15 +13,19 @@ import SelectDefault from "components/Select/SelectDefault";
 import { cloneDeep } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
-
-import '../../components/form/form.css';
+import FormAddHost from "./organisms/FormAddhost";
 
 const gymPage = (): JSX.Element => {
-  const [gym, setGym] = useState<ClientDetail[]>([]);
+  const [gym, setGym] = useState<GymDetail[]>([]);
+
+  const [formDataHost, setFormDataHost] =
+    useState<GymDetail>(emptySubjectDetail);
 
   const openFormUpdate = useBoolean();
   const openFormDestroy = useBoolean();
   const openViewDetail = useBoolean();
+  const openFormAdd = useBoolean();
+  const updateData = useBoolean();
 
   const {
     handleChangeInputSearch,
@@ -45,6 +49,18 @@ const gymPage = (): JSX.Element => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page.value, orderBy.value]);
+
+  const openFormAddHost = () => {
+    openFormAdd.setValue(true);
+  };
+
+  const closeFormAddHost = () => {
+    openFormAdd.setValue(false);
+  };
+
+  const handleUpdate = () => {
+    updateData.setValue(true);
+  };
 
   const getGym = async (source?: CancelTokenSource) => {
     try {
@@ -103,12 +119,16 @@ const gymPage = (): JSX.Element => {
       childrenAction={
         <div className="flex items-center justify-between h-full pr-8">
           <div className="flex items-center">
-            {/* {} */}
+            <ButtonDefault
+              onClick={openFormAddHost}
+              buttonClass="form-btn"
+            >
+              Add New Host
+            </ButtonDefault>
           </div>
         </div>
       }
     >
-
       <Table
         limit={limit.value}
         page={page.value}
@@ -124,6 +144,15 @@ const gymPage = (): JSX.Element => {
       />
 
       {isLoadingPage.value ? <BackdropCustomize /> : null}
+      {
+        openFormAdd.value &&
+        <FormAddHost
+          onClose={closeFormAddHost}
+          openFormChange={openFormAdd.value}
+          handleUpdateList={handleUpdate}
+          dataItem={formDataHost}
+        />
+      }
     </PageLayout>
   );
 };

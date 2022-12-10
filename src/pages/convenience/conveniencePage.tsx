@@ -6,12 +6,15 @@ import { useBoolean, useTable } from 'helpers/hooks';
 import { showNotification } from 'helpers/util';
 import PageLayout from 'pages/layout/organisms/PageLayout';
 import React, { useEffect, useState } from 'react'
+import FormAddConvenience from './molecules/FormAddConvenience';
 import { getConvenienceMiddleware } from './services/api';
-import { ConvenienceDetail, ParamsRequest } from './types';
+import { ConvenienceDetail, emptyConvenienceDetail, ParamsRequest } from './types';
 import { dataHeaderUser } from './utils';
 
 const conveniencePage = (): JSX.Element => {
     const [convenience, setConvenience] = useState<ConvenienceDetail[]>([]);
+    const [formDataSubject, setFormDataSubject] =
+        useState<ConvenienceDetail>(emptyConvenienceDetail);
 
     const updateConvenience = useBoolean(false);
     const openFormAdd = useBoolean(false);
@@ -44,6 +47,23 @@ const conveniencePage = (): JSX.Element => {
     }, [page.value, orderBy.value, updateConvenience.value]);
 
 
+    const handleUpdate = () => {
+        updateConvenience.setValue(true);
+    };
+
+    const openFormAddConvenience = () => {
+        openFormAdd.setValue(true);
+    };
+
+    const closeFormAddConvenience = () => {
+        openFormAdd.setValue(false);
+    };
+
+    const cleanStateRequest = () => {
+        isLoadingPage.setValue(false);
+        isLoadingTable.setValue(false);
+    };
+
     const getConvenience = async (source?: CancelTokenSource) => {
         try {
             const params: ParamsRequest = {
@@ -69,11 +89,6 @@ const conveniencePage = (): JSX.Element => {
                 showNotification("error", "Server Error");
             }
         }
-    };
-
-    const cleanStateRequest = () => {
-        isLoadingPage.setValue(false);
-        isLoadingTable.setValue(false);
     };
 
     const handleOpenUpdateList =
@@ -102,7 +117,7 @@ const conveniencePage = (): JSX.Element => {
                 <div className="flex items-center justify-between h-full pr-8">
                     <div className="flex items-center">
                         <ButtonDefault
-                            // onClick={openFormAddNewClient}
+                            onClick={openFormAddConvenience}
                             buttonClass="form-btn"
                         >
                             Add New Convenience
@@ -126,12 +141,13 @@ const conveniencePage = (): JSX.Element => {
             />
 
             {isLoadingPage.value ? <BackdropCustomize /> : null}
-            {/* {openFormAdd.value ?
-      <FormAddNewClient
-        onClose={closeFormAddNewClient}
-        openFormChange={openFormAdd.value}
-        handleUpdateList={handleUpdate}
-      /> : null} */}
+            {openFormAdd.value ?
+                <FormAddConvenience
+                    onClose={closeFormAddConvenience}
+                    openFormChange={openFormAdd.value}
+                    handleUpdateList={handleUpdate}
+                    dataItem={formDataSubject}
+                /> : null}
         </PageLayout>
     )
 }

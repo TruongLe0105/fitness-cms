@@ -158,9 +158,8 @@ const Table = (props: TableProps): JSX.Element => {
                   <tr
                     key={index}
                     onClick={onClickViewDetail(el)}
-                    className={`${
-                      handleViewDetailTable ? "cursor-pointer" : ""
-                    }`}
+                    className={`${handleViewDetailTable ? "cursor-pointer" : ""
+                      }`}
                     style={{
                       borderBottom:
                         index === data.length - 1

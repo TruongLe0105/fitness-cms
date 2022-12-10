@@ -27,14 +27,6 @@ export interface NotificationDetail {
   send: boolean;
   startDate: string;
 }
-export interface SubjectDetail {
-  id: string;
-  name: string;
-  logo: any;
-  status: string;
-  createdAt: number;
-  updatedAt: number;
-}
 
 export const emptyNotificationDetail: NotificationDetail = {
   createdAt: "",
@@ -160,3 +152,45 @@ export interface TypographyItemCardProps {
   label: string;
   rootClass?: string;
 }
+
+export interface SubjectDetail {
+  id: string;
+  name: string;
+  logo: string;
+  status: string;
+  createdAt: number;
+  updatedAt: number;
+  url: string;
+}
+
+export interface InputSubject {
+  name: string;
+  logo: string;
+}
+
+export interface FormAddSubject {
+  openFormChange?: boolean;
+  onClose: () => void;
+  subject?: InputSubject;
+  handleUpdateList: () => void;
+  dataItem: SubjectDetail;
+}
+
+export interface ImageEventCardProps {
+  fileInput: any;
+  fileSelectedImageURL: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  keyInputFile: string;
+  handleRemoveFileInput: (event) => void;
+  originImage: string;
+}
+
+
+export const emptySubjectDetail: SubjectDetail = {
+  id: "0",
+  name: "",
+  logo: "",
+  status: "",
+  createdAt: 0,
+  updatedAt: 0,
+  url: ""
+};
