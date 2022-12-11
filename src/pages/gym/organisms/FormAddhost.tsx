@@ -3,21 +3,17 @@ import DialogCard from "components/Dialog/DialogCard";
 import InputDefault from "components/Input/InputDefault";
 import { STATUS_INPUT } from "components/Input/types";
 import SelectDefault from "components/Select/SelectDefault";
-import { useBoolean, useString, useTable } from "helpers/hooks";
+import { useBoolean, useString } from "helpers/hooks";
 import { isValidPhone } from "helpers/util";
-import { ParamsRequest } from "interfaces";
 import { getConvenienceMiddleware } from "pages/convenience/services/api";
 import { getMerchantMiddleware } from "pages/merchant/services/api";
 import { getSubjectMiddleware } from "pages/subject/services/api";
 import React, { FC, useState } from "react";
 import { useSelector } from "react-redux";
-import { STATUS_RESPONSE_CODE } from "types";
 import { optionSegment } from "../constant";
-import { MerchantOptions } from "../constant/MerchantOptions";
 import MultiImage from "../molecules/MultiImage";
 import MultiSelectInput from "../molecules/MultiSelect";
 import TimeInput from "../molecules/TimeWrapper";
-import { addNewHostMiddleware } from "../services/api";
 import { FormAddHostProps, InputHost } from "../types";
 
 const FormAddHost: FC<FormAddHostProps> = (props) => {
@@ -30,8 +26,6 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
 
     const [options, setOptions] = useState<any>([]);
 
-    console.log(merchants)
-
     React.useEffect(() => {
         getSubjectMiddleware();
         getConvenienceMiddleware();
@@ -42,12 +36,9 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                 label: merchant.name,
                 value: merchant._id
             }
-            console.log("newOps:", newOps)
             options.push(newOps)
         })
     }, [merchants.length]);
-
-    console.log("options:", options)
 
     const basicConvenience = conveniences?.filter((convenience) => convenience.type === "basic")
     const highClassConvenience = conveniences?.filter((convenience) => convenience.type === "highClass")

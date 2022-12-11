@@ -58,20 +58,10 @@ const FormAddNewSubject: FC<FormAddSubject> = (props) => {
             return;
         }
 
-        // const formData = new FormData();
-        // formData.append("name", name.value);
-
-        // if (fileInput) {
-        //     formData.append("logo", urlImage.value);
-        // }
-
-        // console.log("formData:", formData)
         isLoading.setValue(true);
-        console.log(formInput)
 
         addNewSubjectMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
             isLoading.setValue(false);
-            console.log(status)
             if (status === STATUS_RESPONSE_CODE.SUCCESS) {
                 handleUpdateList();
                 onClose();

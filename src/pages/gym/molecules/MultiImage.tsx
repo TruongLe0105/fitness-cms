@@ -25,8 +25,6 @@ function MultiImage({ required, setFormInput, formInput }) {
             }
         }
 
-        console.log("newArr", newArr)
-
         setFormInput({
             ...formInput,
             images: newArr
@@ -48,9 +46,6 @@ function MultiImage({ required, setFormInput, formInput }) {
             setUploadImg(response.data.data)
         })
     };
-
-    console.log("uploadImg", uploadImg)
-    // console.log("url", urlImage)
 
     return (
         <div className="images-container">

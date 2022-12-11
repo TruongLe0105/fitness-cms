@@ -54,7 +54,6 @@ export const getSubjectMiddleware = async (
     params,
   });
 
-  console.log(response.data.data.data)
   stateStore.dispatch(setListSubject(response.data.data.data));
   return response.data.data;
 };
