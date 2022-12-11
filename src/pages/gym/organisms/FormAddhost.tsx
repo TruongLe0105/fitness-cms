@@ -10,10 +10,12 @@ import { getMerchantMiddleware } from "pages/merchant/services/api";
 import { getSubjectMiddleware } from "pages/subject/services/api";
 import React, { FC, useState } from "react";
 import { useSelector } from "react-redux";
+import { STATUS_RESPONSE_CODE } from "types";
 import { optionSegment } from "../constant";
 import MultiImage from "../molecules/MultiImage";
 import MultiSelectInput from "../molecules/MultiSelect";
 import TimeInput from "../molecules/TimeWrapper";
+import { addNewHostMiddleware } from "../services/api";
 import { FormAddHostProps, InputHost } from "../types";
 
 const FormAddHost: FC<FormAddHostProps> = (props) => {
@@ -102,14 +104,14 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
     const onSubmitButton = () => {
         // console.log("formInsubmit", JSON.stringify(formInput))
         console.log("formInsubmit", formInput)
-        // isLoading.setValue(true);
-        // addNewHostMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
-        //     isLoading.setValue(false);
-        //     if (status === STATUS_RESPONSE_CODE.SUCCESS) {
-        //         handleUpdateList();
-        //         onClose();
-        //     }
-        // });
+        isLoading.setValue(true);
+        addNewHostMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
+            isLoading.setValue(false);
+            if (status === STATUS_RESPONSE_CODE.SUCCESS) {
+                handleUpdateList();
+                onClose();
+            }
+        });
     };
 
     const onKeyPress = (event: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -399,7 +401,7 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
             />
             <ButtonDefault
                 widthButton="w-140-custom"
-                // disabled={isDisabledButton()}
+                disabled={isDisabledButton()}
                 onClick={onSubmitButton}
                 style={{
                     minHeight: 37,
