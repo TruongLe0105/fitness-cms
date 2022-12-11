@@ -90,6 +90,7 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
             !formInput.lat ||
             !formInput.merchantId ||
             !formInput.subjects.length ||
+            !formInput.images.length ||
             !formInput.basicConvenience.length ||
             !formInput.highClassConvenience.length ||
             !formInput.safeConvenience.length ||
@@ -169,7 +170,7 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
             openPopup={openFormChange}
             disablePopup
             handleCLoseDialog={onClose}
-            title="Add New Client"
+            title="Add New Gym"
             size="md"
             rootStyle={{
                 width: "90vw",

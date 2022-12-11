@@ -112,7 +112,7 @@ const merchantPage = (): JSX.Element => {
 
   return (
     <PageLayout
-      title="Client"
+      title="Merchant"
       childrenAction={
         <div className="flex items-center justify-between h-full pr-8">
           <div className="flex items-center">
@@ -120,7 +120,7 @@ const merchantPage = (): JSX.Element => {
               onClick={openFormAddNewClient}
               buttonClass="form-btn"
             >
-              Add New Client
+              Add New Merchant
             </ButtonDefault>
           </div>
         </div>

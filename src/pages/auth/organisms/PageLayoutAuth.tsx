@@ -8,7 +8,9 @@ const PageLayoutAuth = (props: PageLayoutAuthProps): JSX.Element => {
     <div
       className="w-full h-screen flex justify-center items-center"
       style={{
-        backgroundImage: `url("/pmg-background.png")`,
+        backgroundImage: `url("/pmg-background.jpg")`,
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat"
       }}
     >
       <div className="flex flex-col justify-center items-center">
@@ -20,7 +22,11 @@ const PageLayoutAuth = (props: PageLayoutAuthProps): JSX.Element => {
         >
           FITNESS CMS
         </Typography>
-        <div className="bg-white rounded-2xl w-400-custom p-8 flex flex-col relative">
+        <div className="bg-white rounded-2xl w-400-custom p-8 flex flex-col relative"
+          style={{
+            boxShadow: "rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px"
+          }}
+        >
           <Typography
             variant="h3"
             fontWeight="font-bold"

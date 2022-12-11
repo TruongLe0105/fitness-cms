@@ -87,7 +87,7 @@ const FormAddNewClient: FC<FormAddClient> = (props) => {
             openPopup={openFormChange}
             disablePopup
             handleCLoseDialog={onClose}
-            title="Add New Client"
+            title="Add New Merchant"
         >
             <InputDefault
                 label="Email"

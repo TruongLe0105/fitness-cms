@@ -115,7 +115,7 @@ const gymPage = (): JSX.Element => {
 
   return (
     <PageLayout
-      title="Client"
+      title="Gym"
       childrenAction={
         <div className="flex items-center justify-between h-full pr-8">
           <div className="flex items-center">
@@ -123,7 +123,7 @@ const gymPage = (): JSX.Element => {
               onClick={openFormAddHost}
               buttonClass="form-btn"
             >
-              Add New Host
+              Add New Gym
             </ButtonDefault>
           </div>
         </div>
