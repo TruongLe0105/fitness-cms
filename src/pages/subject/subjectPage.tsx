@@ -47,7 +47,7 @@ const subjectPage = (): JSX.Element => {
     }, [page.value, orderBy.value, updateSubject.value]);
 
     const handleUpdate = () => {
-        updateSubject.setValue(true);
+        updateSubject.setValue(!updateSubject.value);
     };
 
     const openFormAddNewSubject = () => {

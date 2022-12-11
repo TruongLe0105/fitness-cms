@@ -1,7 +1,8 @@
+import Typography from 'components/Typography';
 import React from 'react';
 import TimeField from 'react-simple-timefield';
 
-const TimeInput = ({ label, setFormInput, formInput }) => {
+const TimeInput = ({ label, setFormInput, formInput, required }) => {
 
     const styleInput = {
         backgroundColor: "rgba(96, 108, 110, 0.15)",
@@ -19,7 +20,7 @@ const TimeInput = ({ label, setFormInput, formInput }) => {
 
     const labelStyle = {
         fontSize: "15px",
-        fontWeight: "600"
+        color: "rgba(161, 169, 180, var(--tw-text-opacity))"
     };
 
     const onChangeTimeFrom = (event: any, time: any) => {
@@ -40,7 +41,20 @@ const TimeInput = ({ label, setFormInput, formInput }) => {
         <div className='mb-6'>
             {
                 label &&
-                <p className="text-sm font-semibold text-gray-custom text-xs">{label}</p>
+                (
+                    < Typography
+                        fontWeight='font-semibold'
+                        textColor='text-gray-custom'
+                        textClass='text-xs'
+                        style={{
+                            display: "flex",
+                            marginBottom: "3px"
+                        }}
+                    >
+                        <p className="text-sm font-semibold text-gray-custom text-xs">{label}</p>
+                        {required && <span className='text-red-500 ml-1'> (*)</span>}
+                    </Typography>
+                )
             }
             <div >
                 <label style={labelStyle}>From</label>
@@ -57,7 +71,7 @@ const TimeInput = ({ label, setFormInput, formInput }) => {
                 />
             </div>
 
-        </div>
+        </div >
     );
 };
 

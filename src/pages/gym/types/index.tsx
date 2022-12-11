@@ -172,14 +172,14 @@ export interface InputHost {
   };
   long: string;
   lat: string;
-  // images: Array<string>;
-  merchantId: Array<string>;
+  merchantId: string;
+  images: Array<string>;
   subjects: Array<string>;
   basicConvenience: Array<string>;
   favoriteConvenience: Array<string>;
   highClassConvenience: Array<string>;
   safeConvenience: Array<string>;
-  rule: Array<any>;
+  rules: Array<any>;
   medicalAndSafe: Array<any>;
 }
 
@@ -225,6 +225,11 @@ export const emptySubjectDetail: GymDetail = {
 };
 
 export interface SegmentModelOption {
+  label: string;
+  value: string;
+}
+
+export interface MerchantModelOption {
   label: string;
   value: string;
 }

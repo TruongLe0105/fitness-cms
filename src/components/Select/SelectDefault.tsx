@@ -21,6 +21,7 @@ const SelectDefault = (props: SelectDefaultProps): JSX.Element => {
     ...otherProps
   } = props;
 
+
   const customStyles = {
     control: () => ({
       ...{
@@ -92,7 +93,6 @@ const SelectDefault = (props: SelectDefaultProps): JSX.Element => {
         isSearchable={false}
         onChange={handleChange}
         options={options}
-        // menuIsOpen
         menuPlacement='auto'
         isDisabled={isDisabled}
         className='text'

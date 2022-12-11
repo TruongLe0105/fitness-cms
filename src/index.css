@@ -192,8 +192,55 @@ body {
   flex-direction: column;
 }
 
+.btn-dialog {
+  margin-top: 1rem;
+}
+
 .dialog-body .bg-img {
-  height: 300px;
+  width: 200px;
+  height: 200px;
+}
+
+.upload__image-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.optionListContainer {
+  font-size: 12px;
+}
+
+.images-container {
+  width: 100%;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.wrapper-image {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.image-item {
+  position: relative;
+  margin-right: 2rem;
+  width: 100px;
+  height: 100px;
+}
+
+.image-item .images {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.destroy-icon {
+  bottom: 0;
+  right: 0
 }
 
 .scroll-page-layout-children {

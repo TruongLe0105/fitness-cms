@@ -140,13 +140,13 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
             disablePopup
             handleCLoseDialog={onClose}
             title="Add New Convenience"
-        // rootStyle={{ width: "50%" }}
+            rootStyle={{ width: "300px" }}
         >
             <div
                 className="grid"
-                style={{
-                    gridTemplateColumns: "359px calc(100% - 359px)",
-                }}
+            // style={{
+            //     gridTemplateColumns: "359px calc(100% - 359px)",
+            // }}
             >
                 <ImageEventCard
                     fileInput={fileInput}
@@ -186,6 +186,7 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
                 widthButton="w-140-custom"
                 disabled={isDisabledButton()}
                 onClick={onSubmitButton}
+                buttonClass="btn-dialog"
             >
                 Add
             </ButtonDefault>

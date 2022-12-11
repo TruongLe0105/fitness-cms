@@ -5,6 +5,8 @@ import { PATH } from "helpers/constant";
 import { pushTo } from "helpers/history";
 import { showNotification } from "helpers/util";
 import { InputClient } from "pages/merchant/types";
+import { setListConvenience } from "slices/selectSlice";
+import stateStore from "slices/store";
 import { STATUS_RESPONSE_CODE } from "types";
 import {
   FormRequest,
@@ -31,7 +33,7 @@ export const getNotificationsMiddleware = async (
 };
 
 export const getConvenienceMiddleware = async (
-  params: ParamsRequest,
+  params?: ParamsRequest,
   source?: CancelTokenSource
 ) => {
   const accessToken: string = localStorage.getItem("access_token") || "";
@@ -60,6 +62,8 @@ export const getConvenienceMiddleware = async (
     pushTo(PATH.login);
     return;
   }
+
+  stateStore.dispatch(setListConvenience(response.data.data.data));
 
   return response.data.data;
 };

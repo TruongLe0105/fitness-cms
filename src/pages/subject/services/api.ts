@@ -5,6 +5,8 @@ import { PATH } from "helpers/constant";
 import { pushTo } from "helpers/history";
 import { showNotification } from "helpers/util";
 import React from "react";
+import stateStore from "slices/store";
+import { setListSubject } from "slices/selectSlice";
 import { STATUS_RESPONSE_CODE } from "types";
 import {
   FormRequest,
@@ -31,7 +33,7 @@ export const getNotificationsMiddleware = async (
 };
 
 export const getSubjectMiddleware = async (
-  params: ParamsRequest,
+  params?: ParamsRequest,
   source?: CancelTokenSource
 ) => {
   // const accessToken: string = localStorage.getItem("access_token") || "";
@@ -50,17 +52,10 @@ export const getSubjectMiddleware = async (
     statusCode: number;
   }> = await Axios.get(`/subject`, {
     params,
-    // headers: {
-    //   "x-access-token": accessToken,
-    // },
   });
 
-  // if (response.data.message === "Invalid token ! ") {
-  //   localStorage.removeItem("access_token");
-  //   pushTo(PATH.login);
-  //   return;
-  // }
-
+  console.log(response.data.data.data)
+  stateStore.dispatch(setListSubject(response.data.data.data));
   return response.data.data;
 };
 

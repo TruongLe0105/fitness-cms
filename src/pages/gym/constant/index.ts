@@ -1,5 +1,6 @@
 import { SegmentModelOption } from "../types";
 
+
 export const optionSegment: SegmentModelOption[] = [
     {
         label: "Vip",

@@ -136,3 +136,9 @@ export const addNewHostMiddleware = (
       callBack(STATUS_RESPONSE_CODE.ERROR)
     })
 }
+
+export const uploadImageMiddleware = (
+  formData: FormData,
+) => {
+  return Axios.post(`/media/admin/uploadImage`, formData);
+}

@@ -182,6 +182,7 @@ export interface ImageEventCardProps {
   keyInputFile: string;
   handleRemoveFileInput: (event) => void;
   originImage: string;
+  styleImage?: any;
 }
 
 

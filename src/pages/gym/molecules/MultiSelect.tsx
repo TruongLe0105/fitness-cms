@@ -19,40 +19,40 @@ const MultiSelectInput = (props): JSX.Element => {
 
     const selectedOptions = (values: any) => {
         switch (inputType) {
-            case "merchantId":
-                setFormInput({
-                    ...formInput,
-                    merchantId: values.map((value: any) => value.value)
-                });
-                break;
+            // case "merchantId":
+            //     setFormInput({
+            //         ...formInput,
+            //         merchantId: values.map((value: any) => value._id)
+            //     });
+            //     break;
             case "subjects":
                 setFormInput({
                     ...formInput,
-                    subjects: values.map((value: any) => value.value)
+                    subjects: values.map((value: any) => value._id)
                 });
                 break;
             case "basicConvenience":
                 setFormInput({
                     ...formInput,
-                    basicConvenience: values.map((value: any) => value.value)
+                    basicConvenience: values.map((value: any) => value._id)
                 });
                 break;
             case "favoriteConvenience":
                 setFormInput({
                     ...formInput,
-                    favoriteConvenience: values.map((value: any) => value.value)
+                    favoriteConvenience: values.map((value: any) => value._id)
                 });
                 break;
             case "highClassConvenience":
                 setFormInput({
                     ...formInput,
-                    highClassConvenience: values.map((value: any) => value.value)
+                    highClassConvenience: values.map((value: any) => value._id)
                 });
                 break;
             case "safeConvenience":
                 setFormInput({
                     ...formInput,
-                    safeConvenience: values.map((value: any) => value.value)
+                    safeConvenience: values.map((value: any) => value._id)
                 });
                 break;
         }
@@ -60,43 +60,47 @@ const MultiSelectInput = (props): JSX.Element => {
 
     const removeOptions = (values: any) => {
         switch (inputType) {
-            case "merchantId":
-                setFormInput({
-                    ...formInput,
-                    merchantId: values.map((value: any) => value.value)
-                });
-                break;
+            // case "merchantId":
+            //     setFormInput({
+            //         ...formInput,
+            //         merchantId: values.map((value: any) => value._id)
+            //     });
+            //     break;
             case "subjects":
                 setFormInput({
                     ...formInput,
-                    subjects: values.map((value: any) => value.value)
+                    subjects: values.map((value: any) => value._id)
                 });
                 break;
             case "basicConvenience":
                 setFormInput({
                     ...formInput,
-                    basicConvenience: values.map((value: any) => value.value)
+                    basicConvenience: values.map((value: any) => value._id)
                 });
                 break;
             case "favoriteConvenience":
                 setFormInput({
                     ...formInput,
-                    favoriteConvenience: values.map((value: any) => value.value)
+                    favoriteConvenience: values.map((value: any) => value._id)
                 });
                 break;
             case "highClassConvenience":
                 setFormInput({
                     ...formInput,
-                    highClassConvenience: values.map((value: any) => value.value)
+                    highClassConvenience: values.map((value: any) => value._id)
                 });
                 break;
             case "safeConvenience":
                 setFormInput({
                     ...formInput,
-                    safeConvenience: values.map((value: any) => value.value)
+                    safeConvenience: values.map((value: any) => value._id)
                 });
                 break;
         }
+    }
+
+    const labelStyle = {
+        marginBottom: "3px"
     }
 
     return (
@@ -106,23 +110,18 @@ const MultiSelectInput = (props): JSX.Element => {
                     fontWeight='font-semibold'
                     textColor='text-gray-custom'
                     textClass='text-xs'
-                // style={labelStyle}
+                    style={labelStyle}
                 >
                     {label}
                     {required && <span className='text-red-500'> (*)</span>}
                 </Typography>
             ) : null}
             <Multiselect
-                displayValue="label"
+                displayValue="name"
                 onSelect={selectedOptions}
                 onRemove={removeOptions}
                 options={options}
                 showArrow={true}
-                style={{
-                    padding: "0 !important",
-                    height: 20,
-                    background: "red"
-                }}
             />
         </div>
     )

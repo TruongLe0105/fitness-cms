@@ -7,9 +7,11 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { authReducer } from "./authSlice";
+import { selectReducer } from "./selectSlice";
 
 const reducers = combineReducers({
   auth: authReducer,
+  subject: selectReducer
 });
 
 const persistConfig = {

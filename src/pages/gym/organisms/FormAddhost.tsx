@@ -3,10 +3,18 @@ import DialogCard from "components/Dialog/DialogCard";
 import InputDefault from "components/Input/InputDefault";
 import { STATUS_INPUT } from "components/Input/types";
 import SelectDefault from "components/Select/SelectDefault";
-import { useBoolean, useString } from "helpers/hooks";
+import { useBoolean, useString, useTable } from "helpers/hooks";
+import { isValidPhone } from "helpers/util";
+import { ParamsRequest } from "interfaces";
+import { getConvenienceMiddleware } from "pages/convenience/services/api";
+import { getMerchantMiddleware } from "pages/merchant/services/api";
+import { getSubjectMiddleware } from "pages/subject/services/api";
 import React, { FC, useState } from "react";
+import { useSelector } from "react-redux";
 import { STATUS_RESPONSE_CODE } from "types";
 import { optionSegment } from "../constant";
+import { MerchantOptions } from "../constant/MerchantOptions";
+import MultiImage from "../molecules/MultiImage";
 import MultiSelectInput from "../molecules/MultiSelect";
 import TimeInput from "../molecules/TimeWrapper";
 import { addNewHostMiddleware } from "../services/api";
@@ -14,9 +22,37 @@ import { FormAddHostProps, InputHost } from "../types";
 
 const FormAddHost: FC<FormAddHostProps> = (props) => {
     const { onClose, openFormChange, handleUpdateList } = props;
+    const { subjects, conveniences, merchants } = useSelector((state: any) => state.subject);
 
-    const isLoading = useBoolean();
+    const merchantName = useString();
     const segment = useString();
+    const isLoading = useBoolean();
+
+    const [options, setOptions] = useState<any>([]);
+
+    console.log(merchants)
+
+    React.useEffect(() => {
+        getSubjectMiddleware();
+        getConvenienceMiddleware();
+        getMerchantMiddleware();
+
+        merchants?.map((merchant: any) => {
+            const newOps = {
+                label: merchant.name,
+                value: merchant._id
+            }
+            console.log("newOps:", newOps)
+            options.push(newOps)
+        })
+    }, [merchants.length]);
+
+    console.log("options:", options)
+
+    const basicConvenience = conveniences?.filter((convenience) => convenience.type === "basic")
+    const highClassConvenience = conveniences?.filter((convenience) => convenience.type === "highClass")
+    const safeConvenience = conveniences?.filter((convenience) => convenience.type === "safe")
+    const favoriteConvenience = conveniences?.filter((convenience) => convenience.type === "favorite")
 
     const [formInput, setFormInput] = useState<InputHost>({
         name: "",
@@ -26,18 +62,18 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
         address: "",
         long: "",
         lat: "",
+        merchantId: "",
         openingTime: {
             from: 0,
             to: 0
         },
-        // images: [],
-        merchantId: [],
-        subject: [],
+        images: [],
+        subjects: [],
         basicConvenience: [],
         favoriteConvenience: [],
         highClassConvenience: [],
         safeConvenience: [],
-        rule: [{
+        rules: [{
             title: "title",
             content: "content"
         }],
@@ -53,19 +89,18 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
     const isDisabledButton = () => {
         if (
             !formInput.name ||
-            !formInput.phone ||
+            !isValidPhone(formInput.phone) ||
             !formInput.description ||
             !formInput.segment ||
             !formInput.address ||
-            // openingTime ||
             !formInput.long ||
             !formInput.lat ||
-            !formInput.merchantId.length ||
-            !formInput.subject.length ||
+            !formInput.merchantId ||
+            !formInput.subjects.length ||
             !formInput.basicConvenience.length ||
             !formInput.highClassConvenience.length ||
             !formInput.safeConvenience.length ||
-            !formInput.rule.length ||
+            !formInput.rules.length ||
             !formInput.medicalAndSafe.length
         ) {
             return true;
@@ -74,15 +109,16 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
     };
 
     const onSubmitButton = () => {
-        console.log("formInsubmit", JSON.stringify(formInput))
-        isLoading.setValue(true);
-        addNewHostMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
-            isLoading.setValue(false);
-            if (status === STATUS_RESPONSE_CODE.SUCCESS) {
-                handleUpdateList();
-                onClose();
-            }
-        });
+        // console.log("formInsubmit", JSON.stringify(formInput))
+        console.log("formInsubmit", formInput)
+        // isLoading.setValue(true);
+        // addNewHostMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
+        //     isLoading.setValue(false);
+        //     if (status === STATUS_RESPONSE_CODE.SUCCESS) {
+        //         handleUpdateList();
+        //         onClose();
+        //     }
+        // });
     };
 
     const onKeyPress = (event: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -96,17 +132,8 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
     };
 
     const handleChangeInput =
-        (key: "name" | "phone" | "description" | "segment" | "address" | "long" | "lat") =>
+        (key: "name" | "phone" | "description" | "address" | "long" | "lat") =>
             (event: React.ChangeEvent<HTMLInputElement>) => {
-                // if (key === "name") {
-                //     let newStatus = STATUS_INPUT.DEFAULT;
-                //     if (event.target.value) {
-                //         newStatus = isValidEmail(event.target.value)
-                //             ? STATUS_INPUT.VALID
-                //             : STATUS_INPUT.ERROR;
-                //     }
-                //     setStatusEmailInput(newStatus);
-                // }
                 setFormInput({
                     ...formInput,
                     [key]: event.target.value,
@@ -114,15 +141,26 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
             };
 
     const onSelectChange = (value: any) => {
-        // segment.setValue(value.value);
         setFormInput({
             ...formInput,
             segment: value.value
         })
     };
 
+    const onSelectChangeMerchant = (value: any) => {
+        console.log(value)
+        setFormInput({
+            ...formInput,
+            merchantId: value.value
+        })
+    };
+
     const getTypeValue = () => {
-        optionSegment.find((el) => el.value === formInput.segment)
+        optionSegment.find((el) => el.value === segment.value)
+    };
+
+    const getTypeMerchant = () => {
+        merchants?.find((el) => el.value === merchantName.value)
     };
 
     const inputStyle: React.CSSProperties = {
@@ -167,6 +205,21 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                 Basic information
             </p>
             <div className="grid grid-cols-4 mb-6 gap-5">
+                <SelectDefault
+                    label="Merchant"
+                    required
+                    options={options}
+                    selectedOption={getTypeMerchant()}
+                    handleChange={onSelectChangeMerchant}
+                    styleControl={inputStyle}
+                    styleSingleValue={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: 14,
+                        maxWidth: "inherit",
+                    }}
+                    controlWidth={1}
+                />
                 <SelectDefault
                     label="Segment"
                     required
@@ -257,30 +310,13 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
             </p>
             <div className="grid grid-cols-2 mb-6 gap-5">
                 <MultiSelectInput
-                    label="MerchantId"
-                    inputType="merchantId"
-                    require={true}
+                    label="Subjects"
+                    inputType="subjects"
+                    required
                     rootClasses="mb-6"
                     setFormInput={setFormInput}
                     formInput={formInput}
-                    options={optionSegment}
-                    styleControl={inputStyle}
-                    styleSingleValue={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: 14,
-                        maxWidth: "inherit",
-                    }}
-                    controlWidth={1}
-                />
-                <MultiSelectInput
-                    label="Subject"
-                    inputType="subject"
-                    require={true}
-                    rootClasses="mb-6"
-                    setFormInput={setFormInput}
-                    formInput={formInput}
-                    options={optionSegment}
+                    options={subjects}
                     styleControl={inputStyle}
                     styleSingleValue={{
                         display: "flex",
@@ -293,11 +329,11 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                 <MultiSelectInput
                     label="Basic Convenience"
                     inputType="basicConvenience"
-                    require={true}
+                    required
                     rootClasses="mb-6"
                     setFormInput={setFormInput}
                     formInput={formInput}
-                    options={optionSegment}
+                    options={basicConvenience}
                     styleControl={inputStyle}
                     styleSingleValue={{
                         display: "flex",
@@ -310,11 +346,11 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                 <MultiSelectInput
                     label="Favorite Convenience"
                     inputType="favoriteConvenience"
-                    require={true}
+                    required
                     rootClasses="mb-6"
                     setFormInput={setFormInput}
                     formInput={formInput}
-                    options={optionSegment}
+                    options={favoriteConvenience}
                     styleControl={inputStyle}
                     styleSingleValue={{
                         display: "flex",
@@ -327,11 +363,11 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                 <MultiSelectInput
                     label="High Class Convenience"
                     inputType="highClassConvenience"
-                    require={true}
+                    required
                     rootClasses="mb-6"
                     setFormInput={setFormInput}
                     formInput={formInput}
-                    options={optionSegment}
+                    options={highClassConvenience}
                     styleControl={inputStyle}
                     styleSingleValue={{
                         display: "flex",
@@ -344,11 +380,11 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                 <MultiSelectInput
                     label="Safe Convenience"
                     inputType="safeConvenience"
-                    require={true}
+                    required
                     rootClasses="mb-6"
                     setFormInput={setFormInput}
                     formInput={formInput}
-                    options={optionSegment}
+                    options={safeConvenience}
                     styleControl={inputStyle}
                     styleSingleValue={{
                         display: "flex",
@@ -362,11 +398,17 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                     label="Opening Time"
                     setFormInput={setFormInput}
                     formInput={formInput}
+                    required
                 />
             </div>
+            <MultiImage
+                required={true}
+                setFormInput={setFormInput}
+                formInput={formInput}
+            />
             <ButtonDefault
                 widthButton="w-140-custom"
-                disabled={isDisabledButton()}
+                // disabled={isDisabledButton()}
                 onClick={onSubmitButton}
                 style={{
                     minHeight: 37,

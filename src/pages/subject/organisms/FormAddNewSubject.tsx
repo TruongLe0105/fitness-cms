@@ -120,12 +120,23 @@ const FormAddNewSubject: FC<FormAddSubject> = (props) => {
         setFileInput(null);
     };
 
+    const inputStyle: React.CSSProperties = {
+        border: "1px solid #e5e5e5",
+        backgroundColor: "rgba(0,0,0,0.01)",
+        borderRadius: "4px",
+        padding: "0px 10px",
+        margin: "5 0",
+    };
+
     return (
         <DialogCard
             openPopup={openFormChange}
             disablePopup
             handleCLoseDialog={onClose}
             title="Add New Subject"
+            rootStyle={{
+                width: "400px"
+            }}
         >
             <InputDefault
                 label="Subject"
@@ -134,6 +145,7 @@ const FormAddNewSubject: FC<FormAddSubject> = (props) => {
                 value={formInput.name}
                 onChange={handleChangeInput("name")}
                 onKeyPress={onKeyPress}
+                inputStyle={inputStyle}
             />
             <ImageEventCard
                 fileInput={fileInput}

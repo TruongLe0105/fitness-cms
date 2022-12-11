@@ -32,7 +32,7 @@ const ImageEventCard = React.memo((props: ImageEventCardProps): JSX.Element => {
   return (
     <div className="flex flex-col">
       <div
-        className={`h-450-custom w-327-custom rounded-lg ${!fileInput ? "bg-gray-04-custom" : ""
+        className={`rounded-lg ${!fileInput ? "bg-gray-04-custom" : ""
           } flex items-center justify-center relative bg-no-repeat bg-center bg-cover bg-img`}
         style={{
           backgroundImage: `url(${renderImage()})`,
@@ -70,7 +70,7 @@ const ImageEventCard = React.memo((props: ImageEventCardProps): JSX.Element => {
       </div>
       <div className="flex justify-center mt-3 pr-8">
         <p className="text-primary-custom font-semibold text-sm	">
-          Banner (327 x 300)
+          Logo
         </p>
       </div>
     </div>
