@@ -8,15 +8,15 @@ import { isValidEmail, isValidMerchantName, isValidPassword, isValidPhone } from
 import { addNewClientMiddleware } from "pages/merchant/services/api";
 import React, { FC, useState } from "react";
 import { STATUS_RESPONSE_CODE } from "types";
-import { FormAddClient, InputClient } from "../types";
+import { FormInputMerchant, AddMerchantInput } from "../types";
 
-const FormAddNewClient: FC<FormAddClient> = (props) => {
+const FormAddNewClient: FC<FormInputMerchant> = (props) => {
     const { onClose, openFormChange, handleUpdateList } = props;
 
     const isLoading = useBoolean();
     const changeTypePasswordInput = useBoolean();
 
-    const [formInput, setFormInput] = useState<InputClient>({
+    const [formInput, setFormInput] = useState<AddMerchantInput>({
         merchantName: "",
         phone: "",
         email: "",
@@ -82,14 +82,26 @@ const FormAddNewClient: FC<FormAddClient> = (props) => {
                 })
             };
 
+    const inputStyle: React.CSSProperties = {
+        border: "1px solid #e5e5e5",
+        backgroundColor: "rgba(0,0,0,0.01)",
+        borderRadius: "4px",
+        padding: "0px 10px",
+        marginTop: 5,
+    };
+
     return (
         <DialogCard
             openPopup={openFormChange}
             disablePopup
             handleCLoseDialog={onClose}
             title="Add New Merchant"
+            rootStyle={{
+                width: "400px"
+            }}
         >
             <InputDefault
+                inputStyle={inputStyle}
                 label="Email"
                 required
                 rootClass="mb-6"
@@ -99,6 +111,7 @@ const FormAddNewClient: FC<FormAddClient> = (props) => {
                 onKeyPress={onKeyPress}
             />
             <InputDefault
+                inputStyle={inputStyle}
                 label="Password"
                 required
                 rootClass="mb-6"
@@ -114,6 +127,7 @@ const FormAddNewClient: FC<FormAddClient> = (props) => {
                 }
             />
             <InputDefault
+                inputStyle={inputStyle}
                 label="Confirm Password"
                 required
                 rootClass="mb-6"
@@ -129,6 +143,7 @@ const FormAddNewClient: FC<FormAddClient> = (props) => {
                 }
             />
             <InputDefault
+                inputStyle={inputStyle}
                 label="Name"
                 required
                 rootClass="mb-6"
@@ -137,6 +152,7 @@ const FormAddNewClient: FC<FormAddClient> = (props) => {
                 onKeyPress={onKeyPress}
             />
             <InputDefault
+                inputStyle={inputStyle}
                 label="Phone"
                 required
                 rootClass="mb-6"

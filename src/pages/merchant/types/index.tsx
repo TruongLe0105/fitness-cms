@@ -162,25 +162,17 @@ export interface TypographyItemCardProps {
   rootClass?: string;
 }
 
-export interface AddClientInput {
-  name: string,
-  phone: string,
-  email: string,
-  password: string,
-  passwordConfirm: string,
+export interface AddMerchantInput {
+  merchantName: string;
+  phone: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
 }
 
-export interface InputClient {
-  email: string,
-  password: string,
-  passwordConfirm: string,
-  merchantName: string,
-  phone: string,
-}
-
-export interface FormAddClient {
-  openFormChange?: boolean,
-  onClose: () => void,
-  client?: InputClient,
-  handleUpdateList: () => void
+export interface FormInputMerchant {
+  openFormChange?: boolean;
+  onClose: () => void;
+  client?: AddMerchantInput;
+  handleUpdateList: () => void;
 }

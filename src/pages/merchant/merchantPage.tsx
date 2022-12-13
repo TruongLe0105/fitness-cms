@@ -88,7 +88,7 @@ const merchantPage = (): JSX.Element => {
   };
 
   const handleUpdate = () => {
-    updateMerchant.setValue(true);
+    updateMerchant.setValue(!updateMerchant.value);
   };
 
   const handleOpenUpdateList =

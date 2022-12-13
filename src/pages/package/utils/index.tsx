@@ -72,6 +72,230 @@ export function dataHeaderUser(
       ),
     },
     {
+      title: "Description",
+      field: "description",
+      styleHeader: {
+        textTransform: "capitalize",
+
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      styleBody: {
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      renderBody: (value: PackageDetail) => (
+        <p
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 3,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+          }}
+          className="whitespace-pre-line"
+        >
+          {value.description}
+        </p>
+      ),
+    },
+    {
+      title: "Time Period Type",
+      field: "timePeriodType",
+      styleHeader: {
+        textTransform: "capitalize",
+
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      styleBody: {
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      renderBody: (value: PackageDetail) => (
+        <p
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 3,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+          }}
+          className="whitespace-pre-line"
+        >
+          {value.timePeriodType}
+        </p>
+      ),
+    },
+    {
+      title: "Price",
+      field: "price",
+      styleHeader: {
+        textTransform: "capitalize",
+
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      styleBody: {
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      renderBody: (value: PackageDetail) => (
+        <p
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 3,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+          }}
+          className="whitespace-pre-line"
+        >
+          {value.price}
+        </p>
+      ),
+    },
+    {
+      title: "Unit Time",
+      field: "unitTime",
+      styleHeader: {
+        textTransform: "capitalize",
+
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      styleBody: {
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      renderBody: (value: PackageDetail) => (
+        <p
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 3,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+          }}
+          className="whitespace-pre-line"
+        >
+          {value.unitTime}
+        </p>
+      ),
+    },
+    {
+      title: "Gym",
+      field: "gym",
+      styleHeader: {
+        textTransform: "capitalize",
+
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      styleBody: {
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      renderBody: (value: PackageDetail) => (
+        <p
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 3,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+          }}
+          className="whitespace-pre-line"
+        >
+          {value.gym.name}
+        </p>
+      ),
+    },
+    {
+      title: "Type",
+      field: "type",
+      styleHeader: {
+        textTransform: "capitalize",
+
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      styleBody: {
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      renderBody: (value: PackageDetail) => (
+        <p
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 3,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+          }}
+          className="whitespace-pre-line"
+        >
+          {value.type.toUpperCase()}
+        </p>
+      ),
+    },
+    {
+      title: "Benefit",
+      field: "benefit",
+      styleHeader: {
+        textTransform: "capitalize",
+
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      styleBody: {
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      renderBody: (value: PackageDetail) => (
+        <p
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 3,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+          }}
+          className="whitespace-pre-line"
+        >
+          {value.benefit[0]}
+        </p>
+      ),
+    },
+    {
+      title: "Rules",
+      field: "rules",
+      styleHeader: {
+        textTransform: "capitalize",
+
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      styleBody: {
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      renderBody: (value: PackageDetail) => (
+        <p
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 3,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+          }}
+          className="whitespace-pre-line"
+        >
+          {value.rules[0]}
+        </p>
+      ),
+    },
+    {
       title: "Status",
       field: "status",
       styleHeader: {

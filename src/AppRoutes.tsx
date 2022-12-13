@@ -15,6 +15,7 @@ import GymPage from "pages/gym/gymPage";
 import MerchantPage from "pages/merchant/merchantPage";
 import SubjectPage from "pages/subject/subjectPage";
 import ConvenienPage from "pages/convenience/conveniencePage";
+import PackagePage from "pages/package/packagePage";
 
 import './form.css';
 
@@ -52,6 +53,7 @@ const AppRoutes = (): JSX.Element => {
         <PrivateRoute exact path={PATH.user} component={<UserPage />} />
         <PrivateRoute exact path={PATH.gym} component={<GymPage />} />
         <PrivateRoute exact path={PATH.merchant} component={<MerchantPage />} />
+        <PrivateRoute exact path={PATH.package} component={<PackagePage />} />
         <PrivateRoute exact path={PATH.subject} component={<SubjectPage />} />
         <PrivateRoute exact path={PATH.convenience} component={<ConvenienPage />} />
         {/* <PrivateRoute

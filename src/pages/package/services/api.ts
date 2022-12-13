@@ -10,6 +10,7 @@ import {
   PackageDetail,
   NotificationDetail,
   ParamsRequest,
+  AddPackageInput,
 } from "../types";
 // eslint-disable-next-line
 export const getNotificationsMiddleware = async (
@@ -28,9 +29,10 @@ export const getNotificationsMiddleware = async (
   return response.data.data;
 };
 
-export const getMerchantMiddleware = async (
-  params: ParamsRequest,
-  source?: CancelTokenSource
+export const getPackageMiddleware = async (
+  params?: ParamsRequest,
+  source?: CancelTokenSource,
+  gymId?: string,
 ) => {
   const accessToken: string = localStorage.getItem("access_token") || "";
   if (!accessToken.length) {
@@ -46,8 +48,7 @@ export const getMerchantMiddleware = async (
     };
     message: string;
     statusCode: number;
-  }> = await Axios.get(`/merchant/admin`, {
-    params,
+  }> = await Axios.get(`/package/admin?gymId=${gymId}`, {
     headers: {
       "x-access-token": accessToken,
     },
@@ -112,3 +113,27 @@ export const updateNotificationMiddleware = (
       callBack(STATUS_RESPONSE_CODE.ERROR);
     });
 };
+
+
+export const addPackageMiddleware = (
+  request: AddPackageInput,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.post(`/package/create`, request)
+    .then((response: any) => {
+      if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
+        showNotification("success", "Create new Merchant successfully!");
+        callBack(response.data.statusCode);
+        return;
+      }
+      showNotification(
+        "error",
+        response.data.data ? response.data.data.errors : response.data.message
+      );
+
+      callBack(response.data.statusCode);
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR)
+    })
+}

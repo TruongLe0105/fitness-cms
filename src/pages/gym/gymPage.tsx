@@ -59,7 +59,7 @@ const gymPage = (): JSX.Element => {
   };
 
   const handleUpdate = () => {
-    updateData.setValue(true);
+    updateData.setValue(!updateData.value);
   };
 
   const getGym = async (source?: CancelTokenSource) => {

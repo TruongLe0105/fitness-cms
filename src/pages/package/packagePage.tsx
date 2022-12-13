@@ -4,7 +4,7 @@ import { useBoolean, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
 import { useEffect, useState } from "react";
 import { ParamsRequest, PackageDetail } from "./types";
-import { getMerchantMiddleware } from "./services/api";
+import { getPackageMiddleware } from "./services/api";
 import { dataHeaderUser } from "./utils";
 import FilterTable from "components/Filter/FilterTable";
 import ButtonDefault from "components/Button/ButtonDefault";
@@ -13,6 +13,9 @@ import SelectDefault from "components/Select/SelectDefault";
 import { cloneDeep } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
+import FormAddPackage from "./organisms/FormAddPackage";
+import { useSelector } from "react-redux";
+import { getGymMiddleware } from "pages/gym/services/api";
 
 const packagePage = (): JSX.Element => {
   const [gymPackage, setPackage] = useState<PackageDetail[]>([]);
@@ -20,6 +23,9 @@ const packagePage = (): JSX.Element => {
   const openFormUpdate = useBoolean();
   const openFormDestroy = useBoolean();
   const openViewDetail = useBoolean();
+  const openFormAdd = useBoolean();
+  const updatePackage = useBoolean();
+
   const {
     handleChangeInputSearch,
     handleChangePage,
@@ -34,17 +40,25 @@ const packagePage = (): JSX.Element => {
     isLoadingTable,
   } = useTable();
 
+  const { gyms } = useSelector((state: any) => state.subject);
+
   useEffect(() => {
     const source: CancelTokenSource = Axios.CancelToken.source();
+    getGymMiddleware();
 
-    getMerchant(source);
+    gyms?.map((gym: any) => {
+      getPackage(source, gym);
+    })
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page.value, orderBy.value]);
+  }, [page.value, orderBy.value, gyms.length]);
 
-  const getMerchant = async (source?: CancelTokenSource) => {
+  console.log("gyms", gyms)
+
+  const getPackage = async (source?: CancelTokenSource, gym?: any) => {
     try {
+      const gymId = gym ? gym?._id : null;
       const params: ParamsRequest = {
         limit: limit.value,
         page: page.value,
@@ -53,7 +67,7 @@ const packagePage = (): JSX.Element => {
       //   params.sort = orderBy.value;
       // }
 
-      const dataRes = await getMerchantMiddleware(params, source);
+      const dataRes = await getPackageMiddleware(params, source, gymId);
 
       if (dataRes?.data?.length) {
         setPackage(dataRes.data);
@@ -94,13 +108,32 @@ const packagePage = (): JSX.Element => {
       }
     };
 
+  const openFormAddPackage = () => {
+    openFormAdd.setValue(true);
+  };
+
+  const closeFormAddNewClient = () => {
+    openFormAdd.setValue(false);
+  };
+
+  const handleUpdate = () => {
+    updatePackage.setValue(!updatePackage.value)
+  };
+
   return (
     <PageLayout
       title="Client"
       childrenAction={
         <div className="flex items-center justify-between h-full pr-8">
-          <div className="flex items-center">{/*  */}</div>
-        </div>
+          <div className="flex items-center">
+            <ButtonDefault
+              onClick={openFormAddPackage}
+              buttonClass="form-btn"
+            >
+              Add New Package
+            </ButtonDefault>
+          </div>
+        </div >
       }
     >
       <Table
@@ -118,7 +151,15 @@ const packagePage = (): JSX.Element => {
       />
 
       {isLoadingPage.value ? <BackdropCustomize /> : null}
-    </PageLayout>
+      {
+        openFormAdd.value ?
+          <FormAddPackage
+            onClose={closeFormAddNewClient}
+            openFormChange={openFormAdd.value}
+            handleUpdateList={handleUpdate}
+          /> : null
+      }
+    </PageLayout >
   );
 };
 

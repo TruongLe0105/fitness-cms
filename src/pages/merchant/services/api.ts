@@ -9,7 +9,7 @@ import stateStore from "slices/store";
 import { STATUS_RESPONSE_CODE } from "types";
 import {
   FormRequest,
-  InputClient,
+  AddMerchantInput,
   MerchantDetail,
   NotificationDetail,
   ParamsRequest,
@@ -118,7 +118,7 @@ export const updateNotificationMiddleware = (
 };
 
 export const addNewClientMiddleware = (
-  request: InputClient,
+  request: AddMerchantInput,
   callBack: (status: STATUS_RESPONSE_CODE) => void,
 ) => {
   Axios.post(`/admin/createMerchant`, request)

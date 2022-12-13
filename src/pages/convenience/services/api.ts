@@ -4,7 +4,6 @@ import { access } from "fs";
 import { PATH } from "helpers/constant";
 import { pushTo } from "helpers/history";
 import { showNotification } from "helpers/util";
-import { InputClient } from "pages/merchant/types";
 import { setListConvenience } from "slices/selectSlice";
 import stateStore from "slices/store";
 import { STATUS_RESPONSE_CODE } from "types";

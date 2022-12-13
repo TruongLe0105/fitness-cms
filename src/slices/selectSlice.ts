@@ -5,6 +5,7 @@ const initialState = {
     subjects: [],
     conveniences: [],
     merchants: [],
+    gyms: [],
     isLoading: false,
 }
 
@@ -33,9 +34,16 @@ const selectSlice = createSlice({
             state.isLoading = false;
             state.merchants = action.payload;
         },
+        setListGyms: (
+            state,
+            action
+        ) => {
+            // state.isLoading = false;
+            state.gyms = action.payload;
+        },
     }
 });
 
-export const { setListSubject, setListConvenience, setListMerchant } = selectSlice.actions;
+export const { setListSubject, setListConvenience, setListMerchant, setListGyms } = selectSlice.actions;
 
 export const selectReducer = selectSlice.reducer;

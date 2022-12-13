@@ -4,6 +4,8 @@ import { access } from "fs";
 import { PATH } from "helpers/constant";
 import { pushTo } from "helpers/history";
 import { showNotification } from "helpers/util";
+import { setListGyms } from "slices/selectSlice";
+import stateStore from "slices/store";
 import { STATUS_RESPONSE_CODE } from "types";
 import {
   GymDetail,
@@ -30,7 +32,7 @@ export const getNotificationsMiddleware = async (
 };
 
 export const getGymMiddleware = async (
-  params: ParamsRequest,
+  params?: ParamsRequest,
   source?: CancelTokenSource
 ) => {
   const accessToken: string = localStorage.getItem("access_token") || "";
@@ -60,6 +62,7 @@ export const getGymMiddleware = async (
     return;
   }
 
+  stateStore.dispatch(setListGyms(response.data.data.data));
   return response.data.data;
 };
 

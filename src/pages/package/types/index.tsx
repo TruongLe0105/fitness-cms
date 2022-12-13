@@ -27,24 +27,6 @@ export interface NotificationDetail {
   send: boolean;
   startDate: string;
 }
-export interface PackageDetail {
-  name: string;
-  description: string;
-  price: number;
-  timePeriodType: string;
-  unitTime: 1;
-  status: string;
-  gym: {
-    name: string;
-    id: string;
-  };
-  type: string;
-  benefit: [];
-  rules: [];
-  createdAt: number;
-  updatedAt: number;
-  id: string;
-}
 
 export const emptyNotificationDetail: NotificationDetail = {
   createdAt: "",
@@ -169,4 +151,55 @@ export interface TypographyItemCardProps {
   title: string;
   label: string;
   rootClass?: string;
+}
+
+export interface AddPackageInput {
+  name: string;
+  description: string;
+  price: number;
+  timePeriodType: string;
+  unitTime: number;
+  gymId: string;
+  type: string;
+  benefit: string[];
+  rules: string[];
+}
+
+export interface FormInputPackage {
+  openFormChange?: boolean;
+  onClose: () => void;
+  merchant?: AddPackageInput;
+  handleUpdateList: () => void;
+}
+
+// export interface PackageDetail {
+//   id: string;
+//   name: string;
+//   description: string;
+//   timePeriodType: string;
+//   price: number;
+//   unitTime: number;
+//   gymId: string;
+//   type: string;
+//   benefit: string[];
+//   rule: string[];
+// }
+
+export interface PackageDetail {
+  name: string;
+  description: string;
+  price: number;
+  timePeriodType: string;
+  unitTime: 1;
+  status: string;
+  gym: {
+    name: string;
+    id: string;
+  };
+  type: string;
+  benefit: string[];
+  rules: string[];
+  createdAt: number;
+  updatedAt: number;
+  id: string;
 }

@@ -48,7 +48,7 @@ const conveniencePage = (): JSX.Element => {
 
 
     const handleUpdate = () => {
-        updateConvenience.setValue(true);
+        updateConvenience.setValue(!updateConvenience.value);
     };
 
     const openFormAddConvenience = () => {

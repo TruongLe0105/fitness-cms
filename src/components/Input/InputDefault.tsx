@@ -68,7 +68,7 @@ const InputDefault = (props: InputDefaultProps): JSX.Element => {
         style={inputStyle}
       />
 
-      <div className="absolute right-0 bottom-2 cursor-pointer	">
+      <div className="absolute right-0 bottom-2 cursor-pointer pr-2">
         {childrenIcon}
       </div>
     </div>
