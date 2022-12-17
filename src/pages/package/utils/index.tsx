@@ -10,7 +10,8 @@ import MovieIcon from '@mui/icons-material/Movie';
 import { useState } from "react";
 import ModalGyms from "pages/merchant/organisms/ModalGyms";
 
-export function dataHeaderUser(
+export function dataHeaderPackage(
+  setDataGymsPackage,
   openPackage,
   handleOpenUpdateList: (
     key: "edit" | "delete" | "view-detail",
@@ -129,7 +130,10 @@ export function dataHeaderUser(
             color="primary"
             fontSize="large"
             className="ml-4 cursor-pointer"
-            onClick={() => openPackage.setValue(true)}
+            onClick={() => {
+              setDataGymsPackage(value);
+              openPackage.setValue(true);
+            }}
           />
         </p>
       ),

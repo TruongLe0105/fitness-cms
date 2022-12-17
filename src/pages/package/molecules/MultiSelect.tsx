@@ -60,6 +60,7 @@ const MultiSelectInput = (props): JSX.Element => {
                 onRemove={removeOptions}
                 options={options}
                 showArrow={true}
+                hidePlaceholder={true}
             />
         </div>
     )

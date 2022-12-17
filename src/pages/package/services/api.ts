@@ -49,7 +49,7 @@ export const getPackageMiddleware = async (
     };
     message: string;
     statusCode: number;
-  }> = await Axios.get(`/package/admin?gymId=${gymId}`, {
+  }> = await Axios.get(`/package/admin`, {
     headers: {
       "x-access-token": accessToken,
     },
@@ -119,7 +119,7 @@ export const addPackageMiddleware = (
   request: AddPackageInput,
   callBack: (status: STATUS_RESPONSE_CODE) => void,
 ) => {
-  Axios.post(`/package/create`, request)
+  Axios.post(`/package/admin/create`, request)
     .then((response: any) => {
       if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
         showNotification("success", "Create new Package successfully!");

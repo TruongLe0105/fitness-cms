@@ -5,7 +5,7 @@ import PageLayout from "pages/layout/organisms/PageLayout";
 import { useEffect, useState } from "react";
 import { ParamsRequest, PackageDetail } from "./types";
 import { getPackageMiddleware } from "./services/api";
-import { dataHeaderUser } from "./utils";
+import { dataHeaderPackage } from "./utils";
 import FilterTable from "components/Filter/FilterTable";
 import ButtonDefault from "components/Button/ButtonDefault";
 import FormDialog from "./organisms/FormDialog";
@@ -20,6 +20,7 @@ import ModalGyms from "pages/merchant/organisms/ModalGyms";
 
 const packagePage = (): JSX.Element => {
   const [gymPackage, setPackage] = useState<PackageDetail[]>([]);
+  const [dataGymsPackage, setDataGymsPackage] = useState<any>([]);
 
   const openFormUpdate = useBoolean();
   const openFormDestroy = useBoolean();
@@ -42,25 +43,22 @@ const packagePage = (): JSX.Element => {
     isLoadingTable,
   } = useTable();
 
-  const { gyms } = useSelector((state: any) => state.subject);
+  // const { gyms } = useSelector((state: any) => state.subject);
 
   useEffect(() => {
     const source: CancelTokenSource = Axios.CancelToken.source();
-    getGymMiddleware();
+    // getGymMiddleware();
 
-    gyms?.map((gym: any) => {
-      getPackage(source, gym);
-    })
+    getPackage(source);
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page.value, orderBy.value, gyms.length]);
+  }, [page.value, orderBy.value, updatePackage.value]);
 
   console.log("gymPackage", gymPackage)
 
-  const getPackage = async (source?: CancelTokenSource, gym?: any) => {
+  const getPackage = async (source?: CancelTokenSource) => {
     try {
-      const gymId = gym ? gym?._id : null;
       const params: ParamsRequest = {
         limit: limit.value,
         page: page.value,
@@ -69,7 +67,7 @@ const packagePage = (): JSX.Element => {
       //   params.sort = orderBy.value;
       // }
 
-      const dataRes = await getPackageMiddleware(params, source, gymId);
+      const dataRes = await getPackageMiddleware(params, source);
 
       if (dataRes?.data?.length) {
         setPackage(dataRes.data);
@@ -142,7 +140,7 @@ const packagePage = (): JSX.Element => {
         limit={limit.value}
         page={page.value}
         countItems={total.value}
-        headers={dataHeaderUser(openPackage, handleOpenUpdateList)}
+        headers={dataHeaderPackage(setDataGymsPackage, openPackage, handleOpenUpdateList)}
         handleChangePage={handleChangePage}
         // data={notifications.length ? notifications : []}
         data={gymPackage.length ? gymPackage : []}
@@ -152,7 +150,7 @@ const packagePage = (): JSX.Element => {
         isLoadingTable={isLoadingTable.value}
       />
 
-      {isLoadingPage.value ? <BackdropCustomize /> : null}
+      {/* {isLoadingPage.value ? <BackdropCustomize /> : null} */}
       {
         openFormAdd.value ?
           <FormAddPackage
@@ -167,6 +165,7 @@ const packagePage = (): JSX.Element => {
             onClose={() => openPackage.setValue(false)}
             openFormChange={openPackage.value}
             handleUpdateList={handleUpdate}
+            data={dataGymsPackage ? dataGymsPackage : {}}
           /> : null
       }
     </PageLayout >

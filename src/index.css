@@ -974,3 +974,7 @@ body {
 .title-mb-0 {
   margin-bottom: 0 !important;
 }
+
+.text-capitalize {
+  text-transform: capitalize;
+}
