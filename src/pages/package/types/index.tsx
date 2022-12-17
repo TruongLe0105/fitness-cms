@@ -159,10 +159,22 @@ export interface AddPackageInput {
   price: number;
   timePeriodType: string;
   unitTime: number;
-  gymId: string;
+  gymId: string[];
   type: string;
   benefit: string[];
   rules: string[];
+}
+
+export interface UpdatePackageInput {
+  name?: string;
+  description?: string;
+  price?: number;
+  timePeriodType?: string;
+  unitTime?: number;
+  gymId?: string[];
+  type?: string;
+  benefit?: string[];
+  rules?: string[];
 }
 
 export interface FormInputPackage {
@@ -192,10 +204,10 @@ export interface PackageDetail {
   timePeriodType: string;
   unitTime: 1;
   status: string;
-  gym: {
+  gym: [{
     name: string;
     id: string;
-  };
+  }];
   type: string;
   benefit: string[];
   rules: string[];

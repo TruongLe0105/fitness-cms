@@ -158,7 +158,7 @@ export interface ViewDetailNotificationProps {
 
 export interface TypographyItemCardProps {
   title: string;
-  label: string;
+  label?: string;
   rootClass?: string;
 }
 

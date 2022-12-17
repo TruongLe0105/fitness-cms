@@ -16,6 +16,7 @@ import { showNotification } from "helpers/util";
 import FormAddPackage from "./organisms/FormAddPackage";
 import { useSelector } from "react-redux";
 import { getGymMiddleware } from "pages/gym/services/api";
+import ModalGyms from "pages/merchant/organisms/ModalGyms";
 
 const packagePage = (): JSX.Element => {
   const [gymPackage, setPackage] = useState<PackageDetail[]>([]);
@@ -25,6 +26,7 @@ const packagePage = (): JSX.Element => {
   const openViewDetail = useBoolean();
   const openFormAdd = useBoolean();
   const updatePackage = useBoolean();
+  const openPackage = useBoolean();
 
   const {
     handleChangeInputSearch,
@@ -54,7 +56,7 @@ const packagePage = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page.value, orderBy.value, gyms.length]);
 
-  console.log("gyms", gyms)
+  console.log("gymPackage", gymPackage)
 
   const getPackage = async (source?: CancelTokenSource, gym?: any) => {
     try {
@@ -122,7 +124,7 @@ const packagePage = (): JSX.Element => {
 
   return (
     <PageLayout
-      title="Client"
+      title="Package"
       childrenAction={
         <div className="flex items-center justify-between h-full pr-8">
           <div className="flex items-center">
@@ -140,7 +142,7 @@ const packagePage = (): JSX.Element => {
         limit={limit.value}
         page={page.value}
         countItems={total.value}
-        headers={dataHeaderUser(handleOpenUpdateList)}
+        headers={dataHeaderUser(openPackage, handleOpenUpdateList)}
         handleChangePage={handleChangePage}
         // data={notifications.length ? notifications : []}
         data={gymPackage.length ? gymPackage : []}
@@ -156,6 +158,14 @@ const packagePage = (): JSX.Element => {
           <FormAddPackage
             onClose={closeFormAddNewClient}
             openFormChange={openFormAdd.value}
+            handleUpdateList={handleUpdate}
+          /> : null
+      }
+      {
+        openPackage.value ?
+          <ModalGyms
+            onClose={() => openPackage.setValue(false)}
+            openFormChange={openPackage.value}
             handleUpdateList={handleUpdate}
           /> : null
       }

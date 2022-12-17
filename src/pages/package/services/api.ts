@@ -11,6 +11,7 @@ import {
   NotificationDetail,
   ParamsRequest,
   AddPackageInput,
+  UpdatePackageInput,
 } from "../types";
 // eslint-disable-next-line
 export const getNotificationsMiddleware = async (
@@ -114,7 +115,6 @@ export const updateNotificationMiddleware = (
     });
 };
 
-
 export const addPackageMiddleware = (
   request: AddPackageInput,
   callBack: (status: STATUS_RESPONSE_CODE) => void,
@@ -122,7 +122,7 @@ export const addPackageMiddleware = (
   Axios.post(`/package/create`, request)
     .then((response: any) => {
       if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
-        showNotification("success", "Create new Merchant successfully!");
+        showNotification("success", "Create new Package successfully!");
         callBack(response.data.statusCode);
         return;
       }
@@ -136,4 +136,27 @@ export const addPackageMiddleware = (
     .catch(() => {
       callBack(STATUS_RESPONSE_CODE.ERROR)
     })
-}
+};
+
+export const updatePackageMiddleware = (
+  request: UpdatePackageInput,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.post(`/package/update`, request)
+    .then((response: any) => {
+      if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
+        showNotification("success", "Update Package successfully!");
+        callBack(response.data.statusCode);
+        return;
+      }
+      showNotification(
+        "error",
+        response.data.data ? response.data.data.errors : response.data.message
+      );
+
+      callBack(response.data.statusCode);
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR)
+    })
+};

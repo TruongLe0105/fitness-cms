@@ -6,17 +6,18 @@ import {
   NotificationDetail,
   STATUS_NOTIFICATION,
 } from "../types";
+import MovieIcon from '@mui/icons-material/Movie';
+import { useState } from "react";
+import ModalGyms from "pages/merchant/organisms/ModalGyms";
 
 export function dataHeaderUser(
-  // handleOpenUpdateList: (
-  //   key: "edit" | "delete" | "view-detail",
-  //   value: NotificationDetail
-  // ) => () => void
+  openPackage,
   handleOpenUpdateList: (
     key: "edit" | "delete" | "view-detail",
     value: PackageDetail
   ) => () => void
 ): Header[] {
+
   const headers: Header[] = [
     {
       title: "ID",
@@ -96,6 +97,40 @@ export function dataHeaderUser(
           className="whitespace-pre-line"
         >
           {value.description}
+        </p>
+      ),
+    },
+    {
+      title: "Total Gym",
+      field: "totalGym",
+      styleHeader: {
+        textTransform: "capitalize",
+
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      styleBody: {
+        minWidth: 200,
+        maxWidth: 400,
+      },
+      renderBody: (value: PackageDetail) => (
+        <p
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 3,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+          }}
+          className="whitespace-pre-line"
+        >
+          {value.gym.length}
+          <MovieIcon
+            color="primary"
+            fontSize="large"
+            className="ml-4 cursor-pointer"
+            onClick={() => openPackage.setValue(true)}
+          />
         </p>
       ),
     },
@@ -183,34 +218,34 @@ export function dataHeaderUser(
         </p>
       ),
     },
-    {
-      title: "Gym",
-      field: "gym",
-      styleHeader: {
-        textTransform: "capitalize",
+    // {
+    //   title: "Gym",
+    //   field: "gym",
+    //   styleHeader: {
+    //     textTransform: "capitalize",
 
-        minWidth: 200,
-        maxWidth: 400,
-      },
-      styleBody: {
-        minWidth: 200,
-        maxWidth: 400,
-      },
-      renderBody: (value: PackageDetail) => (
-        <p
-          style={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            WebkitLineClamp: 3,
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-          }}
-          className="whitespace-pre-line"
-        >
-          {value.gym.name}
-        </p>
-      ),
-    },
+    //     minWidth: 200,
+    //     maxWidth: 400,
+    //   },
+    //   styleBody: {
+    //     minWidth: 200,
+    //     maxWidth: 400,
+    //   },
+    //   renderBody: (value: PackageDetail) => (
+    //     <p
+    //       style={{
+    //         overflow: "hidden",
+    //         textOverflow: "ellipsis",
+    //         WebkitLineClamp: 3,
+    //         display: "-webkit-box",
+    //         WebkitBoxOrient: "vertical",
+    //       }}
+    //       className="whitespace-pre-line"
+    //     >
+    //       {value.gym[0].name}
+    //     </p>
+    //   ),
+    // },
     {
       title: "Type",
       field: "type",

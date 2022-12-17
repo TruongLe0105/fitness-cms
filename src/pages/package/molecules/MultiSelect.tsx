@@ -17,16 +17,10 @@ const MultiSelectInput = (props): JSX.Element => {
 
     const selectedOptions = (values: any) => {
         switch (inputType) {
-            case "benefit":
+            case "gymId":
                 setFormInput({
                     ...formInput,
-                    benefit: values.map((value: any) => value.value)
-                });
-                break;
-            case "rules":
-                setFormInput({
-                    ...formInput,
-                    rules: values.map((value: any) => value.value)
+                    gymId: values.map((value: any) => value.value)
                 });
                 break;
         }
@@ -34,16 +28,10 @@ const MultiSelectInput = (props): JSX.Element => {
 
     const removeOptions = (values: any) => {
         switch (inputType) {
-            case "benefit":
+            case "gymId":
                 setFormInput({
                     ...formInput,
-                    benefit: values.map((value: any) => value.value)
-                });
-                break;
-            case "rules":
-                setFormInput({
-                    ...formInput,
-                    rules: values.map((value: any) => value.value)
+                    gymId: values.map((value: any) => value.value)
                 });
                 break;
         }
