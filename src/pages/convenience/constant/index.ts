@@ -3,19 +3,19 @@ import { TypeModelOption } from "../types";
 
 export const ConvenienceTypeOptions: TypeModelOption[] = [
   {
-    label: "Basic",
+    label: "Cơ Bản",
     value: "basic"
   },
   {
-    label: "Favorite",
+    label: "Yêu Thích",
     value: "favorite",
   },
   {
-    label: "Safe",
+    label: "An Toàn",
     value: "safe",
   },
   {
-    label: "High Class",
+    label: "Cao Cấp",
     value: "highClass"
   }
 ];

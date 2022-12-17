@@ -139,7 +139,7 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
             openPopup={openFormChange}
             disablePopup
             handleCLoseDialog={onClose}
-            title="Add New Convenience"
+            title="Add Convenience"
             rootStyle={{ width: "300px" }}
         >
             <div

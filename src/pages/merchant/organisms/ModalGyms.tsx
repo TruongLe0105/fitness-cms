@@ -27,6 +27,7 @@ const ModalGyms = (props: any) => {
     const isLoading = useBoolean();
 
     console.log("dataGyms", data)
+    console.log("gyms", gyms)
     console.log("formUpdate", formUpdate)
 
     const {
@@ -57,7 +58,9 @@ const ModalGyms = (props: any) => {
 
     useEffect(() => {
         getGymMiddleware();
-        gyms?.map((gym: any) => {
+        const currentGymsId = data?.gym.map((el: any) => el._id);
+        const filterGyms = gyms.filter((gym: any) => !currentGymsId.includes(gym._id));
+        filterGyms?.map((gym: any) => {
             const newOps = {
                 label: gym.name,
                 value: gym._id
