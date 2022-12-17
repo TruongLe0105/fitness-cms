@@ -48,7 +48,7 @@ const gymPage = (): JSX.Element => {
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page.value, orderBy.value]);
+  }, [page.value, orderBy.value, updateData.value]);
 
   const openFormAddHost = () => {
     openFormAdd.setValue(true);
