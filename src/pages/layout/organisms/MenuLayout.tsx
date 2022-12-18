@@ -4,7 +4,7 @@ import IconChangeMenu from "assets/images/icons/change-menu.svg";
 // import IconLogoClose from "assets/images/menu-logo-close.png";
 // import IconLogoOpen from "assets/images/menu-logo-open.png";
 import IconLogoClose from "assets/images/Logo.png";
-import IconLogoOpen from "assets/images/Logo.png";
+import IconLogoOpen from "assets/images/gym-layout.png";
 
 const MenuLayout = (props: MenuLayoutProps): JSX.Element => {
   const { handleChangeMenu, openMenu } = props;
@@ -17,9 +17,8 @@ const MenuLayout = (props: MenuLayoutProps): JSX.Element => {
       }}
     >
       <div
-        className={`h-66-custom flex ${
-          openMenu ? "justify-end pr-4" : "justify-center"
-        } items-start`}
+        className={`h-66-custom flex ${openMenu ? "justify-end pr-4" : "justify-center"
+          } items-start`}
       >
         <div className="p-1 mt-4 rounded-full cursor-pointer hover:bg-gray-custom">
           <img
@@ -35,8 +34,8 @@ const MenuLayout = (props: MenuLayoutProps): JSX.Element => {
         <img
           src={openMenu ? IconLogoOpen : IconLogoClose}
           style={{
-            width: "160px",
-            height: "60px",
+            width: "140px",
+            // height: "60px",
           }}
           alt="icon"
           // className="h-50-custom"
