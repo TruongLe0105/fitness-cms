@@ -42,3 +42,5 @@ export const CURRENCY_DECIMALS = process.env.REACT_APP_CURRENCY_DECIMALS || "";
 export const CURRENCY_SYMBOL_WEB =
   process.env.REACT_APP_CURRENCY_SYMBOL_WEB || "";
 export const TESTNET_WEB = process.env.REACT_APP_TESTNET_WEB || "";
+
+export const GOONG_MAP_API_KEY = "a8EsYW8DwXXlFrFS19b7g0xUlGfmPUt8Y8vxqkWv"

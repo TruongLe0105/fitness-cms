@@ -7,34 +7,38 @@ import React, { FC, useEffect, useState } from "react";
 import { STATUS_RESPONSE_CODE } from "types";
 import ImageEventCard from "../molecules/ImageEventCard";
 import { addNewSubjectMiddleware, uploadImageMiddleware } from "../services/api";
-import { FormAddSubject, InputSubject } from "../types";
+import { FormUpdate, InputSubject, InputUpdate } from "../types";
 
 
-const FormAddNewSubject: FC<FormAddSubject> = (props) => {
-    const { onClose, openFormChange, onRefetch } = props;
+const FormUpdateSubject: FC<FormUpdate> = (props) => {
+    const { onClose, openFormChange, onRefetch, item } = props;
 
     const isLoading = useBoolean();
     // const name = useString();
     const keyInputFile = useString();
     const [fileInput, setFileInput] = useState<any>(null);
     const urlImage = useString();
+    const isChange = useBoolean();
 
-    const [formInput, setFormInput] = useState<InputSubject>({
-        name: "",
-        logo: "",
+    const [formUpdate, setFormUpdate] = useState<InputUpdate>({
+        name: item?.name,
+        logo: item?.logo,
+        id: item?.id,
+        status: item?.status
     });
 
     useEffect(() => {
-        setFormInput({
-            ...formInput,
-            logo: urlImage.value
+        setFormUpdate({
+            ...formUpdate,
+            logo: urlImage.value || item?.logo
         })
-    }, [urlImage.value]);
+    }, [item, urlImage.value, isChange.value]);
 
     const isDisabledButton = () => {
         if (
-            !formInput.name ||
-            !formInput.logo
+            !formUpdate.name ||
+            !formUpdate.logo ||
+            !isChange.value
         ) {
             return true;
         }
@@ -45,7 +49,7 @@ const FormAddNewSubject: FC<FormAddSubject> = (props) => {
     const onSubmitButton = () => {
         let isError = false;
 
-        if (!fileInput) {
+        if (!formUpdate.logo) {
             showNotification("error", "Please add image");
             isError = true;
         }
@@ -55,7 +59,7 @@ const FormAddNewSubject: FC<FormAddSubject> = (props) => {
 
         isLoading.setValue(true);
 
-        addNewSubjectMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
+        addNewSubjectMiddleware(formUpdate, (status: STATUS_RESPONSE_CODE) => {
             isLoading.setValue(false);
             if (status === STATUS_RESPONSE_CODE.SUCCESS) {
                 onClose();
@@ -79,14 +83,18 @@ const FormAddNewSubject: FC<FormAddSubject> = (props) => {
         (key: "name") =>
             (event: React.ChangeEvent<HTMLInputElement>) => {
                 if (key === "name") {
-                    setFormInput({
-                        ...formInput,
+                    isChange.setValue(true);
+                    setFormUpdate({
+                        ...formUpdate,
                         [key]: event.target.value
                     })
-                    // name.setValue(event.target.value);
                     return;
                 }
             };
+
+    console.log("isChange:", isChange.value);
+    console.log("logo:", formUpdate.logo);
+
 
     const fileSelectedImageURL = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files: any = event.target.files;
@@ -95,6 +103,7 @@ const FormAddNewSubject: FC<FormAddSubject> = (props) => {
             const formData = new FormData();
             formData.append("images", files[0]);
             uploadImageMiddleware(formData).then((response: any) => urlImage.setValue(response.data.data[0]));
+            isChange.setValue(true);
         }
         keyInputFile.setValue(Math.random().toString(36));
     };
@@ -118,7 +127,7 @@ const FormAddNewSubject: FC<FormAddSubject> = (props) => {
             openPopup={openFormChange}
             disablePopup
             handleCLoseDialog={onClose}
-            title="Add New Subject"
+            title="Update Subject"
             rootStyle={{
                 width: "400px"
             }}
@@ -127,7 +136,7 @@ const FormAddNewSubject: FC<FormAddSubject> = (props) => {
                 label="Name"
                 required
                 rootClass="mb-6"
-                value={formInput.name}
+                value={formUpdate.name}
                 onChange={handleChangeInput("name")}
                 onKeyPress={onKeyPress}
                 inputStyle={inputStyle}
@@ -137,18 +146,18 @@ const FormAddNewSubject: FC<FormAddSubject> = (props) => {
                 fileSelectedImageURL={fileSelectedImageURL}
                 keyInputFile={keyInputFile.value}
                 handleRemoveFileInput={handleRemoveFileInput}
-                originImage={formInput?.logo}
+                originImage={item?.logo}
             />
             <ButtonDefault
                 widthButton="w-140-custom"
                 disabled={isDisabledButton()}
                 onClick={onSubmitButton}
             >
-                Add
+                Update
             </ButtonDefault>
         </DialogCard>
     );
 
 };
 
-export default FormAddNewSubject;
+export default FormUpdateSubject;

@@ -6,13 +6,17 @@ import { useBoolean, useTable } from 'helpers/hooks';
 import { showNotification } from 'helpers/util';
 import PageLayout from 'pages/layout/organisms/PageLayout';
 import React, { useEffect, useState } from 'react'
+import DestroyDialog from './organisms/DeleteDialog';
 import FormAddNewSubject from './organisms/FormAddNewSubject';
+import FormUpdateSubject from './organisms/FormUpdateSubject';
 import { getSubjectMiddleware } from './services/api';
 import { emptySubjectDetail, ParamsRequest, SubjectDetail } from './types';
 import { dataHeaderUser } from './utils';
 
 const subjectPage = (): JSX.Element => {
     const [subject, setSubject] = useState<SubjectDetail[]>([]);
+    const [refetch, setRefetch] = useState(0);
+    const [selected, setSelected] = useState<any>();
     const [formDataSubject, setFormDataSubject] =
         useState<SubjectDetail>(emptySubjectDetail);
 
@@ -36,6 +40,17 @@ const subjectPage = (): JSX.Element => {
         isLoadingTable,
     } = useTable();
 
+    const onRefetch = React.useCallback(
+        () => setRefetch(new Date().getTime()),
+        []
+    );
+
+    const onCloseDialog = () => {
+        openFormAdd.setValue(false);
+        openFormUpdate.setValue(false);
+        openFormDestroy.setValue(false);
+        setSelected(null);
+    };
 
     useEffect(() => {
         const source: CancelTokenSource = Axios.CancelToken.source();
@@ -44,14 +59,20 @@ const subjectPage = (): JSX.Element => {
         return () => source.cancel();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page.value, orderBy.value, updateSubject.value]);
-
-    const handleUpdate = () => {
-        updateSubject.setValue(!updateSubject.value);
-    };
+    }, [page.value, orderBy.value, refetch]);
 
     const openFormAddNewSubject = () => {
         openFormAdd.setValue(true);
+    };
+
+    const onEdit = (item: SubjectDetail) => {
+        openFormUpdate.setValue(true);
+        setSelected(item);
+    };
+
+    const onDelete = (item: SubjectDetail) => {
+        openFormDestroy.setValue(true);
+        setSelected(item);
     };
 
     const closeFormAddNewSubject = () => {
@@ -129,7 +150,7 @@ const subjectPage = (): JSX.Element => {
                 limit={limit.value}
                 page={page.value}
                 countItems={total.value}
-                headers={dataHeaderUser(handleOpenUpdateList)}
+                headers={dataHeaderUser(handleOpenUpdateList, onEdit, onDelete)}
                 handleChangePage={handleChangePage}
                 // data={notifications.length ? notifications : []}
                 data={subject.length ? subject : []}
@@ -139,14 +160,27 @@ const subjectPage = (): JSX.Element => {
                 isLoadingTable={isLoadingTable.value}
             />
 
-            {isLoadingPage.value ? <BackdropCustomize /> : null}
             {openFormAdd.value ?
                 <FormAddNewSubject
-                    onClose={closeFormAddNewSubject}
+                    onClose={onCloseDialog}
                     openFormChange={openFormAdd.value}
-                    handleUpdateList={handleUpdate}
-                    dataItem={formDataSubject}
+                    onRefetch={onRefetch}
                 /> : null}
+            {openFormUpdate.value ?
+                <FormUpdateSubject
+                    onClose={onCloseDialog}
+                    openFormChange={openFormUpdate.value}
+                    onRefetch={onRefetch}
+                    item={selected}
+                /> : null}
+            {openFormDestroy.value ?
+                <DestroyDialog
+                    openPopup={openFormDestroy.value}
+                    onClose={onCloseDialog}
+                    onRefetch={onRefetch}
+                    item={selected}
+                /> : null}
+            {isLoadingPage.value ? <BackdropCustomize /> : null}
         </PageLayout>
     )
 }

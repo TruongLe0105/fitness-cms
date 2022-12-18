@@ -2,7 +2,7 @@ import BackdropCustomize from "components/BackdropCustomize";
 import Table from "components/Table/Table";
 import { useBoolean, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ParamsRequest, MerchantDetail } from "./types";
 import { getMerchantMiddleware } from "./services/api";
 import { dataHeaderUser } from "./utils";
@@ -13,10 +13,14 @@ import SelectDefault from "components/Select/SelectDefault";
 import { cloneDeep } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
-import FormAddNewClient from "pages/merchant/organisms/FormAddNewClient";
+import FormAddNewClient from "pages/merchant/organisms/FormAddNewMerchant";
+// import FormUpdateMerchant from "./organisms/FormUpdateMerchant";
+import DestroyDialog from "./organisms/DestroyDialog";
 
 const merchantPage = (): JSX.Element => {
   const [merchant, setMerchant] = useState<MerchantDetail[]>([]);
+  const [selected, setSelected] = useState<any>();
+  const [refetch, setRefetch] = useState(0);
 
   const openFormUpdate = useBoolean();
   const openFormDestroy = useBoolean();
@@ -38,6 +42,29 @@ const merchantPage = (): JSX.Element => {
     isLoadingTable,
   } = useTable();
 
+  const onEdit = (item: MerchantDetail) => {
+    console.log(item)
+    openFormUpdate.setValue(true);
+    setSelected(item);
+  };
+
+  const onDelete = (item: MerchantDetail) => {
+    openFormDestroy.setValue(true);
+    setSelected(item);
+  };
+
+  const closeDialog = () => {
+    openFormAdd.setValue(false);
+    openFormUpdate.setValue(false);
+    openFormDestroy.setValue(false);
+    setSelected(null);
+  }
+
+  const onRefetch = React.useCallback(
+    () => setRefetch(new Date().getTime()),
+    []
+  );
+
   useEffect(() => {
     const source: CancelTokenSource = Axios.CancelToken.source();
 
@@ -45,7 +72,7 @@ const merchantPage = (): JSX.Element => {
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page.value, orderBy.value, updateMerchant.value]);
+  }, [page.value, orderBy.value, refetch]);
 
   const getMerchant = async (source?: CancelTokenSource) => {
     try {
@@ -130,7 +157,7 @@ const merchantPage = (): JSX.Element => {
         limit={limit.value}
         page={page.value}
         countItems={total.value}
-        headers={dataHeaderUser(handleOpenUpdateList)}
+        headers={dataHeaderUser(handleOpenUpdateList, onEdit, onDelete)}
         handleChangePage={handleChangePage}
         // data={notifications.length ? notifications : []}
         data={merchant.length ? merchant : []}
@@ -143,9 +170,23 @@ const merchantPage = (): JSX.Element => {
       {isLoadingPage.value ? <BackdropCustomize /> : null}
       {openFormAdd.value ?
         <FormAddNewClient
-          onClose={closeFormAddNewClient}
+          onClose={closeDialog}
           openFormChange={openFormAdd.value}
-          handleUpdateList={handleUpdate}
+          onRefetch={onRefetch}
+        /> : null}
+      {/* {openFormUpdate.value ?
+        <FormUpdateMerchant
+          onClose={closeDialog}
+          openFormChange={openFormUpdate.value}
+          onRefetch={onRefetch}
+          item={selected}
+        /> : null} */}
+      {openFormDestroy.value ?
+        <DestroyDialog
+          onClose={closeDialog}
+          openPopup={openFormDestroy.value}
+          onRefetch={onRefetch}
+          item={selected}
         /> : null}
     </PageLayout>
   );

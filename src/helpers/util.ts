@@ -368,7 +368,18 @@ export const isValidMerchantName = (password: string) => {
 };
 
 export const isValidPhone = (password: string) => {
-  if (password.length <= 10)
+  if (password.length < 10)
     return false;
   return true;
+};
+
+export const formatPrice = (price: number, currency = '') => {
+  const str = price.toLocaleString('it-IT', {
+    style: 'currency',
+    currency: 'VND',
+  }); ``
+  if (currency) {
+    return str.replace('VND', currency);
+  }
+  return str;
 };

@@ -11,7 +11,7 @@ import { STATUS_RESPONSE_CODE } from "types";
 import { FormInputMerchant, AddMerchantInput } from "../types";
 
 const FormAddNewClient: FC<FormInputMerchant> = (props) => {
-    const { onClose, openFormChange, handleUpdateList } = props;
+    const { onClose, openFormChange, onRefetch } = props;
 
     const isLoading = useBoolean();
     const changeTypePasswordInput = useBoolean();
@@ -48,7 +48,7 @@ const FormAddNewClient: FC<FormInputMerchant> = (props) => {
         addNewClientMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
             isLoading.setValue(false);
             if (status === STATUS_RESPONSE_CODE.SUCCESS) {
-                handleUpdateList();
+                onRefetch();
                 onClose();
             }
         });

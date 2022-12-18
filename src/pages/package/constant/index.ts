@@ -1,29 +1,29 @@
 export const TimePeriodTypeOptions = [
     {
-        label: "Day",
+        label: "Ngày",
         value: "day"
     },
     {
-        label: "Month",
+        label: "Tháng",
         value: "month"
     },
     {
-        label: "Year",
+        label: "Năm",
         value: "year"
     },
 ]
 
 export const TypeOptions = [
     {
-        label: "Normal",
+        label: "Thông Thường",
         value: "normal"
     },
     {
-        label: "Special",
+        label: "Đặc Biệt",
         value: "special"
     },
     {
-        label: "Best Seller",
+        label: "Bán Chạy Nhất",
         value: "bestSeller"
     },
 ]

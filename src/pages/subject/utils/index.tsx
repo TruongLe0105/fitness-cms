@@ -1,3 +1,4 @@
+import DefaultButtonIcon from "components/ButtonIcon/DefaultButtonIcon";
 import { Header } from "components/Table/types";
 // import IconDefaultAvatar from "assets/images/icons/default-avatar.svg";
 import { formatDate } from "helpers/util";
@@ -11,7 +12,9 @@ export function dataHeaderUser(
   handleOpenUpdateList: (
     key: "edit" | "delete" | "view-detail",
     value: SubjectDetail
-  ) => () => void
+  ) => () => void,
+  onEdit,
+  onDelete
 ): Header[] {
   const headers: Header[] = [
     {
@@ -87,7 +90,7 @@ export function dataHeaderUser(
       },
       sort: true,
       renderBody: (value: SubjectDetail) => (
-        <img src={value.logo} alt="logo" />
+        <img src={value.logo} alt="logo" style={{ width: "1.5rem" }} />
       ),
     },
 
@@ -140,6 +143,44 @@ export function dataHeaderUser(
       sort: true,
       renderBody: (value: SubjectDetail) => (
         <p>{value.createdAt ? formatDate(value.createdAt) : ""}</p>
+      ),
+    },
+    {
+      title: "Action",
+      field: "action",
+      styleSort: {
+        justifyContent: "flex-end",
+      },
+      styleHeader: {
+        paddingLeft: 10,
+        width: "100vh",
+        minWidth: 160,
+      },
+      styleBody: {
+        paddingLeft: 10,
+        width: "100vh",
+        minWidth: 160,
+      },
+      renderBody: (value: SubjectDetail) => (
+        <div className="flex items-center justify-end">
+          <div style={{ margin: "0 5px" }}>
+            <DefaultButtonIcon
+              disable={false}
+              onClick={() => onEdit(value)}
+              field="edit"
+              titleTooltip="Update"
+              keyButtonIcon={Math.random().toString(36)}
+            />
+          </div>
+
+          <DefaultButtonIcon
+            onClick={() => onDelete(value)}
+            disable={false}
+            field="delete"
+            titleTooltip="Destroy"
+            keyButtonIcon={Math.random().toString(36)}
+          />
+        </div>
       ),
     },
   ];

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Select, { components } from 'react-select';
 import { ReactComponent as DownIcon } from 'assets/images/icons/icon-select.svg';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { SelectDefaultProps } from './types';
 import Typography from 'components/Typography';
 
@@ -28,6 +29,7 @@ const SelectDefault = (props: SelectDefaultProps): JSX.Element => {
         borderBottom: '1px solid #E6EAEF',
         height: 32,
         display: 'flex',
+        // alignItems: 'center',
         minWidth: controlWidth || 150,
         cursor: 'pointer',
         ...styleControl,
@@ -62,10 +64,13 @@ const SelectDefault = (props: SelectDefaultProps): JSX.Element => {
     }),
   };
 
+  console.log("selectedOption", selectedOption)
+
   const DropdownIndicator = (dropProps: any) => {
     return (
       <components.DropdownIndicator {...dropProps}>
-        <DownIcon></DownIcon>
+        {/* <DownIcon></DownIcon> */}
+        <ArrowDropDownIcon style={{ fontSize: "1.8rem", color: "black" }} />
       </components.DropdownIndicator>
     );
   };

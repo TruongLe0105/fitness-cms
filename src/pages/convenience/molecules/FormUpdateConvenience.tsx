@@ -8,37 +8,44 @@ import React, { FC, useEffect, useState } from "react";
 import { STATUS_RESPONSE_CODE } from "types";
 import { ConvenienceTypeOptions } from "../constant";
 import { addConvenienceMiddleware, updateConvenienceMiddleware, uploadImageMiddleware } from "../services/api";
-import { FormAddConvenience, InputConvenience, InputUpdateConvenience } from "../types";
+import { UpdateConvenience, InputUpdateConvenience } from "../types";
 import ImageEventCard from "./ImageEventCard";
 
 
-const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
-    const { onClose, openFormChange, onRefetch } = props;
+const FormUpdateConvenience: FC<UpdateConvenience> = (props) => {
+    const { onClose, openFormChange, onRefetch, item } = props;
 
     const isLoading = useBoolean();
+    const isChange = useBoolean();
     const urlImage = useString();
     const keyInputFile = useString();
     const [fileInput, setFileInput] = useState<any>(null);
 
-    const [formInput, setFormInput] = useState<InputConvenience>({
-        name: "",
-        type: "",
-        logo: "",
+    const [formUpdate, setFormUpdate] = useState<InputUpdateConvenience>({
+        name: item?.name,
+        type: item?.type,
+        logo: item?.logo,
+        id: item?.id,
+        status: item?.status
     });
 
-    useEffect(() => {
-        setFormInput({
-            ...formInput,
-            logo: urlImage.value
-        })
+    console.log("item:", item)
+    console.log("formUpdate:", formUpdate)
+    console.log("isChange:", isChange)
 
-    }, [urlImage.value]);
+    useEffect(() => {
+        setFormUpdate({
+            ...formUpdate,
+            logo: urlImage.value || item?.logo
+        });
+    }, [item, urlImage.value, isChange.value]);
 
     const isDisabledButton = () => {
         if (
-            !formInput.name ||
-            !formInput.type ||
-            !formInput.logo
+            !formUpdate.name ||
+            !formUpdate.type ||
+            !formUpdate.logo ||
+            !isChange.value
         ) {
             return true;
         }
@@ -49,7 +56,7 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
     const onSubmitButton = () => {
         let isError = false;
 
-        if (!fileInput) {
+        if (!formUpdate.logo) {
             showNotification("error", "Please add image");
             isError = true;
         }
@@ -58,15 +65,13 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
         }
 
         isLoading.setValue(true);
-        addConvenienceMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
+        updateConvenienceMiddleware(formUpdate, (status: STATUS_RESPONSE_CODE) => {
             isLoading.setValue(false);
             if (status === STATUS_RESPONSE_CODE.SUCCESS) {
-                // handleUpdateList();
                 onClose();
                 onRefetch();
             }
         })
-        return;
     }
 
     const onKeyPress = (event: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -83,8 +88,9 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
         (key: "name") =>
             (event: React.ChangeEvent<HTMLInputElement>) => {
                 if (key === "name") {
-                    setFormInput({
-                        ...formInput,
+                    isChange.setValue(true);
+                    setFormUpdate({
+                        ...formUpdate,
                         [key]: event.target.value
                     });
                     return;
@@ -92,8 +98,9 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
             };
 
     const onSelectChange = (value: any) => {
-        setFormInput({
-            ...formInput,
+        isChange.setValue(true);
+        setFormUpdate({
+            ...formUpdate,
             type: value.value
         })
     }
@@ -105,6 +112,7 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
             const formData = new FormData();
             formData.append("images", files[0]);
             uploadImageMiddleware(formData).then((response: any) => urlImage.setValue(response.data.data[0]));
+            isChange.setValue(true);
         }
         keyInputFile.setValue(Math.random().toString(36));
     };
@@ -124,7 +132,7 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
     };
 
     const getTypeValue = () => {
-        const currentValue = ConvenienceTypeOptions.find((el) => el.value === formInput.type);
+        const currentValue = ConvenienceTypeOptions.find((el) => el.value === formUpdate.type);
         return currentValue;
     }
 
@@ -133,7 +141,7 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
             openPopup={openFormChange}
             disablePopup
             handleCLoseDialog={onClose}
-            title="Add Convenience"
+            title="Update Convenience"
             rootStyle={{ width: "300px" }}
         >
             <div
@@ -147,14 +155,14 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
                     fileSelectedImageURL={fileSelectedImageURL}
                     keyInputFile={keyInputFile.value}
                     handleRemoveFileInput={handleRemoveFileInput}
-                    originImage={formInput?.logo}
+                    originImage={item?.logo}
                 />
                 <div className="flex flex-col">
                     <InputDefault
                         label="Name"
                         required
                         rootClass="mb-6"
-                        value={formInput.name}
+                        value={formUpdate.name}
                         onChange={handleChangeInput("name")}
                         onKeyPress={onKeyPress}
                         inputStyle={inputStyle}
@@ -182,11 +190,11 @@ const FormAddNewConvenience: FC<FormAddConvenience> = (props) => {
                 onClick={onSubmitButton}
                 buttonClass="btn-dialog"
             >
-                Add
+                Update
             </ButtonDefault>
         </DialogCard>
     );
 
 };
 
-export default FormAddNewConvenience;
+export default FormUpdateConvenience;

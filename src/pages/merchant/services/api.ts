@@ -138,4 +138,24 @@ export const addNewClientMiddleware = (
     .catch(() => {
       callBack(STATUS_RESPONSE_CODE.ERROR)
     })
-}
+};
+
+export const deleteMerchant = (
+  id: string,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.delete(`/api/system/star/${id}`)
+    .then((res: any) => {
+      if (res.data?.statusCode >= 400) {
+        callBack(STATUS_RESPONSE_CODE.ERROR);
+        showNotification("error", res.data.message || `Delete merchant error`);
+      } else {
+        callBack(STATUS_RESPONSE_CODE.SUCCESS);
+        showNotification("success", `Delete merchant successful`);
+      }
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR);
+      showNotification("error", `Delete merchant error`);
+    });
+};

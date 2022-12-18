@@ -6,6 +6,9 @@ import { ReactComponent as IconMenuUser } from "assets/images/icons/menu-user.sv
 import { ReactComponent as IconMenuGym } from "assets/images/icons/icon-gym.svg";
 import { ReactComponent as IconMenuMerchant } from "assets/images/icons/merchant-icon.svg";
 import { ReactComponent as IconMenuPackage } from "assets/images/icons/package-icon.svg";
+import SubjectIcon from '@mui/icons-material/Subject';
+import ChairIcon from '@mui/icons-material/Chair';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { PATH } from "helpers/constant";
 
 const MenuItemCard = (props: MenuItemCardProps): JSX.Element => {
@@ -22,15 +25,15 @@ const MenuItemCard = (props: MenuItemCardProps): JSX.Element => {
       case PATH.user:
         return <IconMenuUser />;
       case PATH.gym:
-        return <IconMenuGym />;
+        return <FitnessCenterIcon style={{ color: "#6eb5ef" }} />;
       case PATH.merchant:
         return <IconMenuMerchant />;
       case PATH.package:
         return <IconMenuPackage />;
       case PATH.subject:
-        return <IconMenuPackage />;
+        return <SubjectIcon style={{ color: "#6eb5ef" }} />;
       case PATH.convenience:
-        return <IconMenuPackage />;
+        return <ChairIcon style={{ color: "#6eb5ef" }} />;
     }
   };
 

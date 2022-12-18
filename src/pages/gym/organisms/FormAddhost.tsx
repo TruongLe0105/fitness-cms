@@ -1,8 +1,10 @@
+import axios from "axios";
 import ButtonDefault from "components/Button/ButtonDefault";
 import DialogCard from "components/Dialog/DialogCard";
 import InputDefault from "components/Input/InputDefault";
 import { STATUS_INPUT } from "components/Input/types";
 import SelectDefault from "components/Select/SelectDefault";
+import { GOONG_MAP_API_KEY } from "config/environments";
 import { useBoolean, useString } from "helpers/hooks";
 import { isValidPhone } from "helpers/util";
 import { getConvenienceMiddleware } from "pages/convenience/services/api";
@@ -22,6 +24,10 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
     const { onClose, openFormChange, handleUpdateList } = props;
     const { subjects, conveniences, merchants } = useSelector((state: any) => state.subject);
 
+    const [suggest, setSuggest] = useState<any>([]);
+    const [result, setResult] = useState<any>();
+    const [position, setPosition] = useState<any>()
+
     const merchantName = useString();
     const segment = useString();
     const isLoading = useBoolean();
@@ -40,7 +46,7 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
             }
             options.push(newOps)
         })
-    }, [merchants.length]);
+    }, [merchants?.length, suggest?.length]);
 
     const basicConvenience = conveniences?.filter((convenience) => convenience.type === "basic")
     const highClassConvenience = conveniences?.filter((convenience) => convenience.type === "highClass")
@@ -89,13 +95,13 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
             !formInput.long ||
             !formInput.lat ||
             !formInput.merchantId ||
-            !formInput.subjects.length ||
-            !formInput.images.length ||
-            !formInput.basicConvenience.length ||
-            !formInput.highClassConvenience.length ||
-            !formInput.safeConvenience.length ||
-            !formInput.rules.length ||
-            !formInput.medicalAndSafe.length
+            formInput.subjects.length === 0 ||
+            formInput.images.length === 0 ||
+            formInput.basicConvenience.length === 0 ||
+            formInput.highClassConvenience.length === 0 ||
+            formInput.safeConvenience.length === 0 ||
+            formInput.rules.length === 0 ||
+            formInput.medicalAndSafe.length === 0
         ) {
             return true;
         }
@@ -103,8 +109,7 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
     };
 
     const onSubmitButton = () => {
-        // console.log("formInsubmit", JSON.stringify(formInput))
-        console.log("formInsubmit", formInput)
+        console.log("formInsubmit", formInput);
         isLoading.setValue(true);
         addNewHostMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
             isLoading.setValue(false);
@@ -126,13 +131,49 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
     };
 
     const handleChangeInput =
-        (key: "name" | "phone" | "description" | "address" | "long" | "lat") =>
+        (key: "name" | "phone" | "description" | "position") =>
             (event: React.ChangeEvent<HTMLInputElement>) => {
+                if (key === "position") {
+                    const value = event.target.value;
+                    setResult(value);
+                    setPosition(value);
+
+                    getPositionMap(value);
+                } else {
+                    setFormInput({
+                        ...formInput,
+                        [key]: event.target.value,
+                    })
+                }
+            };
+
+    const getPositionMap = async (e: string) => {
+        await fetch(
+            `https://rsapi.goong.io/Place/AutoComplete?api_key=${GOONG_MAP_API_KEY}&input=${e}`,
+        )
+            .then(response => response.json())
+            .then(json => setSuggest(json.predictions))
+    }
+
+    const choosePosition = async (el: any) => {
+        await fetch(
+            `https://rsapi.goong.io/Place/Detail?api_key=${GOONG_MAP_API_KEY}&place_id=${el.place_id}`,
+        )
+            .then(response => response.json())
+            .then(json => {
+                const address = json.result.formatted_address;
+                const location = json?.result?.geometry?.location;
+
                 setFormInput({
                     ...formInput,
-                    [key]: event.target.value,
-                })
-            };
+                    address: address,
+                    long: location.lng + '',
+                    lat: location.lat + ''
+                });
+                setResult(null);
+                setPosition(address)
+            })
+    }
 
     const onSelectChange = (value: any) => {
         setFormInput({
@@ -198,7 +239,7 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
             >
                 Basic information
             </p>
-            <div className="grid grid-cols-4 mb-6 gap-5">
+            <div className="grid grid-cols-3 mb-6 gap-5">
                 <SelectDefault
                     label="Merchant"
                     required
@@ -239,6 +280,31 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                     status={statusEmailInput}
                     onKeyPress={onKeyPress}
                 />
+                <div className="wrapper-suggest">
+                    <InputDefault
+                        inputStyle={inputStyle}
+                        label="Specific Address"
+                        required
+                        rootClass="mb-6"
+                        value={position}
+                        onChange={handleChangeInput("position")}
+                        status={statusEmailInput}
+                        onKeyPress={onKeyPress}
+                    />
+                    <div
+                        className="modal-suggest"
+                    >
+                        {result && suggest?.map((el: any, index: any) => (
+                            <div
+                                key={index}
+                                className='item-suggest'
+                                onClick={() => choosePosition(el)}
+                            >
+                                {el.description}
+                            </div>
+                        ))}
+                    </div>
+                </div>
                 <InputDefault
                     inputStyle={inputStyle}
                     label="Phone"
@@ -263,9 +329,10 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                     inputStyle={inputStyle}
                     label="Address"
                     required
+                    disabled={true}
+                    classInput="disabled-input"
                     rootClass="mb-6"
                     value={formInput.address}
-                    onChange={handleChangeInput("address")}
                     status={statusEmailInput}
                     onKeyPress={onKeyPress}
                 />
@@ -273,9 +340,10 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                     inputStyle={inputStyle}
                     label="Long"
                     required
+                    disabled={true}
+                    classInput="disabled-input"
                     rootClass="mb-6"
                     value={formInput.long}
-                    onChange={handleChangeInput("long")}
                     status={statusEmailInput}
                     onKeyPress={onKeyPress}
                 />
@@ -283,9 +351,10 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                     inputStyle={inputStyle}
                     label="Lat"
                     required
+                    disabled={true}
+                    classInput="disabled-input"
                     rootClass="mb-6"
                     value={formInput.lat}
-                    onChange={handleChangeInput("lat")}
                     status={statusEmailInput}
                     onKeyPress={onKeyPress}
                 />

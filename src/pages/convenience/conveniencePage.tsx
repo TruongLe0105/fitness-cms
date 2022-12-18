@@ -7,35 +7,55 @@ import { showNotification } from 'helpers/util';
 import PageLayout from 'pages/layout/organisms/PageLayout';
 import React, { useEffect, useState } from 'react'
 import FormAddConvenience from './molecules/FormAddConvenience';
+import FormUpdateConvenience from './molecules/FormUpdateConvenience';
+import DestroyDialog from './organisms/DeleteDialog';
 import { getConvenienceMiddleware } from './services/api';
 import { ConvenienceDetail, emptyConvenienceDetail, ParamsRequest } from './types';
 import { dataHeaderUser } from './utils';
 
 const conveniencePage = (): JSX.Element => {
     const [convenience, setConvenience] = useState<ConvenienceDetail[]>([]);
-    const [formDataSubject, setFormDataSubject] =
-        useState<ConvenienceDetail>(emptyConvenienceDetail);
+    const [selected, setSelected] = useState<any>();
+    const [refetch, setRefetch] = React.useState(0);
 
-    const updateConvenience = useBoolean(false);
     const openFormAdd = useBoolean(false);
     const openFormUpdate = useBoolean();
     const openFormDestroy = useBoolean();
     const openViewDetail = useBoolean();
 
     const {
-        handleChangeInputSearch,
         handleChangePage,
         limit,
         orderBy,
         orderDirection,
         page,
-        search,
         total,
         handleChangeSort,
         isLoadingPage,
         isLoadingTable,
     } = useTable();
 
+    const onEdit = (item: ConvenienceDetail) => {
+        openFormUpdate.setValue(true);
+        setSelected(item);
+    };
+
+    const onDelete = (item: ConvenienceDetail) => {
+        openFormDestroy.setValue(true);
+        setSelected(item);
+    };
+
+    const onCloseDialog = () => {
+        openFormAdd.setValue(false);
+        openFormUpdate.setValue(false);
+        openFormDestroy.setValue(false);
+        setSelected(null);
+    };
+
+    const onRefetch = React.useCallback(
+        () => setRefetch(new Date().getTime()),
+        []
+    );
 
     useEffect(() => {
         const source: CancelTokenSource = Axios.CancelToken.source();
@@ -44,19 +64,10 @@ const conveniencePage = (): JSX.Element => {
         return () => source.cancel();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page.value, orderBy.value, updateConvenience.value]);
-
-
-    const handleUpdate = () => {
-        updateConvenience.setValue(!updateConvenience.value);
-    };
+    }, [page.value, orderBy.value, refetch]);
 
     const openFormAddConvenience = () => {
         openFormAdd.setValue(true);
-    };
-
-    const closeFormAddConvenience = () => {
-        openFormAdd.setValue(false);
     };
 
     const cleanStateRequest = () => {
@@ -130,7 +141,7 @@ const conveniencePage = (): JSX.Element => {
                 limit={limit.value}
                 page={page.value}
                 countItems={total.value}
-                headers={dataHeaderUser(handleOpenUpdateList)}
+                headers={dataHeaderUser(handleOpenUpdateList, onEdit, onDelete)}
                 handleChangePage={handleChangePage}
                 // data={notifications.length ? notifications : []}
                 data={convenience.length ? convenience : []}
@@ -139,15 +150,28 @@ const conveniencePage = (): JSX.Element => {
                 orderDirection={orderDirection.value}
                 isLoadingTable={isLoadingTable.value}
             />
-
-            {isLoadingPage.value ? <BackdropCustomize /> : null}
             {openFormAdd.value ?
                 <FormAddConvenience
-                    onClose={closeFormAddConvenience}
+                    onClose={onCloseDialog}
                     openFormChange={openFormAdd.value}
-                    handleUpdateList={handleUpdate}
-                    dataItem={formDataSubject}
+                    onRefetch={onRefetch}
                 /> : null}
+            {openFormUpdate.value ?
+                <FormUpdateConvenience
+                    onClose={onCloseDialog}
+                    openFormChange={openFormUpdate.value}
+                    item={selected}
+                    onRefetch={onRefetch}
+                /> : null}
+            {openFormDestroy.value && (
+                <DestroyDialog
+                    openPopup={openFormDestroy.value}
+                    onClose={onCloseDialog}
+                    onRefetch={onRefetch}
+                    item={selected}
+                />
+            )}
+            {isLoadingPage.value ? <BackdropCustomize /> : null}
         </PageLayout>
     )
 }

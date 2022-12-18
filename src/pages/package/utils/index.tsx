@@ -1,6 +1,6 @@
 import { Header } from "components/Table/types";
 // import IconDefaultAvatar from "assets/images/icons/default-avatar.svg";
-import { formatDate } from "helpers/util";
+import { formatDate, formatPrice } from "helpers/util";
 import {
   PackageDetail,
   NotificationDetail,
@@ -9,6 +9,7 @@ import {
 import MovieIcon from '@mui/icons-material/Movie';
 import { useState } from "react";
 import ModalGyms from "pages/merchant/organisms/ModalGyms";
+import DefaultButtonIcon from "components/ButtonIcon/DefaultButtonIcon";
 
 export function dataHeaderPackage(
   setDataGymsPackage,
@@ -16,7 +17,9 @@ export function dataHeaderPackage(
   handleOpenUpdateList: (
     key: "edit" | "delete" | "view-detail",
     value: PackageDetail
-  ) => () => void
+  ) => () => void,
+  onEdit,
+  onDelete
 ): Header[] {
 
   const headers: Header[] = [
@@ -190,7 +193,7 @@ export function dataHeaderPackage(
           }}
           className="whitespace-pre-line"
         >
-          {value.price}
+          {formatPrice(value.price)}
         </p>
       ),
     },
@@ -383,6 +386,44 @@ export function dataHeaderPackage(
       sort: true,
       renderBody: (value: PackageDetail) => (
         <p>{value.createdAt ? formatDate(value.createdAt) : ""}</p>
+      ),
+    },
+    {
+      title: "Action",
+      field: "action",
+      styleSort: {
+        justifyContent: "flex-end",
+      },
+      styleHeader: {
+        paddingLeft: 10,
+        width: "100vh",
+        minWidth: 160,
+      },
+      styleBody: {
+        paddingLeft: 10,
+        width: "100vh",
+        minWidth: 160,
+      },
+      renderBody: (value: PackageDetail) => (
+        <div className="flex items-center justify-end">
+          <div style={{ margin: "0 5px" }}>
+            <DefaultButtonIcon
+              disable={false}
+              onClick={() => onEdit(value)}
+              field="edit"
+              titleTooltip="Update"
+              keyButtonIcon={Math.random().toString(36)}
+            />
+          </div>
+
+          <DefaultButtonIcon
+            onClick={() => onDelete(value)}
+            disable={false}
+            field="delete"
+            titleTooltip="Destroy"
+            keyButtonIcon={Math.random().toString(36)}
+          />
+        </div>
       ),
     },
   ];

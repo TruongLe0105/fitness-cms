@@ -33,13 +33,13 @@ function MultiImage({ required, setFormInput, formInput }) {
     }
 
     const maxNumber = 69;//maximum image upload
-    const onChange = (imageList) => {
+    const onChange = (imageList: any) => {
         if (isRemove) {
             setUploadImg([]);
         }
         setImages(imageList);
         const formData = new FormData();
-        imageList.map((image) => {
+        imageList.map((image: any) => {
             formData.append("image", image.file)
         })
         uploadImageMiddleware(formData).then((response: any) => {

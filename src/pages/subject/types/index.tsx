@@ -168,12 +168,26 @@ export interface InputSubject {
   logo: string;
 }
 
+export interface InputUpdate {
+  name: string;
+  logo: string;
+  id: string;
+  status: string;
+}
+
 export interface FormAddSubject {
   openFormChange?: boolean;
   onClose: () => void;
   subject?: InputSubject;
-  handleUpdateList: () => void;
-  dataItem: SubjectDetail;
+  onRefetch: () => void;
+}
+
+export interface FormUpdate {
+  openFormChange?: boolean;
+  onClose: () => void;
+  subject?: InputSubject;
+  onRefetch: () => void;
+  item: SubjectDetail;
 }
 
 export interface ImageEventCardProps {

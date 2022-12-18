@@ -2,7 +2,7 @@ import BackdropCustomize from "components/BackdropCustomize";
 import Table from "components/Table/Table";
 import { useBoolean, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ParamsRequest, PackageDetail } from "./types";
 import { getPackageMiddleware } from "./services/api";
 import { dataHeaderPackage } from "./utils";
@@ -17,10 +17,14 @@ import FormAddPackage from "./organisms/FormAddPackage";
 import { useSelector } from "react-redux";
 import { getGymMiddleware } from "pages/gym/services/api";
 import ModalGyms from "pages/merchant/organisms/ModalGyms";
+import FormUpdatePackage from "./organisms/FormUpdatePackage";
+import DestroyDialog from "./organisms/DialogDestroy";
 
 const packagePage = (): JSX.Element => {
   const [gymPackage, setPackage] = useState<PackageDetail[]>([]);
   const [dataGymsPackage, setDataGymsPackage] = useState<any>([]);
+  const [selected, setSelected] = useState<any>();
+  const [refetch, setRefetch] = useState(0);
 
   const openFormUpdate = useBoolean();
   const openFormDestroy = useBoolean();
@@ -43,19 +47,36 @@ const packagePage = (): JSX.Element => {
     isLoadingTable,
   } = useTable();
 
-  // const { gyms } = useSelector((state: any) => state.subject);
+  const closeDialog = () => {
+    openFormAdd.setValue(false);
+    openFormUpdate.setValue(false);
+    openFormDestroy.setValue(false);
+    setSelected(null);
+  };
+
+  const onRefetch = React.useCallback(
+    () => setRefetch(new Date().getTime()),
+    []
+  );
+
+  const onEdit = (item: PackageDetail) => {
+    openFormUpdate.setValue(true);
+    setSelected(item);
+  };
+
+  const onDelete = (item: PackageDetail) => {
+    openFormDestroy.setValue(true);
+    setSelected(item);
+  };
 
   useEffect(() => {
     const source: CancelTokenSource = Axios.CancelToken.source();
-    // getGymMiddleware();
 
     getPackage(source);
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page.value, orderBy.value, updatePackage.value]);
-
-  console.log("gymPackage", gymPackage)
+  }, [page.value, orderBy.value, refetch]);
 
   const getPackage = async (source?: CancelTokenSource) => {
     try {
@@ -63,9 +84,6 @@ const packagePage = (): JSX.Element => {
         limit: limit.value,
         page: page.value,
       };
-      // if (orderBy.value) {
-      //   params.sort = orderBy.value;
-      // }
 
       const dataRes = await getPackageMiddleware(params, source);
 
@@ -140,7 +158,7 @@ const packagePage = (): JSX.Element => {
         limit={limit.value}
         page={page.value}
         countItems={total.value}
-        headers={dataHeaderPackage(setDataGymsPackage, openPackage, handleOpenUpdateList)}
+        headers={dataHeaderPackage(setDataGymsPackage, openPackage, handleOpenUpdateList, onEdit, onDelete)}
         handleChangePage={handleChangePage}
         // data={notifications.length ? notifications : []}
         data={gymPackage.length ? gymPackage : []}
@@ -150,13 +168,30 @@ const packagePage = (): JSX.Element => {
         isLoadingTable={isLoadingTable.value}
       />
 
-      {/* {isLoadingPage.value ? <BackdropCustomize /> : null} */}
       {
         openFormAdd.value ?
           <FormAddPackage
-            onClose={closeFormAddNewClient}
+            onClose={closeDialog}
             openFormChange={openFormAdd.value}
-            handleUpdateList={handleUpdate}
+            onRefetch={onRefetch}
+          /> : null
+      }
+      {
+        openFormUpdate.value ?
+          <FormUpdatePackage
+            onClose={closeDialog}
+            openFormChange={openFormUpdate.value}
+            onRefetch={onRefetch}
+            item={selected}
+          /> : null
+      }
+      {
+        openFormDestroy.value ?
+          <DestroyDialog
+            onClose={closeDialog}
+            openPopup={openFormDestroy.value}
+            onRefetch={onRefetch}
+            item={selected}
           /> : null
       }
       {
@@ -164,10 +199,11 @@ const packagePage = (): JSX.Element => {
           <ModalGyms
             onClose={() => openPackage.setValue(false)}
             openFormChange={openPackage.value}
-            handleUpdateList={handleUpdate}
+            onRefetch={onRefetch}
             data={dataGymsPackage ? dataGymsPackage : {}}
           /> : null
       }
+      {isLoadingPage.value ? <BackdropCustomize /> : null}
     </PageLayout >
   );
 };

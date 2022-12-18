@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useBoolean } from 'helpers/hooks';
 import { AddPackageInput } from '../types';
 import { STATUS_RESPONSE_CODE } from 'types';
-import { addPackageMiddleware } from '../services/api';
+import { addPackageMiddleware, updatePackageMiddleware } from '../services/api';
 import DialogCard from 'components/Dialog/DialogCard';
 import InputDefault from 'components/Input/InputDefault';
 import ButtonDefault from 'components/Button/ButtonDefault';
@@ -14,23 +14,24 @@ import { useSelector } from 'react-redux';
 import MultiSelectInput from '../molecules/MultiSelect';
 import MultipleInput from 'components/Input/Multiple';
 
-const FormAddPackage = (props: any) => {
-    const { onClose, openFormChange, onRefetch } = props;
+const FormUpdatePackage = (props: any) => {
+    const { onClose, openFormChange, onRefetch, item } = props;
 
     const isLoading = useBoolean();
+    const isChange = useBoolean();
     const { gyms } = useSelector((state: any) => state.subject);
 
     const [optionGyms, setGyms] = useState<any>([]);
-    const [formInput, setFormInput] = useState<AddPackageInput>({
-        name: "",
-        description: "",
-        price: 0,
-        timePeriodType: "",
-        unitTime: 0,
-        gymId: [],
-        type: "",
-        benefit: [],
-        rules: [],
+    const [formUpdate, setformUpdate] = useState<AddPackageInput>({
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        timePeriodType: item.timePeriodType,
+        unitTime: item.unitTime,
+        gymId: item.gym,
+        type: item.type,
+        benefit: item.benefit,
+        rules: item.rules,
     });
 
     useEffect(() => {
@@ -42,21 +43,23 @@ const FormAddPackage = (props: any) => {
             }
             optionGyms.push(newOps)
         })
-    }, [gyms.length]);
+    }, [gyms.length, isChange.value]);
 
-    console.log("formInput:", formInput)
+    console.log("formUpdate:", formUpdate)
+    console.log("item:", item)
 
     const isDisabledButton = () => {
         if (
-            !formInput.name ||
-            !formInput.description ||
-            !formInput.price ||
-            !formInput.timePeriodType ||
-            !formInput.unitTime ||
-            !formInput.gymId.length ||
-            !formInput.type ||
-            !formInput.benefit ||
-            !formInput.rules
+            !formUpdate.name ||
+            !formUpdate.description ||
+            !formUpdate.price ||
+            !formUpdate.timePeriodType ||
+            !formUpdate.unitTime ||
+            // !formUpdate.gymId.length ||
+            !formUpdate.type ||
+            !formUpdate.benefit ||
+            !formUpdate.rules ||
+            !isChange.value
         ) {
             return true;
         }
@@ -64,9 +67,9 @@ const FormAddPackage = (props: any) => {
     };
 
     const onSubmitButton = () => {
-        console.log(formInput);
+        console.log(formUpdate);
         isLoading.setValue(true);
-        addPackageMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
+        updatePackageMiddleware(formUpdate, (status: STATUS_RESPONSE_CODE) => {
             isLoading.setValue(false);
             if (status === STATUS_RESPONSE_CODE.SUCCESS) {
                 onRefetch();
@@ -89,47 +92,53 @@ const FormAddPackage = (props: any) => {
         (key: "name" | "description" | "price" | "unitTime") =>
             (event: React.ChangeEvent<HTMLInputElement>) => {
                 if (key === "price" || key === "unitTime") {
-                    setFormInput({
-                        ...formInput,
+                    setformUpdate({
+                        ...formUpdate,
                         [key]: Number(event.target.value),
                     });
                 } else {
-                    setFormInput({
-                        ...formInput,
+                    setformUpdate({
+                        ...formUpdate,
                         [key]: event.target.value,
                     });
                 }
+                isChange.setValue(true);
             };
 
     const handleChangeInputArea =
         (key: "benefit" | "rules") =>
             (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                setFormInput({
-                    ...formInput,
+                setformUpdate({
+                    ...formUpdate,
                     [key]: [event.target.value],
-                });
+                })
+                isChange.setValue(true);
             }
 
     const getTypeTimePeriod = () => {
-        TimePeriodTypeOptions.find((el) => el.value === formInput.timePeriodType)
+        const currentTypePeriod = TimePeriodTypeOptions.find((el) => el.value === formUpdate.timePeriodType);
+        return currentTypePeriod;
     };
 
     const getTypeOptions = () => {
-        TimePeriodTypeOptions.find((el) => el.value === formInput.type)
+        const currentType = TypeOptions.find((el) => el.value === formUpdate.type);
+        return currentType;
     };
 
     const onSelectChangeTimeType = (value: any) => {
-        setFormInput({
-            ...formInput,
+        setformUpdate({
+            ...formUpdate,
             timePeriodType: value.value
-        })
+        });
+        isChange.setValue(true);
     };
 
     const onSelectChangeType = (value: any) => {
-        setFormInput({
-            ...formInput,
+        setformUpdate({
+            ...formUpdate,
             type: value.value
-        })
+        });
+        isChange.setValue(true);
     };
 
     const inputStyle: React.CSSProperties = {
@@ -145,12 +154,52 @@ const FormAddPackage = (props: any) => {
             openPopup={openFormChange}
             disablePopup
             handleCLoseDialog={onClose}
-            title="Add New Package"
+            title="Update Package"
         // rootStyle={{
         //     width: "400px"
         // }}
         >
-            <div className="grid grid-cols-3 mb-8 gap-5"
+            <div className="grid grid-cols-4 mb-6 gap-5">
+                <InputDefault
+                    inputStyle={inputStyle}
+                    label="Name"
+                    required
+                    rootClass="mb-6"
+                    value={formUpdate.name}
+                    onChange={handleChangeInput("name")}
+                    onKeyPress={onKeyPress}
+                />
+                <InputDefault
+                    inputStyle={inputStyle}
+                    label="Description"
+                    required
+                    rootClass="mb-6"
+                    value={formUpdate.description}
+                    onChange={handleChangeInput("description")}
+                    onKeyPress={onKeyPress}
+                />
+                <InputDefault
+                    inputStyle={inputStyle}
+                    label="Price"
+                    type="number"
+                    required
+                    rootClass="mb-6"
+                    value={formUpdate.price}
+                    onChange={handleChangeInput("price")}
+                    onKeyPress={onKeyPress}
+                />
+                <InputDefault
+                    inputStyle={inputStyle}
+                    label="Unit Time"
+                    type="number"
+                    required
+                    rootClass="mb-6"
+                    value={formUpdate.unitTime}
+                    onChange={handleChangeInput("unitTime")}
+                    onKeyPress={onKeyPress}
+                />
+            </div>
+            <div className="grid grid-cols-2 mb-8 gap-5"
             >
                 <SelectDefault
                     label="Time Period Type"
@@ -182,12 +231,13 @@ const FormAddPackage = (props: any) => {
                     }}
                     controlWidth={1}
                 />
-                {/* <SelectDefault
+                {/* <MultiSelectInput
                     label="Gym"
+                    inputType="gymId"
                     required
+                    setformUpdate={setformUpdate}
+                    formUpdate={formUpdate}
                     options={optionGyms}
-                    selectedOption={getTypeGym()}
-                    handleChange={onSelectChangeGym}
                     styleControl={inputStyle}
                     styleSingleValue={{
                         display: "flex",
@@ -197,70 +247,14 @@ const FormAddPackage = (props: any) => {
                     }}
                     controlWidth={1}
                 /> */}
-                <MultiSelectInput
-                    label="Gym"
-                    inputType="gymId"
-                    required
-                    setFormInput={setFormInput}
-                    formInput={formInput}
-                    options={optionGyms}
-                    styleControl={inputStyle}
-                    styleSingleValue={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: 14,
-                        maxWidth: "inherit",
-                    }}
-                    controlWidth={1}
-                />
-            </div>
-            <div className="grid grid-cols-4 mb-6 gap-5">
-                <InputDefault
-                    inputStyle={inputStyle}
-                    label="Name"
-                    required
-                    rootClass="mb-6"
-                    value={formInput.name}
-                    onChange={handleChangeInput("name")}
-                    onKeyPress={onKeyPress}
-                />
-                <InputDefault
-                    inputStyle={inputStyle}
-                    label="Description"
-                    required
-                    rootClass="mb-6"
-                    value={formInput.description}
-                    onChange={handleChangeInput("description")}
-                    onKeyPress={onKeyPress}
-                />
-                <InputDefault
-                    inputStyle={inputStyle}
-                    label="Price"
-                    type="number"
-                    required
-                    rootClass="mb-6"
-                    value={formInput.price}
-                    onChange={handleChangeInput("price")}
-                    onKeyPress={onKeyPress}
-                />
-                <InputDefault
-                    inputStyle={inputStyle}
-                    label="Unit Time"
-                    type="number"
-                    required
-                    rootClass="mb-6"
-                    value={formInput.unitTime}
-                    onChange={handleChangeInput("unitTime")}
-                    onKeyPress={onKeyPress}
-                />
             </div>
             <div className="grid grid-cols-2 mb-8 gap-5">
                 {/* <MultiSelectInput
                     label="Benefit"
                     inputType="benefit"
                     required
-                    setFormInput={setFormInput}
-                    formInput={formInput}
+                    setformUpdate={setformUpdate}
+                    formUpdate={formUpdate}
                     options={optionGyms}
                     styleControl={inputStyle}
                     styleSingleValue={{
@@ -275,8 +269,8 @@ const FormAddPackage = (props: any) => {
                     label="Rules"
                     inputType="rules"
                     required
-                    setFormInput={setFormInput}
-                    formInput={formInput}
+                    setformUpdate={setformUpdate}
+                    formUpdate={formUpdate}
                     options={optionGyms}
                     styleControl={inputStyle}
                     styleSingleValue={{
@@ -305,11 +299,10 @@ const FormAddPackage = (props: any) => {
                 disabled={isDisabledButton()}
                 onClick={onSubmitButton}
             >
-                {/* {dataItem.id ? "Update" : "Add"} */}
-                Add
+                Update
             </ButtonDefault>
         </DialogCard>
     )
 }
 
-export default FormAddPackage
+export default FormUpdatePackage;

@@ -174,5 +174,12 @@ export interface FormInputMerchant {
   openFormChange?: boolean;
   onClose: () => void;
   client?: AddMerchantInput;
-  handleUpdateList: () => void;
+  onRefetch: () => void;
+}
+
+export interface FormUpdate {
+  openFormChange?: boolean;
+  onClose: () => void;
+  item?: MerchantDetail;
+  onRefetch: () => void;
 }

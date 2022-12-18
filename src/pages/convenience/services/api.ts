@@ -13,6 +13,7 @@ import {
   NotificationDetail,
   ParamsRequest,
   InputConvenience,
+  InputUpdateConvenience,
 } from "../types";
 // eslint-disable-next-line
 export const getNotificationsMiddleware = async (
@@ -141,9 +142,51 @@ export const addConvenienceMiddleware = (
     })
 }
 
+export const updateConvenienceMiddleware = (
+  formUpdate: InputUpdateConvenience,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.post(`/convenience/admin/update`, formUpdate)
+    .then((response: any) => {
+      if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
+        showNotification("success", "Update Convenience successfully!");
+        callBack(response.data.statusCode);
+        return;
+      }
+      showNotification(
+        "error",
+        response.data.data ? response.data.data.errors : response.data.message
+      );
+
+      callBack(response.data.statusCode);
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR)
+    })
+}
+
+export const deleteConvenience = (
+  id: string,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.delete(`/api/system/star/${id}`)
+    .then((res: any) => {
+      if (res.data?.statusCode >= 400) {
+        callBack(STATUS_RESPONSE_CODE.ERROR);
+        showNotification("error", res.data.message || `Delete star error`);
+      } else {
+        callBack(STATUS_RESPONSE_CODE.SUCCESS);
+        showNotification("success", `Delete star successful`);
+      }
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR);
+      showNotification("error", `Delete star error`);
+    });
+};
 
 export const uploadImageMiddleware = (
   formData: FormData,
 ) => {
   return Axios.post(`/media/admin/uploadImage`, formData);
-}
+};

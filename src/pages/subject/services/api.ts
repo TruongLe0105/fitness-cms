@@ -14,6 +14,7 @@ import {
   NotificationDetail,
   ParamsRequest,
   InputSubject,
+  InputUpdate
 } from "../types";
 // eslint-disable-next-line
 export const getNotificationsMiddleware = async (
@@ -116,7 +117,7 @@ export const addNewSubjectMiddleware = (
   Axios.post(`/subject/admin/create`, formInput)
     .then((response: any) => {
       if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
-        showNotification("success", "Create new Merchant successfully!");
+        showNotification("success", "Create new subject successfully!");
         callBack(response.data.statusCode);
         return;
       }
@@ -130,6 +131,49 @@ export const addNewSubjectMiddleware = (
     .catch(() => {
       callBack(STATUS_RESPONSE_CODE.ERROR)
     })
+};
+
+export const updateSubjectMiddleware = (
+  formUpdate: InputUpdate,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.post(`/subject/admin/update`, formUpdate)
+    .then((response: any) => {
+      if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
+        showNotification("success", "Update Subject successfully!");
+        callBack(response.data.statusCode);
+        return;
+      }
+      showNotification(
+        "error",
+        response.data.data ? response.data.data.errors : response.data.message
+      );
+
+      callBack(response.data.statusCode);
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR)
+    })
+};
+
+export const deleteSubject = (
+  id: string,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.delete(`/api/system/star/${id}`)
+    .then((res: any) => {
+      if (res.data?.statusCode >= 400) {
+        callBack(STATUS_RESPONSE_CODE.ERROR);
+        showNotification("error", res.data.message || `Delete subject error`);
+      } else {
+        callBack(STATUS_RESPONSE_CODE.SUCCESS);
+        showNotification("success", `Delete subject successful`);
+      }
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR);
+      showNotification("error", `Delete subject error`);
+    });
 };
 
 export const uploadImageMiddleware = (

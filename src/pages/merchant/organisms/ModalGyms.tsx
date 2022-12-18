@@ -16,7 +16,7 @@ const ModalGyms = (props: any) => {
     const {
         openFormChange,
         onClose,
-        handleUpdateList,
+        onRefetch,
         data
     } = props;
 
@@ -50,7 +50,7 @@ const ModalGyms = (props: any) => {
         updatePackageMiddleware(formUpdate, (status: STATUS_RESPONSE_CODE) => {
             isLoading.setValue(false);
             if (status === STATUS_RESPONSE_CODE.SUCCESS) {
-                handleUpdateList();
+                onRefetch();
                 onClose();
             }
         });

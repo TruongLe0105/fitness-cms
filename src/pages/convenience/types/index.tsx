@@ -170,12 +170,27 @@ export interface InputConvenience {
   logo: string;
 }
 
+export interface InputUpdateConvenience {
+  name: string;
+  type: string;
+  logo: string;
+  id: string;
+  status: string;
+}
+
 export interface FormAddConvenience {
   openFormChange?: boolean;
   onClose: () => void;
   convenience?: InputConvenience;
-  handleUpdateList: () => void;
-  dataItem: ConvenienceDetail;
+  onRefetch: () => void;
+}
+
+export interface UpdateConvenience {
+  openFormChange?: boolean;
+  onClose: () => void;
+  convenience?: InputConvenience;
+  onRefetch: () => void;
+  item: ConvenienceDetail;
 }
 
 export interface ImageEventCardProps {
@@ -187,7 +202,7 @@ export interface ImageEventCardProps {
 }
 
 export const emptyConvenienceDetail: ConvenienceDetail = {
-  id: "0",
+  id: "",
   name: "",
   type: "",
   logo: "",

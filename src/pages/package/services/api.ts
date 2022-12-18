@@ -160,3 +160,23 @@ export const updatePackageMiddleware = (
       callBack(STATUS_RESPONSE_CODE.ERROR)
     })
 };
+
+export const deletePackage = (
+  id: string,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.delete(`/api/system/star/${id}`)
+    .then((res: any) => {
+      if (res.data?.statusCode >= 400) {
+        callBack(STATUS_RESPONSE_CODE.ERROR);
+        showNotification("error", res.data.message || `Delete package error`);
+      } else {
+        callBack(STATUS_RESPONSE_CODE.SUCCESS);
+        showNotification("success", `Delete package successful`);
+      }
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR);
+      showNotification("error", `Delete package error`);
+    });
+};
