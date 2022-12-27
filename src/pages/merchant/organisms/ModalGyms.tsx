@@ -20,7 +20,16 @@ const ModalGyms = (props: any) => {
         data
     } = props;
 
-    const [formUpdate, setFormUpdate] = useState(data);
+    const [formUpdate, setFormUpdate] = useState({
+        id: data?._id,
+        name: data?.name,
+        description: data?.description,
+        price: data?.price,
+        type: data?.type,
+        benefit: data?.benefit || [],
+        rules: data?.rules || [],
+        gymIds: data?.gymIds || [],
+    });
     const { gyms } = useSelector((state: any) => state.subject);
     const [optionGyms, setGyms] = useState<any>([]);
 
@@ -45,7 +54,8 @@ const ModalGyms = (props: any) => {
     } = useTable();
 
     const onSubmitButton = () => {
-        console.log("submit", formUpdate);
+        data?.gym.map(({ _id }) => formUpdate.gymIds.push(_id));
+
         isLoading.setValue(true);
         updatePackageMiddleware(formUpdate, (status: STATUS_RESPONSE_CODE) => {
             isLoading.setValue(false);
@@ -66,7 +76,7 @@ const ModalGyms = (props: any) => {
                 value: gym._id
             }
             optionGyms.push(newOps)
-        })
+        });
     }, [gyms.length]);
 
     const inputStyle: React.CSSProperties = {

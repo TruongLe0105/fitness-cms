@@ -128,7 +128,7 @@ export function dataHeaderPackage(
           }}
           className="whitespace-pre-line"
         >
-          {value.gym.length}
+          {value.gym.length} gyms
           <MovieIcon
             color="primary"
             fontSize="large"

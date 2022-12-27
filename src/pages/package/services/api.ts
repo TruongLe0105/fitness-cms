@@ -142,7 +142,7 @@ export const updatePackageMiddleware = (
   request: UpdatePackageInput,
   callBack: (status: STATUS_RESPONSE_CODE) => void,
 ) => {
-  Axios.post(`/package/update`, request)
+  Axios.post(`/package/admin/update`, request)
     .then((response: any) => {
       if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
         showNotification("success", "Update Package successfully!");
