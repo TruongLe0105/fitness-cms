@@ -6,6 +6,7 @@ import {
   STATUS_NOTIFICATION,
   UserCharacterDetail,
   ClientDetail,
+  UserDetail,
 } from "../types";
 import DefaultButtonIcon from "components/ButtonIcon/DefaultButtonIcon";
 import StatusCard from "components/Status/StatusCard";
@@ -19,7 +20,9 @@ export function dataHeaderUser(
   handleOpenUpdateList: (
     key: "edit" | "delete" | "view-detail",
     value: ClientDetail
-  ) => () => void
+  ) => () => void,
+  onEdit: (value: UserDetail) => void,
+  onDelete: (value: UserDetail) => void
 ): Header[] {
   const headers: Header[] = [
     {
@@ -189,6 +192,44 @@ export function dataHeaderUser(
       sort: true,
       renderBody: (value: ClientDetail) => (
         <p>{value.createdAt ? formatDate(value.createdAt) : ""}</p>
+      ),
+    },
+    {
+      title: "Action",
+      field: "action",
+      styleSort: {
+        justifyContent: "flex-end",
+      },
+      styleHeader: {
+        paddingLeft: 10,
+        width: "100vh",
+        minWidth: 160,
+      },
+      styleBody: {
+        paddingLeft: 10,
+        width: "100vh",
+        minWidth: 160,
+      },
+      renderBody: (value: UserDetail) => (
+        <div className="flex items-center justify-end">
+          <div style={{ margin: "0 5px" }}>
+            <DefaultButtonIcon
+              disable={false}
+              onClick={() => onEdit(value)}
+              field="edit"
+              titleTooltip="Update"
+              keyButtonIcon={Math.random().toString(36)}
+            />
+          </div>
+
+          <DefaultButtonIcon
+            onClick={() => onDelete(value)}
+            disable={false}
+            field="delete"
+            titleTooltip="Destroy"
+            keyButtonIcon={Math.random().toString(36)}
+          />
+        </div>
       ),
     },
   ];

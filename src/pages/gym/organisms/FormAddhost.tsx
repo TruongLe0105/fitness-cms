@@ -21,7 +21,7 @@ import { addNewHostMiddleware } from "../services/api";
 import { FormAddHostProps, InputHost } from "../types";
 
 const FormAddHost: FC<FormAddHostProps> = (props) => {
-    const { onClose, openFormChange, handleUpdateList } = props;
+    const { onClose, openFormChange, onRefetch } = props;
     const { subjects, conveniences, merchants } = useSelector((state: any) => state.subject);
 
     const [suggest, setSuggest] = useState<any>([]);
@@ -114,7 +114,7 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
         addNewHostMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
             isLoading.setValue(false);
             if (status === STATUS_RESPONSE_CODE.SUCCESS) {
-                handleUpdateList();
+                onRefetch();
                 onClose();
             }
         });

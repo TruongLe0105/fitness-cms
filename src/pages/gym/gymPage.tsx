@@ -1,9 +1,9 @@
 import BackdropCustomize from "components/BackdropCustomize";
 import Table from "components/Table/Table";
-import { useBoolean, useTable } from "helpers/hooks";
+import { useBoolean, useFilter, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
-import { useEffect, useState } from "react";
-import { ParamsRequest, ClientDetail, GymDetail, emptySubjectDetail } from "./types";
+import React, { useEffect, useState } from "react";
+import { ParamsRequest, ClientDetail, GymDetail, emptyGymDetail } from "./types";
 import { getGymMiddleware } from "./services/api";
 import { dataHeaderUser } from "./utils";
 import FilterTable from "components/Filter/FilterTable";
@@ -14,19 +14,11 @@ import { cloneDeep } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
 import FormAddHost from "./organisms/FormAddhost";
+import ShowFilterCard from "components/Filter/ShowFilterCard";
+import DestroyDialog from "./organisms/DeleteDialog";
+import FormUpdateGym from "./organisms/FormUpdateGym";
 
 const gymPage = (): JSX.Element => {
-  const [gym, setGym] = useState<GymDetail[]>([]);
-
-  const [formDataHost, setFormDataHost] =
-    useState<GymDetail>(emptySubjectDetail);
-
-  const openFormUpdate = useBoolean();
-  const openFormDestroy = useBoolean();
-  const openViewDetail = useBoolean();
-  const openFormAdd = useBoolean();
-  const updateData = useBoolean();
-
   const {
     handleChangeInputSearch,
     handleChangePage,
@@ -41,6 +33,30 @@ const gymPage = (): JSX.Element => {
     isLoadingTable,
   } = useTable();
 
+  const [gym, setGym] = useState<GymDetail[]>([]);
+  const [refetch, setRefetch] = useState(0);
+  const [selected, setSelected] = useState<any>();
+  const [formUpdateGym, setFormUpdateGym] =
+    useState<GymDetail>(emptyGymDetail);
+
+  const [formDataHost, setFormDataHost] =
+    useState<GymDetail>(emptyGymDetail);
+
+  const openFormUpdate = useBoolean();
+  const openFormDestroy = useBoolean();
+  const openViewDetail = useBoolean();
+  const openFormAdd = useBoolean();
+
+  const { filter, handleChangeCheckedFilter, handleRemoveFilter } = useFilter(
+    page,
+    isLoadingTable
+  );
+
+  const onRefetch = React.useCallback(
+    () => setRefetch(new Date().getTime()),
+    []
+  );
+
   useEffect(() => {
     const source: CancelTokenSource = Axios.CancelToken.source();
 
@@ -48,7 +64,7 @@ const gymPage = (): JSX.Element => {
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page.value, orderBy.value, updateData.value]);
+  }, [page.value, orderBy.value, refetch]);
 
   const openFormAddHost = () => {
     openFormAdd.setValue(true);
@@ -58,9 +74,23 @@ const gymPage = (): JSX.Element => {
     openFormAdd.setValue(false);
   };
 
-  const handleUpdate = () => {
-    updateData.setValue(!updateData.value);
+  const onEdit = (item: GymDetail) => {
+    openFormUpdate.setValue(true);
+    setSelected(item);
   };
+
+  const onDelete = (item: GymDetail) => {
+    openFormDestroy.setValue(true);
+    setSelected(item);
+  };
+
+  const onCloseDialog = () => {
+    openFormAdd.setValue(false);
+    openFormUpdate.setValue(false);
+    openFormDestroy.setValue(false);
+    setSelected(null);
+  };
+
 
   const getGym = async (source?: CancelTokenSource) => {
     try {
@@ -126,14 +156,43 @@ const gymPage = (): JSX.Element => {
               Add New Gym
             </ButtonDefault>
           </div>
+          <FilterTable
+            // listFilter={filterStar}
+            // queryFilter={filter}
+            placeholder="Search"
+            search={search.value}
+            handleChangeInputSearch={handleChangeInputSearch}
+          // handleChangeChecked={handleChangeCheckedFilter}
+          />
         </div>
       }
     >
+      <div className='h-40-custom'>
+        <ShowFilterCard
+          dataFilter={[
+            // {
+            //   field: FiledFilterItem.OWNER,
+            //   dataItem: filter.owner_status?.length ? filter.owner_status : [],
+            // },
+            // {
+            //   field: FiledFilterItem.MARKET,
+            //   dataItem: filter.market_status?.length
+            //     ? filter.market_status
+            //     : [],
+            // },
+            // {
+            //   field: FiledFilterItem.TYPES,
+            //   dataItem: filter.types?.length ? filter.types : [],
+            // },
+          ]}
+          handleRemoveFilter={handleRemoveFilter}
+        />
+      </div>
       <Table
         limit={limit.value}
         page={page.value}
         countItems={total.value}
-        headers={dataHeaderUser(handleOpenUpdateList)}
+        headers={dataHeaderUser(handleOpenUpdateList, onEdit, onDelete)}
         handleChangePage={handleChangePage}
         // data={notifications.length ? notifications : []}
         data={gym.length ? gym : []}
@@ -149,10 +208,24 @@ const gymPage = (): JSX.Element => {
         <FormAddHost
           onClose={closeFormAddHost}
           openFormChange={openFormAdd.value}
-          handleUpdateList={handleUpdate}
+          onRefetch={onRefetch}
           dataItem={formDataHost}
         />
       }
+      {openFormUpdate.value ?
+        <FormUpdateGym
+          onClose={onCloseDialog}
+          openFormChange={openFormUpdate.value}
+          onRefetch={onRefetch}
+          item={selected}
+        /> : null}
+      {openFormDestroy.value ?
+        <DestroyDialog
+          openPopup={openFormDestroy.value}
+          onClose={onCloseDialog}
+          onRefetch={onRefetch}
+          item={selected}
+        /> : null}
     </PageLayout>
   );
 };

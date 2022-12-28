@@ -114,3 +114,28 @@ export const updateNotificationMiddleware = (
       callBack(STATUS_RESPONSE_CODE.ERROR);
     });
 };
+
+// export const deleteUser = (
+//   idNotification: number,
+//   request: FormRequest,
+//   callBack: (status: STATUS_RESPONSE_CODE, dataRes?: NotificationDetail) => void
+// ) => {
+//   Axios.delete(`/api/notifications/${idNotification}`, request)
+//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//     .then((response: any) => {
+//       if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
+//         showNotification("success", "Update notification successfully!");
+//         callBack(response.data.statusCode, response.data.data);
+//         return;
+//       }
+//       showNotification(
+//         "error",
+//         response.data.data ? response.data.data.errors : response.data.message
+//       );
+
+//       callBack(response.data.statusCode);
+//     })
+//     .catch(() => {
+//       callBack(STATUS_RESPONSE_CODE.ERROR);
+//     });
+// };

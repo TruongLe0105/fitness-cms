@@ -1,6 +1,6 @@
 import BackdropCustomize from "components/BackdropCustomize";
 import Table from "components/Table/Table";
-import { useBoolean, useTable } from "helpers/hooks";
+import { useBoolean, useFilter, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
 import React, { useEffect, useState } from "react";
 import { ParamsRequest, PackageDetail } from "./types";
@@ -19,20 +19,9 @@ import { getGymMiddleware } from "pages/gym/services/api";
 import ModalGyms from "pages/merchant/organisms/ModalGyms";
 import FormUpdatePackage from "./organisms/FormUpdatePackage";
 import DestroyDialog from "./organisms/DialogDestroy";
+import ShowFilterCard from "components/Filter/ShowFilterCard";
 
 const packagePage = (): JSX.Element => {
-  const [gymPackage, setPackage] = useState<PackageDetail[]>([]);
-  const [dataGymsPackage, setDataGymsPackage] = useState<any>([]);
-  const [selected, setSelected] = useState<any>();
-  const [refetch, setRefetch] = useState(0);
-
-  const openFormUpdate = useBoolean();
-  const openFormDestroy = useBoolean();
-  const openViewDetail = useBoolean();
-  const openFormAdd = useBoolean();
-  const updatePackage = useBoolean();
-  const openPackage = useBoolean();
-
   const {
     handleChangeInputSearch,
     handleChangePage,
@@ -46,6 +35,24 @@ const packagePage = (): JSX.Element => {
     isLoadingPage,
     isLoadingTable,
   } = useTable();
+
+  const [gymPackage, setPackage] = useState<PackageDetail[]>([]);
+  const [dataGymsPackage, setDataGymsPackage] = useState<any>([]);
+  const [selected, setSelected] = useState<any>();
+  const [refetch, setRefetch] = useState(0);
+
+  const openFormUpdate = useBoolean();
+  const openFormDestroy = useBoolean();
+  const openViewDetail = useBoolean();
+  const openFormAdd = useBoolean();
+  const updatePackage = useBoolean();
+  const openPackage = useBoolean();
+
+  const { filter, handleChangeCheckedFilter, handleRemoveFilter } = useFilter(
+    page,
+    isLoadingTable
+  );
+
 
   const closeDialog = () => {
     openFormAdd.setValue(false);
@@ -151,9 +158,38 @@ const packagePage = (): JSX.Element => {
               Add New Package
             </ButtonDefault>
           </div>
+          <FilterTable
+            // listFilter={filterStar}
+            // queryFilter={filter}
+            placeholder="Search"
+            search={search.value}
+            handleChangeInputSearch={handleChangeInputSearch}
+          // handleChangeChecked={handleChangeCheckedFilter}
+          />
         </div >
       }
     >
+      <div className='h-40-custom'>
+        <ShowFilterCard
+          dataFilter={[
+            // {
+            //   field: FiledFilterItem.OWNER,
+            //   dataItem: filter.owner_status?.length ? filter.owner_status : [],
+            // },
+            // {
+            //   field: FiledFilterItem.MARKET,
+            //   dataItem: filter.market_status?.length
+            //     ? filter.market_status
+            //     : [],
+            // },
+            // {
+            //   field: FiledFilterItem.TYPES,
+            //   dataItem: filter.types?.length ? filter.types : [],
+            // },
+          ]}
+          handleRemoveFilter={handleRemoveFilter}
+        />
+      </div>
       <Table
         limit={limit.value}
         page={page.value}

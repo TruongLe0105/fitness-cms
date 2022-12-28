@@ -35,33 +35,33 @@ const FilterTable = (props: FilterTableProps): JSX.Element => {
 
   return (
     <div className="flex items-center">
-      {listFilter && listFilter.length ? (
-        <Popup
-          trigger={
-            <div className="h-8 w-28 bg-gray-02-custom rounded-xl mr-4 flex items-center justify-center cursor-pointer">
-              <IconFilter className="mr-2 h-4 w-4" />
-              <p className="font-semibold text-xs-custom text-black">Filter</p>
-            </div>
-          }
-          arrow={false}
-          nested
-        >
-          <div className="flex flex-col card-filter">
-            {listFilter.map((el, index) => (
+      {/* {listFilter && listFilter.length ? ( */}
+      <Popup
+        trigger={
+          <div className="h-8 w-28 bg-gray-02-custom rounded-xl mr-4 flex items-center justify-center cursor-pointer">
+            <IconFilter className="mr-2 h-4 w-4" />
+            <p className="font-semibold text-xs-custom text-black">Filter</p>
+          </div>
+        }
+        arrow={false}
+        nested
+      >
+        <div className="flex flex-col card-filter">
+          {/* {listFilter.map((el, index) => (
               <FilterItem
                 dataItem={el}
                 key={index}
                 queryFilter={queryFilter}
                 handleChangeChecked={handleChangeChecked}
               />
-            ))}
-          </div>
-        </Popup>
-      ) : null}
+            ))} */}
+        </div>
+      </Popup>
+      {/* ) : null} */}
 
       <InputDefault
         value={search}
-        label="Search on"
+        // label="Search on"
         onChange={handleChangeInputSearch}
         placeholder={placeholder}
         // classInput="bg-gray-02-custom rounded-xl pl-4 pr-4 border-0 font-medium text-xs-custom"

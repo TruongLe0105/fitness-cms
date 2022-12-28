@@ -6,10 +6,10 @@ import { ReactComponent as IconMenuUser } from "assets/images/icons/menu-user.sv
 import { ReactComponent as IconMenuGym } from "assets/images/icons/icon-gym.svg";
 import { ReactComponent as IconMenuMerchant } from "assets/images/icons/merchant-icon.svg";
 import { ReactComponent as IconMenuPackage } from "assets/images/icons/package-icon.svg";
-import FormatSizeIcon from '@mui/icons-material/FormatSize';
 import SubjectIcon from '@mui/icons-material/Subject';
 import ChairIcon from '@mui/icons-material/Chair';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import PolicyIcon from '@mui/icons-material/Policy';
 import { PATH } from "helpers/constant";
 
 const MenuItemCard = (props: MenuItemCardProps): JSX.Element => {
@@ -35,8 +35,8 @@ const MenuItemCard = (props: MenuItemCardProps): JSX.Element => {
         return <SubjectIcon style={{ color: "#6eb5ef" }} />;
       case PATH.convenience:
         return <ChairIcon style={{ color: "#6eb5ef" }} />;
-      case PATH.editor:
-        return <FormatSizeIcon style={{ color: "#6eb5ef" }} />;
+      case PATH.legal:
+        return <PolicyIcon style={{ color: "#6eb5ef" }} />;
     }
   };
 

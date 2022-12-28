@@ -156,7 +156,7 @@ export interface TypographyItemCardProps {
 export interface FormAddHostProps {
   onClose: () => void;
   openFormChange?: boolean;
-  handleUpdateList: () => void;
+  onRefetch: () => void;
   dataItem: GymDetail;
 }
 
@@ -208,7 +208,7 @@ export interface GymDetail {
   lat: number;
 }
 
-export const emptySubjectDetail: GymDetail = {
+export const emptyGymDetail: GymDetail = {
   id: "0",
   name: "",
   phone: "",

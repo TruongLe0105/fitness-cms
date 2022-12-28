@@ -278,3 +278,17 @@ export interface TypographyItemCardProps {
   label: string;
   rootClass?: string;
 }
+
+export interface InputUser {
+  clientName: string;
+  id: string;
+  status: string;
+}
+
+export interface FormUpdate {
+  openFormChange?: boolean;
+  onClose: () => void;
+  subject?: InputUser;
+  onRefetch: () => void;
+  item: ClientDetail;
+}
