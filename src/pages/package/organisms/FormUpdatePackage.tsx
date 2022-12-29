@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { useBoolean } from 'helpers/hooks';
-import { AddPackageInput } from '../types';
+import { UpdatePackageInput } from '../types';
 import { STATUS_RESPONSE_CODE } from 'types';
 import { addPackageMiddleware, updatePackageMiddleware } from '../services/api';
 import DialogCard from 'components/Dialog/DialogCard';
@@ -22,13 +22,12 @@ const FormUpdatePackage = (props: any) => {
     const { gyms } = useSelector((state: any) => state.subject);
 
     const [optionGyms, setGyms] = useState<any>([]);
-    const [formUpdate, setformUpdate] = useState<AddPackageInput>({
+    const [formUpdate, setformUpdate] = useState<UpdatePackageInput>({
+        id: item._id,
         name: item.name,
         description: item.description,
         price: item.price,
-        timePeriodType: item.timePeriodType,
-        unitTime: item.unitTime,
-        gymId: item.gym,
+        gymIds: item.gym,
         type: item.type,
         benefit: item.benefit,
         rules: item.rules,
@@ -53,9 +52,9 @@ const FormUpdatePackage = (props: any) => {
             !formUpdate.name ||
             !formUpdate.description ||
             !formUpdate.price ||
-            !formUpdate.timePeriodType ||
-            !formUpdate.unitTime ||
-            // !formUpdate.gymId.length ||
+            // !formUpdate.timePeriodType ||
+            // !formUpdate.unitTime ||
+            !formUpdate.gymIds?.length ||
             !formUpdate.type ||
             !formUpdate.benefit ||
             !formUpdate.rules ||
@@ -115,22 +114,9 @@ const FormUpdatePackage = (props: any) => {
                 isChange.setValue(true);
             }
 
-    const getTypeTimePeriod = () => {
-        const currentTypePeriod = TimePeriodTypeOptions.find((el) => el.value === formUpdate.timePeriodType);
-        return currentTypePeriod;
-    };
-
     const getTypeOptions = () => {
         const currentType = TypeOptions.find((el) => el.value === formUpdate.type);
         return currentType;
-    };
-
-    const onSelectChangeTimeType = (value: any) => {
-        setformUpdate({
-            ...formUpdate,
-            timePeriodType: value.value
-        });
-        isChange.setValue(true);
     };
 
     const onSelectChangeType = (value: any) => {
@@ -159,7 +145,7 @@ const FormUpdatePackage = (props: any) => {
         //     width: "400px"
         // }}
         >
-            <div className="grid grid-cols-4 mb-6 gap-5">
+            <div className="grid grid-cols-2 mb-6 gap-5">
                 <InputDefault
                     inputStyle={inputStyle}
                     label="Name"
@@ -178,30 +164,10 @@ const FormUpdatePackage = (props: any) => {
                     onChange={handleChangeInput("description")}
                     onKeyPress={onKeyPress}
                 />
-                <InputDefault
-                    inputStyle={inputStyle}
-                    label="Price"
-                    type="number"
-                    required
-                    rootClass="mb-6"
-                    value={formUpdate.price}
-                    onChange={handleChangeInput("price")}
-                    onKeyPress={onKeyPress}
-                />
-                <InputDefault
-                    inputStyle={inputStyle}
-                    label="Unit Time"
-                    type="number"
-                    required
-                    rootClass="mb-6"
-                    value={formUpdate.unitTime}
-                    onChange={handleChangeInput("unitTime")}
-                    onKeyPress={onKeyPress}
-                />
             </div>
             <div className="grid grid-cols-2 mb-8 gap-5"
             >
-                <SelectDefault
+                {/* <SelectDefault
                     label="Time Period Type"
                     required
                     options={TimePeriodTypeOptions}
@@ -215,22 +181,7 @@ const FormUpdatePackage = (props: any) => {
                         maxWidth: "inherit",
                     }}
                     controlWidth={1}
-                />
-                <SelectDefault
-                    label="Type"
-                    required
-                    options={TypeOptions}
-                    selectedOption={getTypeOptions()}
-                    handleChange={onSelectChangeType}
-                    styleControl={inputStyle}
-                    styleSingleValue={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: 14,
-                        maxWidth: "inherit",
-                    }}
-                    controlWidth={1}
-                />
+                /> */}
                 {/* <MultiSelectInput
                     label="Gym"
                     inputType="gymId"
@@ -249,6 +200,41 @@ const FormUpdatePackage = (props: any) => {
                 /> */}
             </div>
             <div className="grid grid-cols-2 mb-8 gap-5">
+                <InputDefault
+                    inputStyle={inputStyle}
+                    label="Price"
+                    type="number"
+                    required
+                    rootClass="mb-6"
+                    value={formUpdate.price}
+                    onChange={handleChangeInput("price")}
+                    onKeyPress={onKeyPress}
+                />
+                {/* <InputDefault
+                    inputStyle={inputStyle}
+                    label="Unit Time"
+                    type="number"
+                    required
+                    rootClass="mb-6"
+                    value={formUpdate.unitTime}
+                    onChange={handleChangeInput("unitTime")}
+                    onKeyPress={onKeyPress}
+                /> */}
+                <SelectDefault
+                    label="Type"
+                    required
+                    options={TypeOptions}
+                    selectedOption={getTypeOptions()}
+                    handleChange={onSelectChangeType}
+                    styleControl={inputStyle}
+                    styleSingleValue={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: 14,
+                        maxWidth: "inherit",
+                    }}
+                    controlWidth={1}
+                />
                 {/* <MultiSelectInput
                     label="Benefit"
                     inputType="benefit"

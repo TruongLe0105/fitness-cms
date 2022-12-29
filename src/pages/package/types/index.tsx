@@ -166,12 +166,13 @@ export interface AddPackageInput {
 }
 
 export interface UpdatePackageInput {
+  id: string;
   name?: string;
   description?: string;
   price?: number;
-  timePeriodType?: string;
-  unitTime?: number;
-  gymId?: string[];
+  // timePeriodType?: string;
+  // unitTime?: number;
+  gymIds?: string[];
   type?: string;
   benefit?: string[];
   rules?: string[];
