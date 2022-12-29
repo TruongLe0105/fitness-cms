@@ -92,12 +92,28 @@ export enum FiledFilterItem {
 }
 
 export enum ItemFilter {
-  CLIENT = "client_status"
+  CLIENT = "client_status",
+  GYMS = "gym_status",
+  PACKAGE = "package_status",
 }
 
 export enum OWNER_STATUS_ITEM {
   ACTIVE = "active",
   IN_ACTIVE = "in_active",
+  DISABLE = "disable"
+}
+
+export enum OWNER_STATUS_ITEM_FITNESS {
+  ACTIVE = "active",
+  DISABLE = "disable"
+}
+
+export enum ItemStatusFilter {
+  STATUS = "client_status"
+}
+
+export enum OWNER_STATUS_ITEM_FILTER {
+  ACTIVE = "active",
   DISABLE = "disable"
 }
 

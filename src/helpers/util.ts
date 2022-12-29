@@ -245,6 +245,8 @@ export const getTitleFilterFitness = (filed: string): string => {
   switch (filed) {
     case ItemFilter.CLIENT:
       return "Client Status";
+    case ItemFilter.GYMS:
+      return "Gyms Status";
     case OWNER_STATUS_ITEM.ACTIVE:
       return "Active";
     case OWNER_STATUS_ITEM.IN_ACTIVE:

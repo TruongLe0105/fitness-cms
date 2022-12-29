@@ -11,7 +11,7 @@ import {
 import DefaultButtonIcon from "components/ButtonIcon/DefaultButtonIcon";
 import StatusCard from "components/Status/StatusCard";
 import { BSC_SCAN_URL } from "config/environments";
-import { FilterItemDetail, ItemFilter, OWNER_STATUS_ITEM } from "components/Filter/types";
+import { FilterItemDetail, ItemFilter, OWNER_STATUS_ITEM, OWNER_STATUS_ITEM_FITNESS } from "components/Filter/types";
 
 export function dataHeaderUser(
   // handleOpenUpdateList: (
@@ -255,6 +255,40 @@ export const filterClient: FilterItemDetail[] = [
       {
         name: 'Disabled',
         filed: OWNER_STATUS_ITEM.DISABLE,
+      },
+    ],
+  },
+];
+
+export const filterGyms: FilterItemDetail[] = [
+  {
+    title: 'Gyms Status',
+    filed: ItemFilter.CLIENT,
+    listChecked: [
+      {
+        name: 'Active',
+        filed: OWNER_STATUS_ITEM_FITNESS.ACTIVE,
+      },
+      {
+        name: 'Disabled',
+        filed: OWNER_STATUS_ITEM_FITNESS.DISABLE,
+      },
+    ],
+  },
+];
+
+export const filterPackage: FilterItemDetail[] = [
+  {
+    title: 'Package Status',
+    filed: ItemFilter.PACKAGE,
+    listChecked: [
+      {
+        name: 'Active',
+        filed: OWNER_STATUS_ITEM_FITNESS.ACTIVE,
+      },
+      {
+        name: 'Disabled',
+        filed: OWNER_STATUS_ITEM_FITNESS.DISABLE,
       },
     ],
   },

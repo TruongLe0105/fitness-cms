@@ -261,7 +261,6 @@ export const useFilterFitness = (
         newFilter.push(filedChecked);
       }
 
-      console.log("newFilter", newFilter)
       setFilterFitness({
         ...filterFitness,
         [filedTitle]: newFilter,

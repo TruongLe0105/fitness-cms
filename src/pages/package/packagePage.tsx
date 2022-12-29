@@ -1,6 +1,6 @@
 import BackdropCustomize from "components/BackdropCustomize";
 import Table from "components/Table/Table";
-import { useBoolean, useFilter, useTable } from "helpers/hooks";
+import { useBoolean, useFilter, useFilterFitness, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
 import React, { useEffect, useState } from "react";
 import { ParamsRequest, PackageDetail } from "./types";
@@ -20,6 +20,7 @@ import ModalGyms from "pages/merchant/organisms/ModalGyms";
 import FormUpdatePackage from "./organisms/FormUpdatePackage";
 import DestroyDialog from "./organisms/DialogDestroy";
 import ShowFilterCard from "components/Filter/ShowFilterCard";
+import { filterPackage } from "pages/user-data/utils";
 
 const packagePage = (): JSX.Element => {
   const {
@@ -48,7 +49,7 @@ const packagePage = (): JSX.Element => {
   const updatePackage = useBoolean();
   const openPackage = useBoolean();
 
-  const { filter, handleChangeCheckedFilter, handleRemoveFilter } = useFilter(
+  const { filterFitness, handleChangeCheckedFilterFitness, handleRemoveFilterFitness } = useFilterFitness(
     page,
     isLoadingTable
   );
@@ -159,12 +160,12 @@ const packagePage = (): JSX.Element => {
             </ButtonDefault>
           </div>
           <FilterTable
-            // listFilter={filterStar}
-            // queryFilter={filter}
+            listFilter={filterPackage}
+            queryFilter={filterFitness}
             placeholder="Search"
             search={search.value}
             handleChangeInputSearch={handleChangeInputSearch}
-          // handleChangeChecked={handleChangeCheckedFilter}
+            handleChangeChecked={handleChangeCheckedFilterFitness}
           />
         </div >
       }
@@ -187,7 +188,7 @@ const packagePage = (): JSX.Element => {
             //   dataItem: filter.types?.length ? filter.types : [],
             // },
           ]}
-          handleRemoveFilter={handleRemoveFilter}
+          handleRemoveFilter={handleRemoveFilterFitness}
         />
       </div>
       <Table

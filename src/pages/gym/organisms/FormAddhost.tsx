@@ -7,10 +7,11 @@ import SelectDefault from "components/Select/SelectDefault";
 import { GOONG_MAP_API_KEY } from "config/environments";
 import { useBoolean, useString } from "helpers/hooks";
 import { isValidPhone } from "helpers/util";
+import { debounce } from "lodash";
 import { getConvenienceMiddleware } from "pages/convenience/services/api";
 import { getMerchantMiddleware } from "pages/merchant/services/api";
 import { getSubjectMiddleware } from "pages/subject/services/api";
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { STATUS_RESPONSE_CODE } from "types";
 import { optionSegment } from "../constant";
@@ -138,7 +139,7 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                     setResult(value);
                     setPosition(value);
 
-                    getPositionMap(value);
+                    getPositionMap(value)
                 } else {
                     setFormInput({
                         ...formInput,

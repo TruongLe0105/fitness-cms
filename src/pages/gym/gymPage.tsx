@@ -17,6 +17,8 @@ import FormAddHost from "./organisms/FormAddhost";
 import ShowFilterCard from "components/Filter/ShowFilterCard";
 import DestroyDialog from "./organisms/DeleteDialog";
 import FormUpdateGym from "./organisms/FormUpdateGym";
+import { ItemStatusFilter } from "components/Filter/types";
+import { filterGyms } from "pages/user-data/utils";
 
 const gymPage = (): JSX.Element => {
   const {
@@ -157,8 +159,8 @@ const gymPage = (): JSX.Element => {
             </ButtonDefault>
           </div>
           <FilterTable
-            // listFilter={filterClient}
-            // queryFilter={filterFitness}
+            listFilter={filterGyms}
+            queryFilter={filterFitness}
             placeholder="Search"
             search={search.value}
             handleChangeInputSearch={handleChangeInputSearch}
@@ -170,10 +172,10 @@ const gymPage = (): JSX.Element => {
       <div className='h-40-custom'>
         <ShowFilterCard
           dataFilter={[
-            // {
-            //   field: FiledFilterItem.OWNER,
-            //   dataItem: filter.owner_status?.length ? filter.owner_status : [],
-            // },
+            {
+              field: ItemStatusFilter.STATUS,
+              dataItem: filterFitness.client_status?.length ? filterFitness.client_status : [],
+            },
             // {
             //   field: FiledFilterItem.MARKET,
             //   dataItem: filter.market_status?.length
