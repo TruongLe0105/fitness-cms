@@ -181,12 +181,6 @@ export const emptyInventoryDetail: InventoryDetail = {
   id: 0,
 };
 
-export enum STATUS_NOTIFICATION {
-  ALL = "",
-  SENT = "Sent",
-  UNSENT = "Unsent",
-}
-
 export enum POINT_LEVEL {
   ALL = "",
   POINT_OVER_50000 = ">=50000",
@@ -215,6 +209,27 @@ export interface PointSelectDetail {
   label: string;
 }
 
+export enum STATUS_NOTIFICATION {
+  ALL = "",
+  SENT = "Sent",
+  UNSENT = "Unsent",
+}
+
+export const ListSentSelect: SentSelectDetail[] = [
+  {
+    value: STATUS_NOTIFICATION.ALL,
+    label: "All",
+  },
+  {
+    value: "true",
+    label: "Sent",
+  },
+  {
+    value: "false",
+    label: "Unsent",
+  },
+];
+
 export const ListOptionToSendSelect: SelectToSendDetail[] = [
   {
     value: TYPE_NOTIFICATION.ALL,
@@ -242,21 +257,6 @@ export const ListPointSelect: PointSelectDetail[] = [
   {
     value: POINT_LEVEL.POINT_LOWER_50000,
     label: POINT_LEVEL.POINT_LOWER_50000,
-  },
-];
-
-export const ListSentSelect: SentSelectDetail[] = [
-  {
-    value: STATUS_NOTIFICATION.ALL,
-    label: "All",
-  },
-  {
-    value: "true",
-    label: "Sent",
-  },
-  {
-    value: "false",
-    label: "Unsent",
   },
 ];
 

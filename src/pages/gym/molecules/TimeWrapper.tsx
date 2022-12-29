@@ -2,9 +2,9 @@ import Typography from 'components/Typography';
 import React, { useState } from 'react';
 import TimeField from 'react-simple-timefield';
 
-const TimeInput = ({ label, setFormInput, formInput, required }) => {
-    const [timeFrom, setTimeFrom] = useState<any>();
-    const [timeTo, setTimeTo] = useState<any>();
+const TimeInput = ({ label, setFormInput, formInput, required, gym }: any) => {
+    const [timeFrom, setTimeFrom] = useState<any>(gym ? gym.from : "");
+    const [timeTo, setTimeTo] = useState<any>(gym ? gym.to : "");
 
     const styleInput = {
         backgroundColor: "rgba(96, 108, 110, 0.15)",

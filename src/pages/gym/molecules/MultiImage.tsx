@@ -7,45 +7,40 @@ import Typography from 'components/Typography';
 import { uploadImageMiddleware } from '../services/api';
 import { useBoolean, useString } from 'helpers/hooks';
 
-function MultiImage({ required, setFormInput, formInput }) {
-    const [images, setImages] = useState<any>([]);
-
-    const [uploadImg, setUploadImg] = useState<any>([]);
-    const isRemove = useBoolean();
-
-    useEffect(() => {
-        unique();
-    }, [images.length, uploadImg.length]);
-
-    function unique() {
-        const newArr: any = []
-        for (let i = 0; i < uploadImg.length; i++) {
-            if (newArr.indexOf(uploadImg[i]) === -1) {
-                newArr.push(uploadImg[i])
-            }
-        }
-
-        setFormInput({
-            ...formInput,
-            images: newArr
-        })
-        return newArr;
-    }
+function MultiImage({ required, setFormInput, formInput, currentImages }: any) {
+    const [images, setImages] = useState<any>(currentImages ? formInput.images : []);
+    const [uploadImgs, setUploadImgs] = useState<any>([]);
 
     const maxNumber = 69;//maximum image upload
+
+    useEffect(() => {
+        console.log("render");
+
+    }, [images.length]);
+
     const onChange = (imageList: any) => {
-        if (isRemove) {
-            setUploadImg([]);
-        }
         setImages(imageList);
         const formData = new FormData();
         imageList.map((image: any) => {
-            formData.append("image", image.file)
+            if (typeof image === 'string') {
+                setFormInput({
+                    ...formInput,
+                    images: imageList
+                });
+            } else {
+                formData.append("image", image.file);
+
+                uploadImageMiddleware(formData).then((response: any) => {
+                    setUploadImgs([...uploadImgs, ...response.data.data]);
+                    setFormInput({
+                        ...formInput,
+                        images: [...formInput.images, ...response.data.data]
+                    });
+                    setImages([...formInput.images, ...response.data.data])
+                })
+            }
         })
-        uploadImageMiddleware(formData).then((response: any) => {
-            setUploadImg(response.data.data)
-        })
-    };
+    }
 
     return (
         <div className="images-container">
@@ -74,13 +69,14 @@ function MultiImage({ required, setFormInput, formInput }) {
                             {required && <span className='text-red-500'> (*)</span>}
                         </Typography>
                         <div className="wrapper-image">
-                            {imageList.map((image, index) => (
+                            {imageList.map((image: any, index) => (
                                 <div key={index} className="image-item bg-gray-04-custom">
-                                    <img src={image['data_url']} alt="" className="images " />
+                                    {/* {images && <img src={image} alt="" className="images " />} */}
+                                    <img src={image['data_url'] || image} alt="" className="images " />
                                     <div
+                                        // onClick={() => handleRemoveImage(onImageRemove, index, image)}
                                         onClick={() => {
                                             onImageRemove(index)
-                                            isRemove.setValue(true)
                                         }}
                                         className="w-8 h-8 rounded-full absolute cursor-pointer flex items-center justify-center destroy-icon"
                                         style={{

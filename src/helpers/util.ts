@@ -10,6 +10,8 @@ import {
   MARKET_STATUS_FILTER,
   TYPES_STATUS_FILTER,
   OWNER_STATUS_FILTER,
+  ItemFilter,
+  OWNER_STATUS_ITEM,
 } from "components/Filter/types";
 import { CURRENCY_SYMBOL_WEB, TESTNET_WEB } from "config/environments";
 import { STATUS_EVENT, STATUS_REFERRAL_CODE } from "components/Status/types";
@@ -234,6 +236,21 @@ export const getTitleFilter = (filed: string): string => {
       return "Mint";
     case FiledFilterItem.CATEGORY:
       return "Categories";
+    default:
+      return filed;
+  }
+};
+
+export const getTitleFilterFitness = (filed: string): string => {
+  switch (filed) {
+    case ItemFilter.CLIENT:
+      return "Client Status";
+    case OWNER_STATUS_ITEM.ACTIVE:
+      return "Active";
+    case OWNER_STATUS_ITEM.IN_ACTIVE:
+      return "No Active";
+    case OWNER_STATUS_ITEM.DISABLE:
+      return "Disabled";
     default:
       return filed;
   }

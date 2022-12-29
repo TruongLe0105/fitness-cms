@@ -6,10 +6,9 @@ import { ReactComponent as IconMenuUser } from "assets/images/icons/menu-user.sv
 import { ReactComponent as IconMenuGym } from "assets/images/icons/icon-gym.svg";
 import { ReactComponent as IconMenuMerchant } from "assets/images/icons/merchant-icon.svg";
 import { ReactComponent as IconMenuPackage } from "assets/images/icons/package-icon.svg";
-import SubjectIcon from '@mui/icons-material/Subject';
-import ChairIcon from '@mui/icons-material/Chair';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import PolicyIcon from '@mui/icons-material/Policy';
+import { ReactComponent as IconMenuSubject } from "assets/images/icons/icon-subject.svg";
+import { ReactComponent as IconMenuConvenience } from "assets/images/icons/icon-convenience.svg";
+import { ReactComponent as IconMenuEditor } from "assets/images/icons/icon-editor.svg";
 import { PATH } from "helpers/constant";
 
 const MenuItemCard = (props: MenuItemCardProps): JSX.Element => {
@@ -26,17 +25,17 @@ const MenuItemCard = (props: MenuItemCardProps): JSX.Element => {
       case PATH.user:
         return <IconMenuUser />;
       case PATH.gym:
-        return <FitnessCenterIcon style={{ color: "#6eb5ef" }} />;
+        return <IconMenuGym width="25px" height="25px" />;
       case PATH.merchant:
         return <IconMenuMerchant />;
       case PATH.package:
         return <IconMenuPackage />;
       case PATH.subject:
-        return <SubjectIcon style={{ color: "#6eb5ef" }} />;
+        return <IconMenuSubject width="25px" height="25px" />;
       case PATH.convenience:
-        return <ChairIcon style={{ color: "#6eb5ef" }} />;
+        return <IconMenuConvenience width="25px" height="25px" />;
       case PATH.legal:
-        return <PolicyIcon style={{ color: "#6eb5ef" }} />;
+        return <IconMenuEditor width="25px" height="25px" />;
     }
   };
 

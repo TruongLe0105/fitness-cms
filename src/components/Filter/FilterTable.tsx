@@ -1,5 +1,5 @@
 import InputDefault from "components/Input/InputDefault";
-import { FilterTableProps } from "./types";
+import { FilterTableFitnessProps, FilterTableProps } from "./types";
 import { ReactComponent as IconFilter } from "assets/images/icons/filter.svg";
 import Popup from "reactjs-popup";
 import FilterItem from "./FilterItem";
@@ -8,7 +8,7 @@ import SelectDefault from "components/Select/SelectDefault";
 // import { KeywordCategory } from "pages/keywords/types";
 import { PLACEHOLDER_INPUT } from "components/Input/types";
 
-const FilterTable = (props: FilterTableProps): JSX.Element => {
+const FilterTable = (props: FilterTableFitnessProps): JSX.Element => {
   const {
     handleChangeInputSearch,
     search,
@@ -33,6 +33,9 @@ const FilterTable = (props: FilterTableProps): JSX.Element => {
   //    placeholders = placeholder || null;
   // }
 
+  console.log("props", props);
+
+
   return (
     <div className="flex items-center">
       {/* {listFilter && listFilter.length ? ( */}
@@ -47,14 +50,14 @@ const FilterTable = (props: FilterTableProps): JSX.Element => {
         nested
       >
         <div className="flex flex-col card-filter">
-          {/* {listFilter.map((el, index) => (
-              <FilterItem
-                dataItem={el}
-                key={index}
-                queryFilter={queryFilter}
-                handleChangeChecked={handleChangeChecked}
-              />
-            ))} */}
+          {listFilter?.map((el, index) => (
+            <FilterItem
+              dataItem={el}
+              key={index}
+              queryFilter={queryFilter}
+              handleChangeChecked={handleChangeChecked}
+            />
+          ))}
         </div>
       </Popup>
       {/* ) : null} */}

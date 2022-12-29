@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Multiselect from 'multiselect-react-dropdown';
 import { optionSegment } from '../constant';
 import { SegmentModelOption } from '../types';
@@ -14,8 +14,11 @@ const MultiSelectInput = (props): JSX.Element => {
         required,
         setFormInput,
         formInput,
+        selectedValues,
         ...otherProps
     } = props;
+
+    const [selected, setSelected] = useState<any>([]);
 
     const selectedOptions = (values: any) => {
         switch (inputType) {
@@ -99,6 +102,13 @@ const MultiSelectInput = (props): JSX.Element => {
         }
     }
 
+    useEffect(() => {
+        if (!selectedValues) return;
+        const currentValues = selectedValues?.map((item: any) => item._id);
+        options?.filter((option: any) => !currentValues.includes(option._id))
+    }, [selectedValues, selected?.length]);
+
+
     const labelStyle = {
         marginBottom: "3px"
     }
@@ -122,6 +132,7 @@ const MultiSelectInput = (props): JSX.Element => {
                 onRemove={removeOptions}
                 options={options}
                 showArrow={true}
+                selectedValues={selectedValues ? selectedValues : ""}
             />
         </div>
     )

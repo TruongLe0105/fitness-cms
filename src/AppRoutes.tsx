@@ -18,7 +18,6 @@ import ConvenienPage from "pages/convenience/conveniencePage";
 import PackagePage from "pages/package/packagePage";
 
 import './form.css';
-import EditorPage from "pages/editors/EditorPage";
 import LegalPage from "pages/editors/LegalPage";
 
 const AppRoutes = (): JSX.Element => {
@@ -59,7 +58,7 @@ const AppRoutes = (): JSX.Element => {
         <PrivateRoute exact path={PATH.subject} component={<SubjectPage />} />
         <PrivateRoute exact path={PATH.convenience} component={<ConvenienPage />} />
         {/* <PrivateRoute exact path={PATH.editor} component={<EditorPage />} /> */}
-        <PrivateRoute exact path={PATH.editor} component={<LegalPage />} />
+        <PrivateRoute exact path={PATH.legal} component={<LegalPage />} />
         {/* <PrivateRoute
           exact
           path={PATH.manageVersions}

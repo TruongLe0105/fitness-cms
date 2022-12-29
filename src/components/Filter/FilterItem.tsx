@@ -1,8 +1,8 @@
 import CheckedDefault from "components/Checked/CheckedDefault";
 import { includes } from "lodash";
-import { FilterItemProps } from "./types";
+import { FilterItemFitnessProps, FilterItemProps } from "./types";
 
-const FilterItem = (props: FilterItemProps): JSX.Element => {
+const FilterItem = (props: FilterItemFitnessProps): JSX.Element => {
   const { dataItem, queryFilter, handleChangeChecked } = props;
   return (
     <div className="flex flex-col mb-8">
@@ -12,27 +12,27 @@ const FilterItem = (props: FilterItemProps): JSX.Element => {
       <div className="flex">
         {dataItem.listChecked.length
           ? dataItem.listChecked.map((elChecked, index) => (
-              <div className="flex items-center mr-8" key={index}>
-                <CheckedDefault
-                  style={{
-                    width: 20,
-                    height: 20,
-                  }}
-                  onClick={
-                    handleChangeChecked &&
-                    handleChangeChecked(dataItem.filed, elChecked.filed)
-                  }
-                  checked={
-                    queryFilter
-                      ? includes(queryFilter[dataItem.filed], elChecked.filed)
-                      : false
-                  }
-                />
-                <p className="text-sm font-medium text-black ml-2">
-                  {elChecked.name}
-                </p>
-              </div>
-            ))
+            <div className="flex items-center mr-8" key={index}>
+              <CheckedDefault
+                style={{
+                  width: 20,
+                  height: 20,
+                }}
+                onClick={
+                  handleChangeChecked &&
+                  handleChangeChecked(dataItem.filed, elChecked.filed)
+                }
+                checked={
+                  queryFilter
+                    ? includes(queryFilter[dataItem.filed], elChecked.filed)
+                    : false
+                }
+              />
+              <p className="text-sm font-medium text-black ml-2">
+                {elChecked.name}
+              </p>
+            </div>
+          ))
           : null}
       </div>
     </div>

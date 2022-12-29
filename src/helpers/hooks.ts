@@ -2,7 +2,7 @@ import {
   definedDateRanges,
   FILED_DATE_RANGES,
 } from "components/DateRanges/types";
-import { FiledFilterItem, QueryFilterProps } from "components/Filter/types";
+import { FiledFilterItem, QueryFilterProps, QueryFilterPropsFitness } from "components/Filter/types";
 import { cloneDeep, debounce, includes, remove, throttle } from "lodash";
 // import { KeywordCategory } from "pages/keywords/types";
 // import {} from "pages/stars/types";
@@ -232,6 +232,76 @@ export const useFilter = (
     filter,
     handleChangeCheckedFilter,
     handleRemoveFilter,
+  };
+};
+// eslint-disable-next-line
+export const useFilterFitness = (
+  page: {
+    value: number;
+    setValue: React.Dispatch<React.SetStateAction<number>>;
+  },
+  isLoadingTable: {
+    value: boolean;
+    setValue: React.Dispatch<React.SetStateAction<boolean>>;
+  }
+  // setFilterCategory?: (value: KeywordCategory[]) => void
+) => {
+  const [filterFitness, setFilterFitness] = useState<QueryFilterPropsFitness>({
+    client_status: [],
+  });
+
+  const handleChangeCheckedFilterFitness =
+    (filedTitle: string, filedChecked: string) => () => {
+      console.log("filedTitle", filedTitle)
+      const newFilter = cloneDeep(filterFitness[filedTitle] ?? []);
+      console.log("newFilter", newFilter)
+      if (includes(newFilter, filedChecked)) {
+        remove(newFilter, (el) => el === filedChecked);
+      } else {
+        newFilter.push(filedChecked);
+      }
+
+      console.log("newFilter", newFilter)
+      setFilterFitness({
+        ...filterFitness,
+        [filedTitle]: newFilter,
+      });
+      handleChangePageFitness();
+    };
+
+  const handleRemoveFilterFitness = (filedTitle: string) => () => {
+    if (filedTitle === "Clear all") {
+      setFilterFitness({
+        client_status: [],
+      });
+      // setFilterCategory?.([]);
+      handleChangePageFitness();
+      return;
+    }
+
+    // if (filedTitle === FiledFilterItem.CATEGORY) {
+    //   setFilterCategory?.([]);
+    // } else {
+    setFilterFitness({
+      ...filterFitness,
+      [filedTitle]: [],
+    });
+    // }
+
+    handleChangePageFitness();
+  };
+
+  const handleChangePageFitness = () => {
+    isLoadingTable.setValue(true);
+    if (page.value > 1) {
+      page.setValue(1);
+    }
+  };
+
+  return {
+    filterFitness,
+    handleChangeCheckedFilterFitness,
+    handleRemoveFilterFitness
   };
 };
 

@@ -7,8 +7,27 @@ export interface QueryFilterProps {
   link_with_star?: string[];
   tokens?: string[]; //treasure page
 }
+
+export interface QueryFilterPropsFitness {
+  client_status?: string[];
+}
+
 export interface FilterTableProps {
   queryFilter?: QueryFilterProps;
+  search: string;
+  listFilter?: FilterItemDetail[];
+  handleChangeInputSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeChecked?: (
+    filedTitle: string,
+    filedChecked: string
+  ) => () => void;
+
+  // placeholder?: PLACEHOLDER_INPUT
+  placeholder?: string;
+}
+
+export interface FilterTableFitnessProps {
+  queryFilter?: QueryFilterPropsFitness;
   search: string;
   listFilter?: FilterItemDetail[];
   handleChangeInputSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -41,6 +60,15 @@ export interface FilterItemProps {
   ) => () => void;
 }
 
+export interface FilterItemFitnessProps {
+  dataItem: FilterItemDetail;
+  queryFilter?: QueryFilterPropsFitness;
+  handleChangeChecked?: (
+    filedTitle: string,
+    filedChecked: string
+  ) => () => void;
+}
+
 export interface ShowFilterItemCardProps {
   field: string;
   dataItem: string[];
@@ -61,6 +89,16 @@ export enum FiledFilterItem {
   TYPES = "types",
   LINK_WITH_STAR = "link_with_star",
   CATEGORY = "category",
+}
+
+export enum ItemFilter {
+  CLIENT = "client_status"
+}
+
+export enum OWNER_STATUS_ITEM {
+  ACTIVE = "active",
+  IN_ACTIVE = "in_active",
+  DISABLE = "disable"
 }
 
 export enum OWNER_STATUS_FILTER {

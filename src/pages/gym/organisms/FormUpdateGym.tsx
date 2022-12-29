@@ -9,74 +9,110 @@ import InputDefault from 'components/Input/InputDefault';
 import ButtonDefault from 'components/Button/ButtonDefault';
 import SelectDefault from 'components/Select/SelectDefault';
 // import { TimePeriodTypeOptions, TypeOptions } from '../constant';
-import { getGymMiddleware } from 'pages/gym/services/api';
+import { getGymMiddleware, updateGym } from 'pages/gym/services/api';
 import { useSelector } from 'react-redux';
 import MultiSelectInput from '../molecules/MultiSelect';
-import MultipleInput from 'components/Input/Multiple';
-import { AddPackageInput } from 'pages/package/types';
+import { UpdateForm } from '../types';
+import TimeInput from '../molecules/TimeWrapper';
+import MultiImage from '../molecules/MultiImage';
+import { isValidPhone } from 'helpers/util';
+import { GOONG_MAP_API_KEY } from 'config/environments';
+import { getSubjectMiddleware } from 'pages/subject/services/api';
+import { getConvenienceMiddleware } from 'pages/convenience/services/api';
+import { getMerchantMiddleware } from 'pages/merchant/services/api';
+import { optionSegment } from '../constant';
 
 const FormUpdateGym = (props: any) => {
     const { onClose, openFormChange, onRefetch, item } = props;
+    const [result, setResult] = useState<any>();
+    const [position, setPosition] = useState<any>();
+    const [suggest, setSuggest] = useState<any>([]);
+    const [currentSubjects, setCurrentSubjects] = useState<any>([]);
 
     const isLoading = useBoolean();
     const isChange = useBoolean();
-    const { gyms } = useSelector((state: any) => state.subject);
+    const { gyms, subjects, conveniences, merchants } = useSelector((state: any) => state.subject);
 
     const [optionGyms, setGyms] = useState<any>([]);
-    const [formUpdate, setformUpdate] = useState<AddPackageInput>({
-        name: item.name,
-        description: item.description,
-        price: item.price,
-        timePeriodType: item.timePeriodType,
-        unitTime: item.unitTime,
-        gymId: item.gym,
-        type: item.type,
-        benefit: item.benefit,
-        rules: item.rules,
-    });
 
     useEffect(() => {
         getGymMiddleware();
+        getSubjectMiddleware();
+        getConvenienceMiddleware();
+        getMerchantMiddleware();
+
         gyms?.map((gym: any) => {
             const newOps = {
                 label: gym.name,
                 value: gym._id
             }
             optionGyms.push(newOps)
-        })
-    }, [gyms.length, isChange.value]);
+        });
 
-    console.log("formUpdate:", formUpdate)
-    console.log("item:", item)
+        const values = subjects?.filter((subject: any) => item?.subjects?.includes(subject?._id));
+        setCurrentSubjects(values);
+    }, [gyms.length, isChange.value, subjects.length]);
+
+    const basicConvenience = conveniences?.filter((convenience: any) => convenience.type === "basic")
+    const highClassConvenience = conveniences?.filter((convenience: any) => convenience.type === "highClass")
+    const safeConvenience = conveniences?.filter((convenience: any) => convenience.type === "safe")
+    const favoriteConvenience = conveniences?.filter((convenience: any) => convenience.type === "favorite")
+
+    // console.log("safeConvenience", safeConvenience);
+
+    const [formUpdate, setFormUpdate] = useState<UpdateForm>({
+        id: item._id,
+        name: item.name,
+        phone: item.phone,
+        description: item.description,
+        segment: item.segment,
+        address: item.address,
+        openingTime: item.openingTime,
+        long: item.long,
+        lat: item.lat,
+        subjects: item.subjects,
+        basicConvenience: item.basicConvenience.map((el: any) => el._id),
+        favoriteConvenience: item.favoriteConvenience.map((el: any) => el._id),
+        highClassConvenience: item.highClassConvenience.map((el: any) => el._id),
+        safeConvenience: item.safeConvenience.map((el: any) => el._id),
+        rules: item.rules,
+        medicalAndSafe: item.medicalAndSafe,
+        images: item.images,
+    });
 
     const isDisabledButton = () => {
         if (
             !formUpdate.name ||
+            !isValidPhone(formUpdate.phone) ||
             !formUpdate.description ||
-            !formUpdate.price ||
-            !formUpdate.timePeriodType ||
-            !formUpdate.unitTime ||
-            // !formUpdate.gymId.length ||
-            !formUpdate.type ||
-            !formUpdate.benefit ||
-            !formUpdate.rules ||
-            !isChange.value
+            !formUpdate.segment ||
+            !formUpdate.address ||
+            !formUpdate.long ||
+            !formUpdate.lat ||
+            formUpdate.subjects.length === 0 ||
+            formUpdate.images.length === 0 ||
+            formUpdate.basicConvenience.length === 0 ||
+            formUpdate.highClassConvenience.length === 0 ||
+            formUpdate.safeConvenience.length === 0
+            // formUpdate.rules.length === 0 ||
+            // formUpdate.medicalAndSafe.length === 0
         ) {
             return true;
         }
         return false;
     };
 
+
     const onSubmitButton = () => {
-        console.log(formUpdate);
+        console.log("formUpdate", formUpdate);
         isLoading.setValue(true);
-        // updatePackageMiddleware(formUpdate, (status: STATUS_RESPONSE_CODE) => {
-        //     isLoading.setValue(false);
-        //     if (status === STATUS_RESPONSE_CODE.SUCCESS) {
-        //         onRefetch();
-        //         onClose();
-        //     }
-        // });
+        updateGym(formUpdate, (status: STATUS_RESPONSE_CODE) => {
+            isLoading.setValue(false);
+            if (status === STATUS_RESPONSE_CODE.SUCCESS) {
+                onRefetch();
+                onClose();
+            }
+        });
     };
 
     const onKeyPress = (event: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -90,57 +126,74 @@ const FormUpdateGym = (props: any) => {
     };
 
     const handleChangeInput =
-        (key: "name" | "description" | "price" | "unitTime") =>
+        (key: "name" | "phone" | "description" | "position") =>
             (event: React.ChangeEvent<HTMLInputElement>) => {
-                if (key === "price" || key === "unitTime") {
-                    setformUpdate({
-                        ...formUpdate,
-                        [key]: Number(event.target.value),
-                    });
+                if (key === "position") {
+                    const value = event.target.value;
+                    setResult(value);
+                    setPosition(value);
+
+                    getPositionMap(value);
                 } else {
-                    setformUpdate({
+                    setFormUpdate({
                         ...formUpdate,
                         [key]: event.target.value,
-                    });
+                    })
                 }
-                isChange.setValue(true);
             };
 
-    const handleChangeInputArea =
-        (key: "benefit" | "rules") =>
-            (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                setformUpdate({
+    const getPositionMap = async (e: string) => {
+        await fetch(
+            `https://rsapi.goong.io/Place/AutoComplete?api_key=${GOONG_MAP_API_KEY}&input=${e}`,
+        )
+            .then(response => response.json())
+            .then(json => setSuggest(json.predictions))
+    }
+
+    const choosePosition = async (el: any) => {
+        await fetch(
+            `https://rsapi.goong.io/Place/Detail?api_key=${GOONG_MAP_API_KEY}&place_id=${el.place_id}`,
+        )
+            .then(response => response.json())
+            .then(json => {
+                const address = json.result.formatted_address;
+                const location = json?.result?.geometry?.location;
+
+                setFormUpdate({
                     ...formUpdate,
-                    [key]: [event.target.value],
-                })
-                isChange.setValue(true);
-            }
-
-    // const getTypeTimePeriod = () => {
-    //     const currentTypePeriod = TimePeriodTypeOptions.find((el) => el.value === formUpdate.timePeriodType);
-    //     return currentTypePeriod;
-    // };
-
-    // const getTypeOptions = () => {
-    //     const currentType = TypeOptions.find((el) => el.value === formUpdate.type);
-    //     return currentType;
-    // };
-
-    const onSelectChangeTimeType = (value: any) => {
-        setformUpdate({
-            ...formUpdate,
-            timePeriodType: value.value
-        });
-        isChange.setValue(true);
+                    address: address,
+                    long: location.lng + '',
+                    lat: location.lat + ''
+                });
+                setResult(null);
+                setPosition(address)
+            })
     };
 
-    const onSelectChangeType = (value: any) => {
-        setformUpdate({
+    const onSelectChange = (value: any) => {
+        setFormUpdate({
             ...formUpdate,
-            type: value.value
-        });
-        isChange.setValue(true);
+            segment: value.value
+        })
     };
+
+    // const onSelectChangeMerchant = (value: any) => {
+    //     console.log(value)
+    //     setFormUpdate({
+    //         ...formUpdate,
+    //         merchantId: value.value
+    //     })
+    // };
+
+    const getTypeValue = () => {
+        const currentValue = optionSegment.find((el) => el.value === formUpdate.segment);
+        return currentValue;
+    };
+
+    // const getTypeMerchant = () => {
+    //     merchants?.find((el) => el.value === formUpdate.name)
+    // };
+
 
     const inputStyle: React.CSSProperties = {
         border: "1px solid #e5e5e5",
@@ -155,12 +208,30 @@ const FormUpdateGym = (props: any) => {
             openPopup={openFormChange}
             disablePopup
             handleCLoseDialog={onClose}
-            title="Update Package"
-        // rootStyle={{
-        //     width: "400px"
-        // }}
+            title="Update Gyms"
+            size="md"
+            rootStyle={{
+                width: "90vw",
+                maxHeight: "90vh",
+                overflow: "auto",
+            }}
         >
-            <div className="grid grid-cols-4 mb-6 gap-5">
+            <div className="grid grid-cols-3 mb-6 gap-5">
+                <SelectDefault
+                    label="Segment"
+                    required
+                    options={optionSegment}
+                    selectedOption={getTypeValue()}
+                    handleChange={onSelectChange}
+                    styleControl={inputStyle}
+                    styleSingleValue={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: 14,
+                        maxWidth: "inherit",
+                    }}
+                    controlWidth={1}
+                />
                 <InputDefault
                     inputStyle={inputStyle}
                     label="Name"
@@ -168,6 +239,42 @@ const FormUpdateGym = (props: any) => {
                     rootClass="mb-6"
                     value={formUpdate.name}
                     onChange={handleChangeInput("name")}
+                    // status={statusEmailInput}
+                    onKeyPress={onKeyPress}
+                />
+                <div className="wrapper-suggest">
+                    <InputDefault
+                        inputStyle={inputStyle}
+                        label="Specific Address"
+                        required
+                        rootClass="mb-6"
+                        value={position}
+                        onChange={handleChangeInput("position")}
+                        // status={statusEmailInput}
+                        onKeyPress={onKeyPress}
+                    />
+                    <div
+                        className="modal-suggest"
+                    >
+                        {result && suggest?.map((el: any, index: any) => (
+                            <div
+                                key={index}
+                                className='item-suggest'
+                                onClick={() => choosePosition(el)}
+                            >
+                                {el.description}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <InputDefault
+                    inputStyle={inputStyle}
+                    label="Phone"
+                    required
+                    rootClass="mb-6"
+                    value={formUpdate.phone}
+                    onChange={handleChangeInput("phone")}
+                    // status={statusEmailInput}
                     onKeyPress={onKeyPress}
                 />
                 <InputDefault
@@ -177,48 +284,167 @@ const FormUpdateGym = (props: any) => {
                     rootClass="mb-6"
                     value={formUpdate.description}
                     onChange={handleChangeInput("description")}
+                    // status={statusEmailInput}
                     onKeyPress={onKeyPress}
                 />
                 <InputDefault
                     inputStyle={inputStyle}
-                    label="Price"
-                    type="number"
+                    label="Address"
                     required
+                    disabled={true}
+                    classInput="disabled-input"
                     rootClass="mb-6"
-                    value={formUpdate.price}
-                    onChange={handleChangeInput("price")}
+                    value={formUpdate.address}
+                    // status={statusEmailInput}
                     onKeyPress={onKeyPress}
                 />
                 <InputDefault
                     inputStyle={inputStyle}
-                    label="Unit Time"
-                    type="number"
+                    label="Long"
                     required
+                    disabled={true}
+                    classInput="disabled-input"
                     rootClass="mb-6"
-                    value={formUpdate.unitTime}
-                    onChange={handleChangeInput("unitTime")}
+                    value={formUpdate.long}
+                    // status={statusEmailInput}
+                    onKeyPress={onKeyPress}
+                />
+                <InputDefault
+                    inputStyle={inputStyle}
+                    label="Lat"
+                    required
+                    disabled={true}
+                    classInput="disabled-input"
+                    rootClass="mb-6"
+                    value={formUpdate.lat}
+                    // status={statusEmailInput}
                     onKeyPress={onKeyPress}
                 />
             </div>
-            <div className="grid grid-cols-2 mb-8 gap-5"
+            <p
+                style={{
+                    marginBottom: 20,
+                    paddingTop: 20,
+                    color: "#1a1f36",
+                    fontSize: 20,
+                    borderTop: "1px solid #e5e5e5",
+                    letterSpacing: 0.6,
+                }}
             >
-                <MultipleInput
-                    label="Benefit"
-                    // value=""
-                    rows={5}
-                    onChange={handleChangeInputArea("benefit")}
+                Detail information
+            </p>
+            <div className="grid grid-cols-2 mb-6 gap-5">
+                <MultiSelectInput
+                    label="Subjects"
+                    inputType="subjects"
+                    required
+                    rootClasses="mb-6"
+                    setFormInput={setFormUpdate}
+                    formInput={formUpdate}
+                    options={subjects}
+                    selectedValues={currentSubjects}
+                    styleControl={inputStyle}
+                    styleSingleValue={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: 14,
+                        maxWidth: "inherit",
+                    }}
+                    controlWidth={1}
                 />
-                <MultipleInput
-                    label="Rules"
-                    // value=""
-                    rows={5}
-                    onChange={handleChangeInputArea("rules")}
+                <MultiSelectInput
+                    label="Basic Convenience"
+                    inputType="basicConvenience"
+                    required
+                    rootClasses="mb-6"
+                    setFormInput={setFormUpdate}
+                    formInput={formUpdate}
+                    options={basicConvenience}
+                    selectedValues={item?.basicConvenience}
+                    styleControl={inputStyle}
+                    styleSingleValue={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: 14,
+                        maxWidth: "inherit",
+                    }}
+                    controlWidth={1}
+                />
+                <MultiSelectInput
+                    label="Favorite Convenience"
+                    inputType="favoriteConvenience"
+                    required
+                    rootClasses="mb-6"
+                    setFormInput={setFormUpdate}
+                    formInput={formUpdate}
+                    options={favoriteConvenience}
+                    selectedValues={item?.favoriteConvenience}
+                    styleControl={inputStyle}
+                    styleSingleValue={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: 14,
+                        maxWidth: "inherit",
+                    }}
+                    controlWidth={1}
+                />
+                <MultiSelectInput
+                    label="High Class Convenience"
+                    inputType="highClassConvenience"
+                    required
+                    rootClasses="mb-6"
+                    setFormInput={setFormUpdate}
+                    formInput={formUpdate}
+                    options={highClassConvenience}
+                    selectedValues={item?.highClassConvenience}
+                    styleControl={inputStyle}
+                    styleSingleValue={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: 14,
+                        maxWidth: "inherit",
+                    }}
+                    controlWidth={1}
+                />
+                <MultiSelectInput
+                    label="Safe Convenience"
+                    inputType="safeConvenience"
+                    required
+                    rootClasses="mb-6"
+                    setFormInput={setFormUpdate}
+                    formInput={formUpdate}
+                    options={safeConvenience}
+                    selectedValues={item?.safeConvenience}
+                    styleControl={inputStyle}
+                    styleSingleValue={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: 14,
+                        maxWidth: "inherit",
+                    }}
+                    controlWidth={1}
+                />
+                <TimeInput
+                    label="Opening Time"
+                    setFormInput={setFormUpdate}
+                    formInput={formUpdate}
+                    gym={item.openingTime}
+                    required
                 />
             </div>
+            <MultiImage
+                required={true}
+                setFormInput={setFormUpdate}
+                formInput={formUpdate}
+                currentImages={item.images}
+            />
             <ButtonDefault
                 widthButton="w-140-custom"
                 disabled={isDisabledButton()}
                 onClick={onSubmitButton}
+                style={{
+                    minHeight: 37,
+                }}
             >
                 Update
             </ButtonDefault>

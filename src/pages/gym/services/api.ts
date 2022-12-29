@@ -13,6 +13,7 @@ import {
   NotificationDetail,
   ParamsRequest,
   InputHost,
+  UpdateForm,
 } from "../types";
 // eslint-disable-next-line
 export const getNotificationsMiddleware = async (
@@ -124,7 +125,30 @@ export const addNewHostMiddleware = (
   Axios.post(`/gym/admin/create`, request)
     .then((response: any) => {
       if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
-        showNotification("success", "Create new Merchant successfully!");
+        showNotification("success", "Create new Gym successfully!");
+        callBack(response.data.statusCode);
+        return;
+      }
+      showNotification(
+        "error",
+        response.data.data ? response.data.data.errors : response.data.message
+      );
+
+      callBack(response.data.statusCode);
+    })
+    .catch(() => {
+      callBack(STATUS_RESPONSE_CODE.ERROR)
+    })
+}
+
+export const updateGym = (
+  request: UpdateForm,
+  callBack: (status: STATUS_RESPONSE_CODE) => void,
+) => {
+  Axios.post(`/gym/admin/update`, request)
+    .then((response: any) => {
+      if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
+        showNotification("success", "Update Gym successfully!");
         callBack(response.data.statusCode);
         return;
       }

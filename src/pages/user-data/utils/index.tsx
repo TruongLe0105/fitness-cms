@@ -11,6 +11,7 @@ import {
 import DefaultButtonIcon from "components/ButtonIcon/DefaultButtonIcon";
 import StatusCard from "components/Status/StatusCard";
 import { BSC_SCAN_URL } from "config/environments";
+import { FilterItemDetail, ItemFilter, OWNER_STATUS_ITEM } from "components/Filter/types";
 
 export function dataHeaderUser(
   // handleOpenUpdateList: (
@@ -232,7 +233,29 @@ export function dataHeaderUser(
         </div>
       ),
     },
+
   ];
 
   return headers;
 }
+
+export const filterClient: FilterItemDetail[] = [
+  {
+    title: 'Client Status',
+    filed: ItemFilter.CLIENT,
+    listChecked: [
+      {
+        name: 'Active',
+        filed: OWNER_STATUS_ITEM.ACTIVE,
+      },
+      {
+        name: 'No Active',
+        filed: OWNER_STATUS_ITEM.IN_ACTIVE,
+      },
+      {
+        name: 'Disabled',
+        filed: OWNER_STATUS_ITEM.DISABLE,
+      },
+    ],
+  },
+];

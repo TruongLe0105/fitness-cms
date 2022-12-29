@@ -42,11 +42,11 @@ const MenuLayout = (props: MenuLayoutProps): JSX.Element => {
           className="h-80-custom"
         />
       </div>
-      <div className="overflow-auto mb-3 mt-14">
+      <div className="overflow-auto mb-3 mt-14" >
         {listMenuPage.map((menu, index) => (
           <MenuItemCard menu={menu} key={index} openMenu={openMenu} />
         ))}
-        <div
+        {/* <div
           style={{
             borderTop: "1px solid #E6EAEF",
             marginTop: 10,
@@ -56,7 +56,7 @@ const MenuLayout = (props: MenuLayoutProps): JSX.Element => {
           {listMenuSettings.map((menu, index) => (
             <MenuItemCard menu={menu} key={index} openMenu={openMenu} />
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

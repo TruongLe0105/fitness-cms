@@ -477,7 +477,6 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                     minHeight: 37,
                 }}
             >
-                {/* {dataItem.id ? "Update" : "Add"} */}
                 Add
             </ButtonDefault>
         </DialogCard>

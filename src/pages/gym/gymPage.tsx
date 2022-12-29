@@ -1,6 +1,6 @@
 import BackdropCustomize from "components/BackdropCustomize";
 import Table from "components/Table/Table";
-import { useBoolean, useFilter, useTable } from "helpers/hooks";
+import { useBoolean, useFilterFitness, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
 import React, { useEffect, useState } from "react";
 import { ParamsRequest, ClientDetail, GymDetail, emptyGymDetail } from "./types";
@@ -47,7 +47,7 @@ const gymPage = (): JSX.Element => {
   const openViewDetail = useBoolean();
   const openFormAdd = useBoolean();
 
-  const { filter, handleChangeCheckedFilter, handleRemoveFilter } = useFilter(
+  const { filterFitness, handleChangeCheckedFilterFitness, handleRemoveFilterFitness } = useFilterFitness(
     page,
     isLoadingTable
   );
@@ -145,7 +145,7 @@ const gymPage = (): JSX.Element => {
 
   return (
     <PageLayout
-      title="Gym"
+      title="Gyms"
       childrenAction={
         <div className="flex items-center justify-between h-full pr-8">
           <div className="flex items-center">
@@ -157,12 +157,12 @@ const gymPage = (): JSX.Element => {
             </ButtonDefault>
           </div>
           <FilterTable
-            // listFilter={filterStar}
-            // queryFilter={filter}
+            // listFilter={filterClient}
+            // queryFilter={filterFitness}
             placeholder="Search"
             search={search.value}
             handleChangeInputSearch={handleChangeInputSearch}
-          // handleChangeChecked={handleChangeCheckedFilter}
+            handleChangeChecked={handleChangeCheckedFilterFitness}
           />
         </div>
       }
@@ -185,7 +185,7 @@ const gymPage = (): JSX.Element => {
             //   dataItem: filter.types?.length ? filter.types : [],
             // },
           ]}
-          handleRemoveFilter={handleRemoveFilter}
+          handleRemoveFilter={handleRemoveFilterFitness}
         />
       </div>
       <Table

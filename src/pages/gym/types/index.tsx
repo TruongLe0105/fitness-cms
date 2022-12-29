@@ -183,6 +183,29 @@ export interface InputHost {
   medicalAndSafe: Array<any>;
 }
 
+export interface UpdateForm {
+  id: string;
+  name: string;
+  phone: string;
+  description: string;
+  segment: string;
+  address: string;
+  openingTime: {
+    from: number,
+    to: number
+  };
+  long: string;
+  lat: string;
+  images: Array<string>;
+  subjects: Array<string>;
+  basicConvenience: Array<string>;
+  favoriteConvenience: Array<string>;
+  highClassConvenience: Array<string>;
+  safeConvenience: Array<string>;
+  rules: Array<any>;
+  medicalAndSafe: Array<any>;
+}
+
 export interface ClientDetail {
   id: string;
   name: string;

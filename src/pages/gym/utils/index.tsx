@@ -1,4 +1,5 @@
 import DefaultButtonIcon from "components/ButtonIcon/DefaultButtonIcon";
+import { FilterItemDetail, ItemFilter, OWNER_STATUS_ITEM } from "components/Filter/types";
 import { Header } from "components/Table/types";
 // import IconDefaultAvatar from "assets/images/icons/default-avatar.svg";
 import { formatDate } from "helpers/util";
@@ -303,3 +304,4 @@ export function dataHeaderUser(
 
   return headers;
 }
+
