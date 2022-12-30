@@ -290,13 +290,13 @@ const FormAddPackage = (props: any) => {
                 <MultipleInput
                     label="Benefit"
                     // value=""
-                    rows={5}
+                    rows={4}
                     onChange={handleChangeInputArea("benefit")}
                 />
                 <MultipleInput
                     label="Rules"
                     // value=""
-                    rows={5}
+                    rows={4}
                     onChange={handleChangeInputArea("rules")}
                 />
             </div>

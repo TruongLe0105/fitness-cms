@@ -6,9 +6,9 @@ export enum STATUS_INPUT {
   VALID = "valid",
 }
 
-export enum PLACEHOLDER_INPUT{
-  WALLET_ADDRESS= 'walletAddress',
-  CHARACTER_NAME= 'character name',
+export enum PLACEHOLDER_INPUT {
+  WALLET_ADDRESS = 'walletAddress',
+  CHARACTER_NAME = 'character name',
 }
 
 export interface InputDefaultProps

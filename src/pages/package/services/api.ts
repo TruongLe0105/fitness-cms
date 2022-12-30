@@ -4,6 +4,8 @@ import { access } from "fs";
 import { PATH } from "helpers/constant";
 import { pushTo } from "helpers/history";
 import { showNotification } from "helpers/util";
+import { setListPackage } from "slices/packageSlice";
+import stateStore from "slices/store";
 import { STATUS_RESPONSE_CODE } from "types";
 import {
   FormRequest,
@@ -61,6 +63,7 @@ export const getPackageMiddleware = async (
     return;
   }
 
+  stateStore.dispatch(setListPackage(response.data.data.data));
   return response.data.data;
 };
 

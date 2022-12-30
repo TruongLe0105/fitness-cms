@@ -78,6 +78,10 @@ export const listMenuPage: MenuItemDetail[] = [
     path: PATH.legal,
     label: "Legal Page",
   },
+  {
+    path: PATH.mailbox,
+    label: "Mailbox Page",
+  },
 ];
 export const listMenuSettings: MenuItemDetail[] = [
   // {

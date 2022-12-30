@@ -4,6 +4,8 @@ import { access } from "fs";
 import { PATH } from "helpers/constant";
 import { pushTo } from "helpers/history";
 import { showNotification } from "helpers/util";
+import stateStore from "slices/store";
+import { setListUser } from "slices/userSlice";
 import { STATUS_RESPONSE_CODE } from "types";
 import {
   ClientDetail,
@@ -15,7 +17,7 @@ import {
 } from "../types";
 // eslint-disable-next-line
 export const getNotificationsMiddleware = async (
-  params: ParamsRequest,
+  params?: ParamsRequest,
   source?: CancelTokenSource
 ) => {
   const response: AxiosResponse<{
@@ -61,6 +63,7 @@ export const getUserMiddleware = async (
     return;
   }
 
+  stateStore.dispatch(setListUser(response.data.data.data));
   return response.data.data;
 };
 

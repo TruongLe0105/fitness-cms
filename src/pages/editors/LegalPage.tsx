@@ -17,7 +17,7 @@ import { ReactComponent as CloseChangeLegal } from "assets/images/icons/close-ch
 import draftToHtmlPuri from "draftjs-to-html";
 import { STATUS_RESPONSE_CODE } from "types";
 
-const LegalPage = (): JSX.Element => {
+const legalPage = (): JSX.Element => {
     const [activeMenu, setActiveMenu] = useState({
         index: 0,
         field: TYPE_LEGAL.TERMS,
@@ -273,4 +273,4 @@ const LegalPage = (): JSX.Element => {
         </PageLayout>
     );
 };
-export default LegalPage;
+export default legalPage;

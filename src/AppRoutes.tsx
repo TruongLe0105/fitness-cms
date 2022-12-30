@@ -16,9 +16,10 @@ import MerchantPage from "pages/merchant/merchantPage";
 import SubjectPage from "pages/subject/subjectPage";
 import ConvenienPage from "pages/convenience/conveniencePage";
 import PackagePage from "pages/package/packagePage";
+import LegalPage from "pages/editors/legalPage";
+import MailboxPage from "pages/mailbox/mailboxPage";
 
 import './form.css';
-import LegalPage from "pages/editors/LegalPage";
 
 const AppRoutes = (): JSX.Element => {
   useEffect(() => {
@@ -45,25 +46,14 @@ const AppRoutes = (): JSX.Element => {
     <Router history={history}>
       <Switch>
         <PublicRoute exact path={PATH.login} component={<LoginPage />} />
-        {/* <PrivateRoute
-          exact
-          path={PATH.user}
-          component={<UserPage />}
-          
-        /> */}
         <PrivateRoute exact path={PATH.user} component={<UserPage />} />
         <PrivateRoute exact path={PATH.gym} component={<GymPage />} />
         <PrivateRoute exact path={PATH.merchant} component={<MerchantPage />} />
         <PrivateRoute exact path={PATH.package} component={<PackagePage />} />
         <PrivateRoute exact path={PATH.subject} component={<SubjectPage />} />
         <PrivateRoute exact path={PATH.convenience} component={<ConvenienPage />} />
-        {/* <PrivateRoute exact path={PATH.editor} component={<EditorPage />} /> */}
         <PrivateRoute exact path={PATH.legal} component={<LegalPage />} />
-        {/* <PrivateRoute
-          exact
-          path={PATH.manageVersions}
-          component={<ManageVersions />}
-        /> */}
+        <PrivateRoute exact path={PATH.mailbox} component={<MailboxPage />} />
         <PublicRoute
           exact
           path={PATH.forgotPassword}
