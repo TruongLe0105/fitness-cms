@@ -67,6 +67,42 @@ export const getGymMiddleware = async (
   return response.data.data;
 };
 
+export const searchGymMiddleware = async (
+  params?: ParamsRequest,
+  source?: CancelTokenSource
+) => {
+  if (params?.keyword?.length === 0) return;
+
+  const accessToken: string = localStorage.getItem("access_token") || "";
+  if (!accessToken.length) {
+    pushTo(PATH.login);
+    return;
+  }
+
+  const response: AxiosResponse<{
+    data: {
+      data: GymDetail[];
+      total: number;
+      totalPage: number;
+    };
+    message: string;
+    statusCode: number;
+  }> = await Axios.get(`/gym/admin/search`, {
+    params,
+    headers: {
+      "x-access-token": accessToken,
+    },
+  });
+
+  if (response.data.message === "Invalid token ! ") {
+    localStorage.removeItem("access_token");
+    pushTo(PATH.login);
+    return;
+  }
+
+  return response.data.data;
+};
+
 // eslint-disable-next-line
 export const addNotificationMiddleware = (
   request: FormRequest,

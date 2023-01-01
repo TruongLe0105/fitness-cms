@@ -5,11 +5,12 @@ export interface ParamsRequest {
   orderDirection?: string;
   sort?: string;
   search?: string;
+  keyword?: string;
   point_level?: number;
   types?: string[];
   isSent?: boolean;
   pointLevel?: string;
-  status?: string[];
+  status?: string;
 }
 
 export enum TYPE_NOTIFICATION {

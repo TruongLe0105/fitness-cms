@@ -9,7 +9,9 @@ export interface QueryFilterProps {
 }
 
 export interface QueryFilterPropsFitness {
-  client_status?: string[];
+  client_status?: string;
+  gyms_status?: string;
+  package_status?: string;
 }
 
 export interface FilterTableProps {
@@ -71,14 +73,14 @@ export interface FilterItemFitnessProps {
 
 export interface ShowFilterItemCardProps {
   field: string;
-  dataItem: string[];
+  dataItem: string;
   handleRemoveFilter: (filedTitle: string) => () => void;
 }
 
 export interface ShowFilterCardProps {
   dataFilter: {
     field: string;
-    dataItem: string[];
+    dataItem: string;
   }[];
   handleRemoveFilter: (filedTitle: string) => () => void;
 }
@@ -93,28 +95,30 @@ export enum FiledFilterItem {
 
 export enum ItemFilter {
   CLIENT = "client_status",
-  GYMS = "gym_status",
+  GYMS = "gyms_status",
   PACKAGE = "package_status",
 }
 
 export enum OWNER_STATUS_ITEM {
   ACTIVE = "active",
-  IN_ACTIVE = "in_active",
-  DISABLE = "disable"
+  IN_ACTIVE = "inactive",
+  DISABLE = "disabled"
 }
 
 export enum OWNER_STATUS_ITEM_FITNESS {
   ACTIVE = "active",
-  DISABLE = "disable"
+  DISABLE = "disabled"
 }
 
 export enum ItemStatusFilter {
-  STATUS = "client_status"
+  CLIENT_STATUS = "client_status",
+  GYMS_STATUS = "gyms_status",
+  PACKAGE_STATUS = "package_status",
 }
 
 export enum OWNER_STATUS_ITEM_FILTER {
   ACTIVE = "active",
-  DISABLE = "disable"
+  DISABLE = "disabled"
 }
 
 export enum OWNER_STATUS_FILTER {

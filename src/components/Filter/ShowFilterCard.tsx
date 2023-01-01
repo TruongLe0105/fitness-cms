@@ -3,19 +3,22 @@ import { ShowFilterCardProps } from "./types";
 
 const ShowFilterCard = (props: ShowFilterCardProps): JSX.Element => {
   const { dataFilter, handleRemoveFilter } = props;
+
+  console.log("dataFilter", dataFilter);
+
   return (
     <div className="flex items-center">
       {dataFilter.length
         ? dataFilter
-            .filter((el) => el.dataItem.length)
-            .map((filter, index) => (
-              <ShowFilterItemCard
-                key={index}
-                dataItem={filter.dataItem}
-                field={filter.field}
-                handleRemoveFilter={handleRemoveFilter}
-              />
-            ))
+          .filter((el) => el.dataItem.length)
+          .map((filter, index) => (
+            <ShowFilterItemCard
+              key={index}
+              dataItem={filter.dataItem}
+              field={filter.field}
+              handleRemoveFilter={handleRemoveFilter}
+            />
+          ))
         : null}
       {dataFilter.filter((el) => el.dataItem.length).length ? (
         <p

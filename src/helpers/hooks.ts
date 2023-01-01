@@ -182,7 +182,7 @@ export const useFilter = (
 
   const handleChangeCheckedFilter =
     (filedTitle: string, filedChecked: string) => () => {
-      const newFilter = cloneDeep(filter[filedTitle] ?? []);
+      const newFilter = cloneDeep(filter[filedTitle] ?? "");
       if (includes(newFilter, filedChecked)) {
         remove(newFilter, (el) => el === filedChecked);
       } else {
@@ -247,28 +247,27 @@ export const useFilterFitness = (
   // setFilterCategory?: (value: KeywordCategory[]) => void
 ) => {
   const [filterFitness, setFilterFitness] = useState<QueryFilterPropsFitness>({
-    client_status: [],
+    client_status: "",
+    gyms_status: "",
+    package_status: "",
   });
 
   const handleChangeCheckedFilterFitness =
     (filedTitle: string, filedChecked: string) => () => {
-      const newFilter = cloneDeep(filterFitness[filedTitle] ?? []);
       console.log("filedTitle", filedTitle);
-      console.log("filterFitness", filterFitness);
       console.log("filedChecked", filedChecked);
-      console.log("filterFitness[filedTitle]", filterFitness[filedTitle]);
 
-      if (includes(newFilter, filedChecked)) {
-        remove(newFilter, (el) => el === filedChecked);
-      } else {
-        newFilter.push(filedChecked);
-      }
+      const newFilter = cloneDeep(filterFitness[filedTitle] ?? "");
 
-      console.log("bewFilter", newFilter);
+      // if (includes(newFilter, filedChecked)) {
+      //   remove(newFilter, (el) => el === filedChecked);
+      // } else {
+      //   newFilter.push(filedChecked);
+      // }
 
       setFilterFitness({
         ...filterFitness,
-        [filedTitle]: newFilter,
+        [filedTitle]: filedChecked,
       });
       handleChangePageFitness();
     };
@@ -276,7 +275,7 @@ export const useFilterFitness = (
   const handleRemoveFilterFitness = (filedTitle: string) => () => {
     if (filedTitle === "Clear all") {
       setFilterFitness({
-        client_status: [],
+        client_status: "",
       });
       // setFilterCategory?.([]);
       handleChangePageFitness();
@@ -288,7 +287,7 @@ export const useFilterFitness = (
     // } else {
     setFilterFitness({
       ...filterFitness,
-      [filedTitle]: [],
+      [filedTitle]: "",
     });
     // }
 

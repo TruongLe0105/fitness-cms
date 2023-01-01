@@ -12,7 +12,7 @@ import {
   ListSentSelect,
   SentSelectDetail,
 } from "./types";
-import { getUserMiddleware } from "./services/api";
+import { getUserMiddleware, searchUserMiddleware } from "./services/api";
 import { dataHeaderUser, filterClient } from "./utils";
 import FilterTable from "components/Filter/FilterTable";
 import ButtonDefault from "components/Button/ButtonDefault";
@@ -35,6 +35,7 @@ const userPage = (): JSX.Element => {
     orderDirection,
     page,
     search,
+    searchParamRequest,
     total,
     handleChangeSort,
     isLoadingPage,
@@ -60,6 +61,8 @@ const userPage = (): JSX.Element => {
   useEffect(() => {
     const source: CancelTokenSource = Axios.CancelToken.source();
 
+    searchUser(source);
+    if (searchParamRequest.value) return;
     getUser(source);
     return () => source.cancel();
 
@@ -67,6 +70,7 @@ const userPage = (): JSX.Element => {
   }, [
     page.value,
     orderBy.value,
+    searchParamRequest.value,
     refetch,
     filterFitness,
   ]);
@@ -92,6 +96,31 @@ const userPage = (): JSX.Element => {
 
         total.setValue(dataRes.total);
       }
+
+      cleanStateRequest();
+    } catch (error) {
+      if (!Axios.isCancel(error)) {
+        cleanStateRequest();
+        showNotification("error", "Server Error");
+      }
+    }
+  };
+
+  const searchUser = async (source?: CancelTokenSource) => {
+    try {
+      const params: ParamsRequest = {
+        limit: limit.value,
+        page: page.value,
+        keyword: searchParamRequest.value,
+      };
+
+      const dataRes: any = await searchUserMiddleware(params, source);
+
+      // if (dataRes?.data?.length) {
+      setUser(dataRes?.data);
+
+      total.setValue(dataRes?.total);
+      // }
 
       cleanStateRequest();
     } catch (error) {
@@ -191,7 +220,7 @@ const userPage = (): JSX.Element => {
           dataFilter={[
             {
               field: ItemFilter.CLIENT,
-              dataItem: filterFitness.client_status?.length ? filterFitness.client_status : [],
+              dataItem: filterFitness.client_status ? filterFitness.client_status : "",
             },
             // {
             //   field: ItemFilter.MARKET,
@@ -213,7 +242,7 @@ const userPage = (): JSX.Element => {
         countItems={total.value}
         headers={dataHeaderUser(handleOpenUpdateList, onEdit, onDelete)}
         handleChangePage={handleChangePage}
-        data={user.length ? user : []}
+        data={user?.length ? user : []}
         handleChangeSort={handleChangeSort}
         orderBy={orderBy.value}
         orderDirection={orderDirection.value}

@@ -263,7 +263,7 @@ export const filterClient: FilterItemDetail[] = [
 export const filterGyms: FilterItemDetail[] = [
   {
     title: 'Gyms Status',
-    filed: ItemFilter.CLIENT,
+    filed: ItemFilter.GYMS,
     listChecked: [
       {
         name: 'Active',

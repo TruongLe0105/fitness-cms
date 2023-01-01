@@ -67,6 +67,41 @@ export const getPackageMiddleware = async (
   return response.data.data;
 };
 
+export const searchPackageMiddleware = async (
+  params?: ParamsRequest,
+  source?: CancelTokenSource,
+) => {
+  if (params?.keyword?.length === 0) return;
+
+  const accessToken: string = localStorage.getItem("access_token") || "";
+  if (!accessToken.length) {
+    pushTo(PATH.login);
+    return;
+  }
+
+  const response: AxiosResponse<{
+    data: {
+      data: PackageDetail[];
+      total: number;
+      totalPage: number;
+    };
+    message: string;
+    statusCode: number;
+  }> = await Axios.get(`/package/admin/search`, {
+    headers: {
+      "x-access-token": accessToken,
+    },
+  });
+
+  if (response.data.message === "Invalid token ! ") {
+    localStorage.removeItem("access_token");
+    pushTo(PATH.login);
+    return;
+  }
+
+  return response.data.data;
+};
+
 // eslint-disable-next-line
 export const addNotificationMiddleware = (
   request: FormRequest,

@@ -22,6 +22,26 @@ export const getMailboxMiddleware = async (
     return response.data.data;
 }
 
+export const searchMailboxMiddleware = async (
+    params: ParamsRequest,
+    source?: CancelTokenSource
+) => {
+    if (params?.keyword?.length === 0) return;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const response: AxiosResponse<{
+        data: {
+            data: MailboxDetail[];
+            total: number;
+        };
+        message: string;
+        statusCode: number;
+    }> = await Axios.get(`/mail/admin/search`, {
+        params,
+    });
+
+    return response.data.data;
+}
+
 export const createMailbox = (
     request: InputMail,
     callBack: (status: STATUS_RESPONSE_CODE) => void,

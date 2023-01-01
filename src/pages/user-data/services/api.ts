@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Axios, { AxiosResponse, CancelTokenSource } from "axios";
+import { KEYWORD_CONTRACT_ADDRESS } from "config/environments";
 import { access } from "fs";
 import { PATH } from "helpers/constant";
 import { pushTo } from "helpers/history";
@@ -64,6 +65,42 @@ export const getUserMiddleware = async (
   }
 
   stateStore.dispatch(setListUser(response.data.data.data));
+  return response.data.data;
+};
+
+export const searchUserMiddleware = async (
+  params: ParamsRequest,
+  source?: CancelTokenSource
+) => {
+  const accessToken: string = localStorage.getItem("access_token") || "";
+  if (!accessToken.length) {
+    pushTo(PATH.login);
+    return;
+  }
+
+  if (params?.keyword?.length === 0) return;
+
+  const response: AxiosResponse<{
+    data: {
+      data: ClientDetail[];
+      total: number;
+      totalPage: number;
+    };
+    message: string;
+    statusCode: number;
+  }> = await Axios.get(`/client/admin/search`, {
+    params,
+    headers: {
+      "x-access-token": accessToken,
+    },
+  });
+
+  if (response.data.message === "Invalid token ! ") {
+    localStorage.removeItem("access_token");
+    pushTo(PATH.login);
+    return;
+  }
+
   return response.data.data;
 };
 

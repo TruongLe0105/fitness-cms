@@ -5,6 +5,7 @@ import { FilterItemFitnessProps, FilterItemProps } from "./types";
 const FilterItem = (props: FilterItemFitnessProps): JSX.Element => {
   const { dataItem, queryFilter, handleChangeChecked } = props;
   console.log("dataIten", dataItem.filed);
+  console.log("queryFilter", queryFilter);
 
   return (
     <div className="flex flex-col mb-8">
@@ -26,7 +27,8 @@ const FilterItem = (props: FilterItemFitnessProps): JSX.Element => {
                 }
                 checked={
                   queryFilter
-                    ? includes(queryFilter[dataItem.filed], elChecked.filed)
+                    ? queryFilter[dataItem.filed] === elChecked.filed
+                    // ? includes(queryFilter[dataItem.filed], elChecked.filed)
                     : false
                 }
               />

@@ -4,7 +4,7 @@ import { useBoolean, useFilter, useFilterFitness, useTable } from "helpers/hooks
 import PageLayout from "pages/layout/organisms/PageLayout";
 import React, { useEffect, useState } from "react";
 import { ParamsRequest, PackageDetail } from "./types";
-import { getPackageMiddleware } from "./services/api";
+import { getPackageMiddleware, searchPackageMiddleware } from "./services/api";
 import { dataHeaderPackage } from "./utils";
 import FilterTable from "components/Filter/FilterTable";
 import ButtonDefault from "components/Button/ButtonDefault";
@@ -21,6 +21,7 @@ import FormUpdatePackage from "./organisms/FormUpdatePackage";
 import DestroyDialog from "./organisms/DialogDestroy";
 import ShowFilterCard from "components/Filter/ShowFilterCard";
 import { filterPackage } from "pages/user-data/utils";
+import { ItemFilter } from "components/Filter/types";
 
 const packagePage = (): JSX.Element => {
   const {
@@ -31,6 +32,7 @@ const packagePage = (): JSX.Element => {
     orderDirection,
     page,
     search,
+    searchParamRequest,
     total,
     handleChangeSort,
     isLoadingPage,
@@ -81,10 +83,17 @@ const packagePage = (): JSX.Element => {
     const source: CancelTokenSource = Axios.CancelToken.source();
 
     getPackage(source);
+    searchPackage(source);
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page.value, orderBy.value, refetch]);
+  }, [
+    page.value,
+    orderBy.value,
+    refetch,
+    searchParamRequest.value,
+    filterFitness,
+  ]);
 
   const getPackage = async (source?: CancelTokenSource) => {
     try {
@@ -100,6 +109,31 @@ const packagePage = (): JSX.Element => {
 
         total.setValue(dataRes.total);
       }
+
+      cleanStateRequest();
+    } catch (error) {
+      if (!Axios.isCancel(error)) {
+        cleanStateRequest();
+        showNotification("error", "Server Error");
+      }
+    }
+  };
+
+  const searchPackage = async (source?: CancelTokenSource) => {
+    try {
+      const params: ParamsRequest = {
+        limit: limit.value,
+        page: page.value,
+        keyword: searchParamRequest.value,
+      };
+
+      const dataRes: any = await searchPackageMiddleware(params, source);
+
+      // if (dataRes?.data?.length) {
+      setPackage(dataRes?.data);
+
+      total.setValue(dataRes?.total);
+      // }
 
       cleanStateRequest();
     } catch (error) {
@@ -138,14 +172,6 @@ const packagePage = (): JSX.Element => {
     openFormAdd.setValue(true);
   };
 
-  const closeFormAddNewClient = () => {
-    openFormAdd.setValue(false);
-  };
-
-  const handleUpdate = () => {
-    updatePackage.setValue(!updatePackage.value)
-  };
-
   return (
     <PageLayout
       title="Package"
@@ -173,20 +199,10 @@ const packagePage = (): JSX.Element => {
       <div className='h-40-custom'>
         <ShowFilterCard
           dataFilter={[
-            // {
-            //   field: FiledFilterItem.OWNER,
-            //   dataItem: filter.owner_status?.length ? filter.owner_status : [],
-            // },
-            // {
-            //   field: FiledFilterItem.MARKET,
-            //   dataItem: filter.market_status?.length
-            //     ? filter.market_status
-            //     : [],
-            // },
-            // {
-            //   field: FiledFilterItem.TYPES,
-            //   dataItem: filter.types?.length ? filter.types : [],
-            // },
+            {
+              field: ItemFilter.PACKAGE,
+              dataItem: filterFitness.package_status ? filterFitness.package_status : "",
+            },
           ]}
           handleRemoveFilter={handleRemoveFilterFitness}
         />
@@ -198,7 +214,7 @@ const packagePage = (): JSX.Element => {
         headers={dataHeaderPackage(setDataGymsPackage, openPackage, handleOpenUpdateList, onEdit, onDelete)}
         handleChangePage={handleChangePage}
         // data={notifications.length ? notifications : []}
-        data={gymPackage.length ? gymPackage : []}
+        data={gymPackage?.length ? gymPackage : []}
         handleChangeSort={handleChangeSort}
         orderBy={orderBy.value}
         orderDirection={orderDirection.value}

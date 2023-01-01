@@ -2,6 +2,7 @@ import Axios, { CancelTokenSource } from 'axios';
 
 import BackdropCustomize from 'components/BackdropCustomize';
 import ButtonDefault from 'components/Button/ButtonDefault';
+import FilterTable from 'components/Filter/FilterTable';
 import Table from 'components/Table/Table';
 import { useBoolean, useTable } from 'helpers/hooks';
 import { showNotification } from 'helpers/util';
@@ -9,7 +10,7 @@ import PageLayout from 'pages/layout/organisms/PageLayout';
 
 import React, { useEffect, useState } from 'react'
 import FormSendMailbox from './organisms/FormSendMailbox';
-import { getMailboxMiddleware } from './services/api';
+import { getMailboxMiddleware, searchMailboxMiddleware } from './services/api';
 import { emptyMailboxDetail, MailboxDetail, ParamsRequest } from './types';
 import { dataHeaderUser } from './utils';
 
@@ -22,6 +23,8 @@ const mailboxPage = (): JSX.Element => {
 
     const openMailbox = useBoolean();
 
+    console.log("mailbox", mailbox)
+
     const {
         handleChangeInputSearch,
         handleChangePage,
@@ -30,6 +33,7 @@ const mailboxPage = (): JSX.Element => {
         orderDirection,
         page,
         search,
+        searchParamRequest,
         total,
         handleChangeSort,
         isLoadingPage,
@@ -52,13 +56,15 @@ const mailboxPage = (): JSX.Element => {
     useEffect(() => {
         const source: CancelTokenSource = Axios.CancelToken.source();
 
-        getSubject(source);
+        searchMailbox(source);
+        if (searchParamRequest.value) return;
+        getMailbox(source);
         return () => source.cancel();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page.value, orderBy.value, refetch]);
+    }, [page.value, orderBy.value, refetch, searchParamRequest.value]);
 
-    const getSubject = async (source?: CancelTokenSource) => {
+    const getMailbox = async (source?: CancelTokenSource) => {
         try {
             const params: ParamsRequest = {
                 limit: limit.value,
@@ -75,6 +81,35 @@ const mailboxPage = (): JSX.Element => {
 
                 total.setValue(dataRes.total);
             }
+
+            cleanStateRequest();
+        } catch (error) {
+            if (!Axios.isCancel(error)) {
+                cleanStateRequest();
+                showNotification("error", "Server Error");
+            }
+        }
+    };
+
+    const searchMailbox = async (source?: CancelTokenSource) => {
+        try {
+            const params: ParamsRequest = {
+                limit: limit.value,
+                page: page.value,
+                keyword: searchParamRequest.value,
+            };
+            // if (orderBy.value) {
+            //   params.sort = orderBy.value;
+            // }
+
+            const dataRes: any = await searchMailboxMiddleware(params, source);
+
+            console.log("dataRes.data", dataRes?.data)
+            // if (dataRes?.data?.length) {
+            setMailbox(dataRes?.data);
+
+            total.setValue(dataRes?.total);
+            // }
 
             cleanStateRequest();
         } catch (error) {
@@ -103,6 +138,14 @@ const mailboxPage = (): JSX.Element => {
                             Create Mailbox
                         </ButtonDefault>
                     </div>
+                    <FilterTable
+                        // listFilter={filterPackage}
+                        // queryFilter={filterFitness}
+                        placeholder="Search"
+                        search={search.value}
+                        handleChangeInputSearch={handleChangeInputSearch}
+                    // handleChangeChecked={handleChangeCheckedFilterFitness}
+                    />
                 </div>
             }
         >
@@ -112,7 +155,7 @@ const mailboxPage = (): JSX.Element => {
                 countItems={total.value}
                 headers={dataHeaderUser()}
                 handleChangePage={handleChangePage}
-                data={mailbox.length ? mailbox : []}
+                data={mailbox?.length ? mailbox : []}
                 handleChangeSort={handleChangeSort}
                 orderBy={orderBy.value}
                 orderDirection={orderDirection.value}
@@ -123,7 +166,6 @@ const mailboxPage = (): JSX.Element => {
                     <FormSendMailbox
                         openFormChange={openMailbox.value}
                         onClose={onCloseDialog}
-                        // mailbox={mailbox}
                         onRefetch={onRefetch}
                     /> : null
             }

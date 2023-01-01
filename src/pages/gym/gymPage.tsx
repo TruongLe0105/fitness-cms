@@ -4,7 +4,7 @@ import { useBoolean, useFilterFitness, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
 import React, { useEffect, useState } from "react";
 import { ParamsRequest, ClientDetail, GymDetail, emptyGymDetail } from "./types";
-import { getGymMiddleware } from "./services/api";
+import { getGymMiddleware, searchGymMiddleware } from "./services/api";
 import { dataHeaderUser } from "./utils";
 import FilterTable from "components/Filter/FilterTable";
 import ButtonDefault from "components/Button/ButtonDefault";
@@ -17,7 +17,7 @@ import FormAddHost from "./organisms/FormAddhost";
 import ShowFilterCard from "components/Filter/ShowFilterCard";
 import DestroyDialog from "./organisms/DeleteDialog";
 import FormUpdateGym from "./organisms/FormUpdateGym";
-import { ItemStatusFilter } from "components/Filter/types";
+import { ItemFilter } from "components/Filter/types";
 import { filterGyms } from "pages/user-data/utils";
 
 const gymPage = (): JSX.Element => {
@@ -29,6 +29,7 @@ const gymPage = (): JSX.Element => {
     orderDirection,
     page,
     search,
+    searchParamRequest,
     total,
     handleChangeSort,
     isLoadingPage,
@@ -63,10 +64,17 @@ const gymPage = (): JSX.Element => {
     const source: CancelTokenSource = Axios.CancelToken.source();
 
     getGym(source);
+    searchGym(source);
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page.value, orderBy.value, refetch]);
+  }, [
+    page.value,
+    orderBy.value,
+    refetch,
+    searchParamRequest.value,
+    filterFitness,
+  ]);
 
   const openFormAddHost = () => {
     openFormAdd.setValue(true);
@@ -93,7 +101,6 @@ const gymPage = (): JSX.Element => {
     setSelected(null);
   };
 
-
   const getGym = async (source?: CancelTokenSource) => {
     try {
       const params: ParamsRequest = {
@@ -104,6 +111,10 @@ const gymPage = (): JSX.Element => {
       //   params.sort = orderBy.value;
       // }
 
+      if (filterFitness.client_status) {
+        params.status = filterFitness.client_status
+      }
+
       const dataRes = await getGymMiddleware(params, source);
 
       if (dataRes?.data?.length) {
@@ -111,6 +122,30 @@ const gymPage = (): JSX.Element => {
 
         total.setValue(dataRes.total);
       }
+
+      cleanStateRequest();
+    } catch (error) {
+      if (!Axios.isCancel(error)) {
+        cleanStateRequest();
+        showNotification("error", "Server Error");
+      }
+    }
+  };
+  const searchGym = async (source?: CancelTokenSource) => {
+    try {
+      const params: ParamsRequest = {
+        limit: limit.value,
+        page: page.value,
+        keyword: searchParamRequest.value
+      };
+
+      const dataRes: any = await searchGymMiddleware(params, source);
+
+      // if (dataRes?.data?.length) {
+      setGym(dataRes?.data);
+
+      total.setValue(dataRes?.total);
+      // }
 
       cleanStateRequest();
     } catch (error) {
@@ -173,8 +208,8 @@ const gymPage = (): JSX.Element => {
         <ShowFilterCard
           dataFilter={[
             {
-              field: ItemStatusFilter.STATUS,
-              dataItem: filterFitness.client_status?.length ? filterFitness.client_status : [],
+              field: ItemFilter.GYMS,
+              dataItem: filterFitness.gyms_status ? filterFitness.gyms_status : "",
             },
             // {
             //   field: FiledFilterItem.MARKET,
@@ -197,7 +232,7 @@ const gymPage = (): JSX.Element => {
         headers={dataHeaderUser(handleOpenUpdateList, onEdit, onDelete)}
         handleChangePage={handleChangePage}
         // data={notifications.length ? notifications : []}
-        data={gym.length ? gym : []}
+        data={gym?.length ? gym : []}
         handleChangeSort={handleChangeSort}
         orderBy={orderBy.value}
         orderDirection={orderDirection.value}
