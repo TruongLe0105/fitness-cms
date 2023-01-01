@@ -83,7 +83,7 @@ const packagePage = (): JSX.Element => {
     const source: CancelTokenSource = Axios.CancelToken.source();
 
     getPackage(source);
-    searchPackage(source);
+    // searchPackage(source);
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -185,18 +185,18 @@ const packagePage = (): JSX.Element => {
               Add New Package
             </ButtonDefault>
           </div>
-          <FilterTable
+          {/* <FilterTable
             listFilter={filterPackage}
             queryFilter={filterFitness}
             placeholder="Search"
             search={search.value}
             handleChangeInputSearch={handleChangeInputSearch}
             handleChangeChecked={handleChangeCheckedFilterFitness}
-          />
+          /> */}
         </div >
       }
     >
-      <div className='h-40-custom'>
+      {/* <div className='h-40-custom'>
         <ShowFilterCard
           dataFilter={[
             {
@@ -206,7 +206,7 @@ const packagePage = (): JSX.Element => {
           ]}
           handleRemoveFilter={handleRemoveFilterFitness}
         />
-      </div>
+      </div> */}
       <Table
         limit={limit.value}
         page={page.value}

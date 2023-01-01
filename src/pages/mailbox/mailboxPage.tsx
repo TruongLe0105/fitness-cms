@@ -23,8 +23,6 @@ const mailboxPage = (): JSX.Element => {
 
     const openMailbox = useBoolean();
 
-    console.log("mailbox", mailbox)
-
     const {
         handleChangeInputSearch,
         handleChangePage,
@@ -56,9 +54,8 @@ const mailboxPage = (): JSX.Element => {
     useEffect(() => {
         const source: CancelTokenSource = Axios.CancelToken.source();
 
-        searchMailbox(source);
-        if (searchParamRequest.value) return;
         getMailbox(source);
+        searchMailbox(source);
         return () => source.cancel();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

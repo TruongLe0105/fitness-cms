@@ -139,7 +139,7 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                     setResult(value);
                     setPosition(value);
 
-                    getPositionMap(value)
+                    debounceSearch(String(value).trim())
                 } else {
                     setFormInput({
                         ...formInput,
@@ -147,6 +147,13 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
                     })
                 }
             };
+
+    const debounceSearch = useCallback(
+        debounce((newSearch: string) => {
+            getPositionMap(newSearch)
+        }, 500),
+        []
+    );
 
     const getPositionMap = async (e: string) => {
         await fetch(

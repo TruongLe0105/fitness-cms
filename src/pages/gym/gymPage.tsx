@@ -55,6 +55,8 @@ const gymPage = (): JSX.Element => {
     isLoadingTable
   );
 
+  console.log("filterFitness", filterFitness)
+
   const onRefetch = React.useCallback(
     () => setRefetch(new Date().getTime()),
     []

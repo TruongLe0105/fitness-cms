@@ -61,9 +61,8 @@ const userPage = (): JSX.Element => {
   useEffect(() => {
     const source: CancelTokenSource = Axios.CancelToken.source();
 
-    searchUser(source);
-    if (searchParamRequest.value) return;
     getUser(source);
+    searchUser(source);
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

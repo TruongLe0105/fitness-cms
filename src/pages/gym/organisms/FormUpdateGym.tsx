@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { useBoolean } from 'helpers/hooks';
 // import { AddPackageInput } from '../types';
@@ -21,6 +21,7 @@ import { getSubjectMiddleware } from 'pages/subject/services/api';
 import { getConvenienceMiddleware } from 'pages/convenience/services/api';
 import { getMerchantMiddleware } from 'pages/merchant/services/api';
 import { optionSegment } from '../constant';
+import { debounce } from 'lodash';
 
 const FormUpdateGym = (props: any) => {
     const { onClose, openFormChange, onRefetch, item } = props;
@@ -131,7 +132,8 @@ const FormUpdateGym = (props: any) => {
                     setResult(value);
                     setPosition(value);
 
-                    getPositionMap(value);
+                    // getPositionMap(value);
+                    debounceSearch(String(value).trim())
                 } else {
                     setFormUpdate({
                         ...formUpdate,
@@ -139,6 +141,14 @@ const FormUpdateGym = (props: any) => {
                     })
                 }
             };
+
+
+    const debounceSearch = useCallback(
+        debounce((newSearch: string) => {
+            getPositionMap(newSearch)
+        }, 500),
+        []
+    );
 
     const getPositionMap = async (e: string) => {
         await fetch(
