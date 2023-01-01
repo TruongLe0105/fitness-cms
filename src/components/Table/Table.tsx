@@ -28,7 +28,6 @@ const Table = (props: TableProps): JSX.Element => {
   } = props;
 
   const renderTableBody = (header: Header, value: any, index: number) => {
-    // console.log(header)
     if (header.renderBody) {
       return header.renderBody(value, index);
     }
@@ -153,7 +152,6 @@ const Table = (props: TableProps): JSX.Element => {
           <tbody>
             {data.length ? (
               data.map((el: any, index: number) => {
-                // console.log(el.name);
                 return (
                   <tr
                     key={index}

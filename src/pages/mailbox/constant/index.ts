@@ -7,6 +7,6 @@ export const SendToUserOptions: SendToOptions[] = [
     },
     {
         label: "Cá Nhân",
-        value: "persional"
+        value: "personal"
     }
 ]

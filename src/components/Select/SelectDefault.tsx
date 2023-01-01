@@ -64,8 +64,6 @@ const SelectDefault = (props: SelectDefaultProps): JSX.Element => {
     }),
   };
 
-  console.log("selectedOption", selectedOption)
-
   const DropdownIndicator = (dropProps: any) => {
     return (
       <components.DropdownIndicator {...dropProps}>

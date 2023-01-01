@@ -43,7 +43,6 @@ const merchantPage = (): JSX.Element => {
   } = useTable();
 
   const onEdit = (item: MerchantDetail) => {
-    console.log(item)
     openFormUpdate.setValue(true);
     setSelected(item);
   };

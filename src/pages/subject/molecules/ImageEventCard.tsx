@@ -29,9 +29,6 @@ const ImageEventCard = React.memo((props: ImageEventCardProps): JSX.Element => {
     return "";
   };
 
-  console.log("originImage:", originImage)
-  console.log("fileInput:", fileInput)
-
   return (
     <div className="flex flex-col">
       <div

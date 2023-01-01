@@ -4,6 +4,8 @@ import { FilterItemFitnessProps, FilterItemProps } from "./types";
 
 const FilterItem = (props: FilterItemFitnessProps): JSX.Element => {
   const { dataItem, queryFilter, handleChangeChecked } = props;
+  console.log("dataIten", dataItem.filed);
+
   return (
     <div className="flex flex-col mb-8">
       <p className="text-xs font-medium text-gray-04-custom mb-2">

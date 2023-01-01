@@ -44,9 +44,6 @@ const FormUpdatePackage = (props: any) => {
         })
     }, [gyms.length, isChange.value]);
 
-    console.log("formUpdate:", formUpdate)
-    console.log("item:", item)
-
     const isDisabledButton = () => {
         if (
             !formUpdate.name ||

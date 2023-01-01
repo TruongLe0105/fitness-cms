@@ -58,8 +58,6 @@ const FormUpdateGym = (props: any) => {
     const safeConvenience = conveniences?.filter((convenience: any) => convenience.type === "safe")
     const favoriteConvenience = conveniences?.filter((convenience: any) => convenience.type === "favorite")
 
-    // console.log("safeConvenience", safeConvenience);
-
     const [formUpdate, setFormUpdate] = useState<UpdateForm>({
         id: item._id,
         name: item.name,

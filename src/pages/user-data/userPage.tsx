@@ -64,7 +64,12 @@ const userPage = (): JSX.Element => {
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page.value, orderBy.value, refetch]);
+  }, [
+    page.value,
+    orderBy.value,
+    refetch,
+    filterFitness,
+  ]);
 
   const getUser = async (source?: CancelTokenSource) => {
     try {
@@ -75,6 +80,10 @@ const userPage = (): JSX.Element => {
       // if (orderBy.value) {
       //   params.sort = orderBy.value;
       // }
+
+      if (filterFitness.client_status?.length) {
+        params.status = filterFitness.client_status;
+      }
 
       const dataRes = await getUserMiddleware(params, source);
 
@@ -148,9 +157,9 @@ const userPage = (): JSX.Element => {
       title="Client"
       childrenAction={
         <div className="flex items-center justify-between h-full pr-8">
-          {/* <div className="flex items-center">
-          </div> */}
-          <SelectDefault
+          <div className="flex items-center">
+          </div>
+          {/* <SelectDefault
             options={ListSentSelect}
             selectedOption={sentSelect}
             handleChange={handleChangeSentSelect}
@@ -165,7 +174,7 @@ const userPage = (): JSX.Element => {
             styleControl={{
               borderBottom: "none",
             }}
-          />
+          /> */}
           <FilterTable
             listFilter={filterClient}
             queryFilter={filterFitness}

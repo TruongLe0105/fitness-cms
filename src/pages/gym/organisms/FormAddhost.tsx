@@ -184,7 +184,6 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
     };
 
     const onSelectChangeMerchant = (value: any) => {
-        console.log(value)
         setFormInput({
             ...formInput,
             merchantId: value.value

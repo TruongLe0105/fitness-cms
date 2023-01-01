@@ -64,8 +64,6 @@ const LoginPage = (): JSX.Element => {
       password: password.value,
     };
 
-    console.log(dataRequest);
-
     isLoadingSubmit.setValue(true);
     loginMiddleware(
       dataRequest,

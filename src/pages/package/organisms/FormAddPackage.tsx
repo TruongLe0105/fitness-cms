@@ -44,8 +44,6 @@ const FormAddPackage = (props: any) => {
         })
     }, [gyms.length]);
 
-    console.log("formInput:", formInput)
-
     const isDisabledButton = () => {
         if (
             !formInput.name ||

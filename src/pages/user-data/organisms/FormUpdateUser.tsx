@@ -18,7 +18,7 @@ const FormUpdateUser: FC<FormUpdate> = (props) => {
     const isChange = useBoolean();
 
     const [formUpdate, setFormUpdate] = useState<InputUser>({
-        clientName: item?.clientName,
+        clientName: item?.rawName,
         id: item?.id,
         status: item?.status
     });

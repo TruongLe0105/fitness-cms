@@ -21,8 +21,6 @@ export const loginMiddleware = (
   Axios.post(`/auth/admin/signIn`, request)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .then((response: any) => {
-      console.log("ádasdasd", response);
-
       if (response.data.statusCode === STATUS_RESPONSE_CODE.SUCCESS) {
         localStorage.setItem(
           "access_token",

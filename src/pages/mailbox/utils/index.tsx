@@ -80,7 +80,7 @@ export function dataHeaderUser(
                 minWidth: 160,
                 maxWidth: 160,
             },
-            sort: true,
+            // sort: true,
             renderBody: (value: MailboxDetail) => (
                 <p
                     style={{

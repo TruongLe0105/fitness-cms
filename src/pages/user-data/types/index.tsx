@@ -9,6 +9,7 @@ export interface ParamsRequest {
   types?: string[];
   isSent?: boolean;
   pointLevel?: string;
+  status?: string[];
 }
 
 export enum TYPE_NOTIFICATION {
@@ -80,7 +81,7 @@ export interface ClientDetail {
   phone: string;
   status: string;
   createdAt: number;
-  clientName: string;
+  rawName: string;
 }
 
 export interface InventoryDetail {

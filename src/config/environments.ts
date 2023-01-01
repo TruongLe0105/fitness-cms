@@ -1,6 +1,5 @@
 export const isLogin = (): boolean => {
   const accessToken = localStorage.getItem("access_token");
-  // console.log(accessToken)
   if (!accessToken) {
     return false;
   }

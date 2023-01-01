@@ -25,26 +25,8 @@ const TimeInput = ({ label, setFormInput, formInput, required, gym }: any) => {
         color: "rgba(161, 169, 180, var(--tw-text-opacity))"
     };
 
-    const onChangeTimeFrom = (event: any, time: any) => {
-        console.log("time", time)
-        const newTime = time.split(":");
-        console.log("newTime", newTime)
-        setFormInput({
-            ...formInput,
-            openingTime: { ...formInput.openingTime, from: event.target.value }
-        })
-    }
-
-    const onChangeTimeTo = (event: any, time: any) => {
-        setFormInput({
-            ...formInput,
-            openingTime: { ...formInput.openingTime, to: event.target.value }
-        })
-    };
-
     const handleChangeTime = (event: any, type: string) => {
         const currentTime = Number(event.target.value);
-        console.log(currentTime)
         if (type === "from") {
             if (currentTime === 0) {
                 setTimeFrom("");

@@ -33,9 +33,9 @@ const FormSendMailbox: FC<FormSendMail> = (props) => {
         sendTo: "",
         includes: [],
         images: [],
-        gym: "",
-        package: "",
-        event: "",
+        // gym: "",
+        // package: "",
+        // event: "",
     });
     const [options, setOptions] = useState<any>([]);
     const [optionsPackage, setOptionsPackage] = useState<any>([]);
@@ -83,10 +83,7 @@ const FormSendMailbox: FC<FormSendMail> = (props) => {
             optionsGyms?.push(newOpsGyms);
         });
 
-        console.log("gyns", gyms);
-
-
-        if (formInput.sendTo === "persional") {
+        if (formInput.sendTo === "personal") {
             setDisableMulti(false);
         } else {
             setDisableMulti(true);
@@ -132,7 +129,7 @@ const FormSendMailbox: FC<FormSendMail> = (props) => {
         ) {
             return true;
         }
-        if (formInput.sendTo === "persional") {
+        if (formInput.sendTo === "personal") {
             if (formInput.includes.length === 0) return true;
         }
         return false;

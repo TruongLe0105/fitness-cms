@@ -35,10 +35,6 @@ const ModalGyms = (props: any) => {
 
     const isLoading = useBoolean();
 
-    console.log("dataGyms", data)
-    console.log("gyms", gyms)
-    console.log("formUpdate", formUpdate)
-
     const {
         handleChangeInputSearch,
         handleChangePage,

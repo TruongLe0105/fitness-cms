@@ -21,7 +21,6 @@ const MultiSelectInput = (props): JSX.Element => {
     const [selected, setSelected] = useState<any>([]);
 
     const selectedOptions = (values: any) => {
-        console.log("values", values);
         switch (inputType) {
             case "user":
                 setFormInput({
@@ -30,29 +29,35 @@ const MultiSelectInput = (props): JSX.Element => {
                 });
                 break;
             case "gym":
+                if (values?.value?.trim().length === 0) return;
                 setFormInput({
                     ...formInput,
                     gym: values[0]?.value
                 })
                 break;
             case "package":
+                if (values?.value?.trim().length === 0) return;
                 setFormInput({
                     ...formInput,
                     package: values[0]?.value
                 })
+                break;
+            case "event":
+                if (values?.value?.trim().length === 0) return;
+                setFormInput({
+                    ...formInput,
+                    event: values[0]?.value
+                })
+                break;
         }
     };
 
     const removeOptions = (values: any) => {
-        console.log("values", values);
         setFormInput({
             ...formInput,
             includes: values.map(el => el.value)
         })
     };
-
-    console.log("options", options);
-
 
     useEffect(() => {
         if (!selectedValues) return;
@@ -64,9 +69,6 @@ const MultiSelectInput = (props): JSX.Element => {
     const labelStyle = {
         marginBottom: "3px"
     }
-
-    console.log("disable", disable);
-
 
     return (
         <div className={rootClasses}>

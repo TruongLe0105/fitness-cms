@@ -252,14 +252,19 @@ export const useFilterFitness = (
 
   const handleChangeCheckedFilterFitness =
     (filedTitle: string, filedChecked: string) => () => {
-      console.log("filedTitle", filedTitle)
       const newFilter = cloneDeep(filterFitness[filedTitle] ?? []);
-      console.log("newFilter", newFilter)
+      console.log("filedTitle", filedTitle);
+      console.log("filterFitness", filterFitness);
+      console.log("filedChecked", filedChecked);
+      console.log("filterFitness[filedTitle]", filterFitness[filedTitle]);
+
       if (includes(newFilter, filedChecked)) {
         remove(newFilter, (el) => el === filedChecked);
       } else {
         newFilter.push(filedChecked);
       }
+
+      console.log("bewFilter", newFilter);
 
       setFilterFitness({
         ...filterFitness,

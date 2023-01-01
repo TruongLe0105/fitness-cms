@@ -110,7 +110,7 @@ export function dataHeaderUser(
           }}
           className="whitespace-pre-line"
         >
-          {value.clientName}
+          {value.rawName}
         </p>
       ),
     },

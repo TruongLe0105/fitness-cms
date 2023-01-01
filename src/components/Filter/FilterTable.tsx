@@ -33,8 +33,6 @@ const FilterTable = (props: FilterTableFitnessProps): JSX.Element => {
   //    placeholders = placeholder || null;
   // }
 
-  console.log("props", props);
-
 
   return (
     <div className="flex items-center">

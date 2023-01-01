@@ -29,10 +29,6 @@ const FormUpdateConvenience: FC<UpdateConvenience> = (props) => {
         status: item?.status
     });
 
-    console.log("item:", item)
-    console.log("formUpdate:", formUpdate)
-    console.log("isChange:", isChange)
-
     useEffect(() => {
         setFormUpdate({
             ...formUpdate,

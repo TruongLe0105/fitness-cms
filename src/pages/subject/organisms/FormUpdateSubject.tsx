@@ -92,10 +92,6 @@ const FormUpdateSubject: FC<FormUpdate> = (props) => {
                 }
             };
 
-    console.log("isChange:", isChange.value);
-    console.log("logo:", formUpdate.logo);
-
-
     const fileSelectedImageURL = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files: any = event.target.files;
         if (files) {
