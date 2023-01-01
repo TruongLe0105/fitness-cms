@@ -18,7 +18,7 @@ import FilterTable from "components/Filter/FilterTable";
 import ButtonDefault from "components/Button/ButtonDefault";
 import FormDialog from "./organisms/FormDialog";
 import SelectDefault from "components/Select/SelectDefault";
-import { cloneDeep } from "lodash";
+import { cloneDeep, includes } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
 import ShowFilterCard from "components/Filter/ShowFilterCard";
@@ -43,6 +43,9 @@ const userPage = (): JSX.Element => {
   } = useTable();
 
   const [user, setUser] = useState<ClientDetail[]>([]);
+  // const [userFilter, setuserFilter] = useState<ClientDetail[]>([]);
+  // const [userSearch, setUserSearch] = useState<ClientDetail[]>([])
+
   const [selected, setSelected] = useState<any>();
   const [refetch, setRefetch] = useState(0);
   const [sentSelect, setSentSelect] = useState<SentSelectDetail>(
@@ -63,6 +66,7 @@ const userPage = (): JSX.Element => {
 
     getUser(source);
     searchUser(source);
+
     return () => source.cancel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,13 +92,13 @@ const userPage = (): JSX.Element => {
         params.status = filterFitness.client_status;
       }
 
-      const dataRes = await getUserMiddleware(params, source);
+      const dataRes: any = await getUserMiddleware(params, source);
 
-      if (dataRes?.data?.length) {
-        setUser(dataRes.data);
+      // if (dataRes?.data?.length) {
+      setUser(dataRes?.data);
 
-        total.setValue(dataRes.total);
-      }
+      total.setValue(dataRes?.total);
+      // }
 
       cleanStateRequest();
     } catch (error) {
