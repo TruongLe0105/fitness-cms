@@ -21,32 +21,60 @@ function MultiImage({ required, setFormInput, formInput, currentImages }: any) {
     const onChange = (imageList: any) => {
         setImages(imageList);
         const formData = new FormData();
+        if (imageList.length === 0) {
+            setFormInput({
+                ...formInput,
+                images: []
+            });
+        }
         imageList.map((image: any) => {
             if (typeof image === 'string') {
+                console.log('image be', image)
                 setFormInput({
                     ...formInput,
                     images: imageList
                 });
+                return;
             } else {
+                console.log('day ne')
                 const newName = Math.random() + image.file.name + Math.random() + 99 + Math.random() + 10 + Math.random()
                 const blob = image.file.slice(0, image.file.size, 'image/png');
                 const newFile = new File([blob], newName, { type: 'image/png' });
 
                 formData.append("image", newFile);
 
-                uploadImageMiddleware(formData).then((response: any) => {
-                    setUploadImgs([...uploadImgs, ...response.data.data]);
-                    try {
-                        console.log("res", response.data.data)
-                        setFormInput({
-                            ...formInput,
-                            images: [...formInput.images, ...response.data.data]
-                        });
-                        setImages([...formInput.images, ...response.data.data])
-                    } catch (error) {
-                        console.log("error", error)
-                    }
-                })
+                // uploadImageMiddleware(formData).then((response: any) => {
+                //     setUploadImgs([...uploadImgs, ...response.data.data]);
+                //     try {
+                //         console.log("res", response.data.data)
+                //         setFormInput({
+                //             ...formInput,
+                //             images: [...formInput.images, ...response.data.data]
+                //         });
+                //         setImages([...formInput.images, ...response.data.data])
+                //     } catch (error) {
+                //         console.log("error", error)
+                //     }
+                // })
+            }
+        })
+
+        console.log('fomr', formData.getAll('image'))
+        console.log('imagelist', imageList)
+        const listData = formData.getAll('image');
+        if (listData.length === 0) return;
+
+        uploadImageMiddleware(formData).then((response: any) => {
+            setUploadImgs([...uploadImgs, ...response.data.data]);
+            try {
+                console.log("res", response.data.data)
+                setFormInput({
+                    ...formInput,
+                    images: [...formInput.images, ...response.data.data]
+                });
+                setImages([...formInput.images, ...response.data.data])
+            } catch (error) {
+                console.log("error", error)
             }
         })
     }
