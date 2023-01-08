@@ -27,7 +27,7 @@ const FormUpdatePackage = (props: any) => {
         name: item.name,
         description: item.description,
         price: item.price,
-        gymIds: item.gym,
+        gymId: item.gym,
         type: item.type,
         benefit: item.benefit,
         rules: item.rules,
@@ -51,7 +51,7 @@ const FormUpdatePackage = (props: any) => {
             !formUpdate.price ||
             // !formUpdate.timePeriodType ||
             // !formUpdate.unitTime ||
-            !formUpdate.gymIds?.length ||
+            !formUpdate.gymId?.length ||
             !formUpdate.type ||
             !formUpdate.benefit ||
             !formUpdate.rules ||

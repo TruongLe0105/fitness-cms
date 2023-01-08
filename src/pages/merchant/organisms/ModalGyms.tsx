@@ -28,7 +28,7 @@ const ModalGyms = (props: any) => {
         type: data?.type,
         benefit: data?.benefit || [],
         rules: data?.rules || [],
-        gymIds: data?.gymIds || [],
+        gymId: data?.gymId || [],
     });
     const { gyms } = useSelector((state: any) => state.subject);
     const [optionGyms, setGyms] = useState<any>([]);
@@ -50,7 +50,7 @@ const ModalGyms = (props: any) => {
     } = useTable();
 
     const onSubmitButton = () => {
-        data?.gym.map(({ _id }) => formUpdate.gymIds.push(_id));
+        data?.gym.map(({ _id }) => formUpdate.gymId.push(_id));
 
         isLoading.setValue(true);
         updatePackageMiddleware(formUpdate, (status: STATUS_RESPONSE_CODE) => {

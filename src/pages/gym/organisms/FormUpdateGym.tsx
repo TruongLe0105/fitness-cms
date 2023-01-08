@@ -104,14 +104,14 @@ const FormUpdateGym = (props: any) => {
 
     const onSubmitButton = () => {
         console.log("formUpdate", formUpdate);
-        isLoading.setValue(true);
-        updateGym(formUpdate, (status: STATUS_RESPONSE_CODE) => {
-            isLoading.setValue(false);
-            if (status === STATUS_RESPONSE_CODE.SUCCESS) {
-                onRefetch();
-                onClose();
-            }
-        });
+        // isLoading.setValue(true);
+        // updateGym(formUpdate, (status: STATUS_RESPONSE_CODE) => {
+        //     isLoading.setValue(false);
+        //     if (status === STATUS_RESPONSE_CODE.SUCCESS) {
+        //         onRefetch();
+        //         onClose();
+        //     }
+        // });
     };
 
     const onKeyPress = (event: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -448,7 +448,7 @@ const FormUpdateGym = (props: any) => {
             />
             <ButtonDefault
                 widthButton="w-140-custom"
-                disabled={isDisabledButton()}
+                // disabled={isDisabledButton()}
                 onClick={onSubmitButton}
                 style={{
                     minHeight: 37,

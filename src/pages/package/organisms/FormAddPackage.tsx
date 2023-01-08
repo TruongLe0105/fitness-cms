@@ -13,6 +13,7 @@ import { getGymMiddleware } from 'pages/gym/services/api';
 import { useSelector } from 'react-redux';
 import MultiSelectInput from '../molecules/MultiSelect';
 import MultipleInput from 'components/Input/Multiple';
+import MultiImage from 'pages/gym/molecules/MultiImage';
 
 const FormAddPackage = (props: any) => {
     const { onClose, openFormChange, onRefetch } = props;
@@ -31,6 +32,7 @@ const FormAddPackage = (props: any) => {
         type: "",
         benefit: [],
         rules: [],
+        images: [],
     });
 
     useEffect(() => {
@@ -144,9 +146,11 @@ const FormAddPackage = (props: any) => {
             disablePopup
             handleCLoseDialog={onClose}
             title="Add New Package"
-        // rootStyle={{
-        //     width: "400px"
-        // }}
+            rootStyle={{
+                width: "90vw",
+                maxHeight: "90vh",
+                overflow: "auto",
+            }}
         >
             <div className="grid grid-cols-3 mb-8 gap-5"
             >
@@ -298,10 +302,17 @@ const FormAddPackage = (props: any) => {
                     onChange={handleChangeInputArea("rules")}
                 />
             </div>
+            <MultiImage
+                setFormInput={setFormInput}
+                formInput={formInput}
+            />
             <ButtonDefault
                 widthButton="w-140-custom"
                 disabled={isDisabledButton()}
                 onClick={onSubmitButton}
+                style={{
+                    minHeight: 37,
+                }}
             >
                 {/* {dataItem.id ? "Update" : "Add"} */}
                 Add

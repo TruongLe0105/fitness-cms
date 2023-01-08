@@ -28,15 +28,24 @@ function MultiImage({ required, setFormInput, formInput, currentImages }: any) {
                     images: imageList
                 });
             } else {
-                formData.append("image", image.file);
+                const newName = Math.random() + image.file.name + Math.random() + 99 + Math.random() + 10 + Math.random()
+                const blob = image.file.slice(0, image.file.size, 'image/png');
+                const newFile = new File([blob], newName, { type: 'image/png' });
+
+                formData.append("image", newFile);
 
                 uploadImageMiddleware(formData).then((response: any) => {
                     setUploadImgs([...uploadImgs, ...response.data.data]);
-                    setFormInput({
-                        ...formInput,
-                        images: [...formInput.images, ...response.data.data]
-                    });
-                    setImages([...formInput.images, ...response.data.data])
+                    try {
+                        console.log("res", response.data.data)
+                        setFormInput({
+                            ...formInput,
+                            images: [...formInput.images, ...response.data.data]
+                        });
+                        setImages([...formInput.images, ...response.data.data])
+                    } catch (error) {
+                        console.log("error", error)
+                    }
                 })
             }
         })
@@ -72,7 +81,7 @@ function MultiImage({ required, setFormInput, formInput, currentImages }: any) {
                             {imageList.map((image: any, index) => (
                                 <div key={index} className="image-item bg-gray-04-custom">
                                     {/* {images && <img src={image} alt="" className="images " />} */}
-                                    <img src={image['data_url'] || image} alt="" className="images " />
+                                    <img src={image['data_url'] || image} alt="" className="images" />
                                     <div
                                         // onClick={() => handleRemoveImage(onImageRemove, index, image)}
                                         onClick={() => {

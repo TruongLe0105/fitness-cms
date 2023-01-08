@@ -4,8 +4,6 @@ import { ShowFilterCardProps } from "./types";
 const ShowFilterCard = (props: ShowFilterCardProps): JSX.Element => {
   const { dataFilter, handleRemoveFilter } = props;
 
-  console.log("dataFilter", dataFilter);
-
   return (
     <div className="flex items-center">
       {dataFilter.length

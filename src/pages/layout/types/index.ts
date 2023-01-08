@@ -75,12 +75,16 @@ export const listMenuPage: MenuItemDetail[] = [
     label: "Convenience",
   },
   {
-    path: PATH.legal,
-    label: "Legal Page",
+    path: PATH.order,
+    label: "Order Page",
   },
   {
     path: PATH.mailbox,
     label: "Mailbox Page",
+  },
+  {
+    path: PATH.legal,
+    label: "Legal Page",
   },
 ];
 export const listMenuSettings: MenuItemDetail[] = [

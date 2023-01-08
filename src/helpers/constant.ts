@@ -16,6 +16,7 @@ export const PATH = {
   convenience: "/convenience",
   legal: "/legal",
   mailbox: "/mailbox",
+  order: "/order",
 };
 
 export const EMPTY_ADDRESS = "0x78ab6140f3944e8190c596bf2c3a23a1";

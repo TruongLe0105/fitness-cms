@@ -3,14 +3,11 @@ import Table from "components/Table/Table";
 import { useBoolean, useFilterFitness, useTable } from "helpers/hooks";
 import PageLayout from "pages/layout/organisms/PageLayout";
 import React, { useEffect, useState } from "react";
-import { ParamsRequest, ClientDetail, GymDetail, emptyGymDetail } from "./types";
+import { ParamsRequest, GymDetail, emptyGymDetail } from "./types";
 import { getGymMiddleware, searchGymMiddleware } from "./services/api";
 import { dataHeaderUser } from "./utils";
 import FilterTable from "components/Filter/FilterTable";
 import ButtonDefault from "components/Button/ButtonDefault";
-import FormDialog from "./organisms/FormDialog";
-import SelectDefault from "components/Select/SelectDefault";
-import { cloneDeep } from "lodash";
 import Axios, { CancelTokenSource } from "axios";
 import { showNotification } from "helpers/util";
 import FormAddHost from "./organisms/FormAddhost";
@@ -39,8 +36,6 @@ const gymPage = (): JSX.Element => {
   const [gym, setGym] = useState<GymDetail[]>([]);
   const [refetch, setRefetch] = useState(0);
   const [selected, setSelected] = useState<any>();
-  const [formUpdateGym, setFormUpdateGym] =
-    useState<GymDetail>(emptyGymDetail);
 
   const [formDataHost, setFormDataHost] =
     useState<GymDetail>(emptyGymDetail);
@@ -54,8 +49,6 @@ const gymPage = (): JSX.Element => {
     page,
     isLoadingTable
   );
-
-  console.log("filterFitness", filterFitness)
 
   const onRefetch = React.useCallback(
     () => setRefetch(new Date().getTime()),
@@ -109,9 +102,6 @@ const gymPage = (): JSX.Element => {
         limit: limit.value,
         page: page.value,
       };
-      // if (orderBy.value) {
-      //   params.sort = orderBy.value;
-      // }
 
       if (filterFitness.client_status) {
         params.status = filterFitness.client_status
@@ -233,7 +223,6 @@ const gymPage = (): JSX.Element => {
         countItems={total.value}
         headers={dataHeaderUser(handleOpenUpdateList, onEdit, onDelete)}
         handleChangePage={handleChangePage}
-        // data={notifications.length ? notifications : []}
         data={gym?.length ? gym : []}
         handleChangeSort={handleChangeSort}
         orderBy={orderBy.value}

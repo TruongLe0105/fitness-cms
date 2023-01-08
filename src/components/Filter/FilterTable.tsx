@@ -3,10 +3,7 @@ import { FilterTableFitnessProps, FilterTableProps } from "./types";
 import { ReactComponent as IconFilter } from "assets/images/icons/filter.svg";
 import Popup from "reactjs-popup";
 import FilterItem from "./FilterItem";
-import React from "react";
-import SelectDefault from "components/Select/SelectDefault";
-// import { KeywordCategory } from "pages/keywords/types";
-import { PLACEHOLDER_INPUT } from "components/Input/types";
+import React, { useEffect } from "react";
 
 const FilterTable = (props: FilterTableFitnessProps): JSX.Element => {
   const {
@@ -15,7 +12,6 @@ const FilterTable = (props: FilterTableFitnessProps): JSX.Element => {
     listFilter,
     queryFilter,
     handleChangeChecked,
-    // category,
     placeholder,
   } = props;
 
@@ -62,10 +58,8 @@ const FilterTable = (props: FilterTableFitnessProps): JSX.Element => {
 
       <InputDefault
         value={search}
-        // label="Search on"
         onChange={handleChangeInputSearch}
         placeholder={placeholder}
-        // classInput="bg-gray-02-custom rounded-xl pl-4 pr-4 border-0 font-medium text-xs-custom"
         classInput="bg-gray-02-custom rounded-xl pl-4 pr-4 border-0 font-medium text-xs-custom"
       />
     </div>

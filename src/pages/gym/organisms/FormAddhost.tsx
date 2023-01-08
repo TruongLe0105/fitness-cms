@@ -111,14 +111,14 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
 
     const onSubmitButton = () => {
         console.log("formInsubmit", formInput);
-        isLoading.setValue(true);
-        addNewHostMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
-            isLoading.setValue(false);
-            if (status === STATUS_RESPONSE_CODE.SUCCESS) {
-                onRefetch();
-                onClose();
-            }
-        });
+        // isLoading.setValue(true);
+        // addNewHostMiddleware(formInput, (status: STATUS_RESPONSE_CODE) => {
+        //     isLoading.setValue(false);
+        //     if (status === STATUS_RESPONSE_CODE.SUCCESS) {
+        //         onRefetch();
+        //         onClose();
+        //     }
+        // });
     };
 
     const onKeyPress = (event: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -478,7 +478,7 @@ const FormAddHost: FC<FormAddHostProps> = (props) => {
             />
             <ButtonDefault
                 widthButton="w-140-custom"
-                disabled={isDisabledButton()}
+                // disabled={isDisabledButton()}
                 onClick={onSubmitButton}
                 style={{
                     minHeight: 37,

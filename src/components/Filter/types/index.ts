@@ -12,13 +12,14 @@ export interface QueryFilterPropsFitness {
   client_status?: string;
   gyms_status?: string;
   package_status?: string;
+  order_status?: string;
 }
 
 export interface FilterTableProps {
   queryFilter?: QueryFilterProps;
-  search: string;
+  search?: string;
   listFilter?: FilterItemDetail[];
-  handleChangeInputSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeInputSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeChecked?: (
     filedTitle: string,
     filedChecked: string
@@ -30,9 +31,9 @@ export interface FilterTableProps {
 
 export interface FilterTableFitnessProps {
   queryFilter?: QueryFilterPropsFitness;
-  search: string;
+  search?: string;
   listFilter?: FilterItemDetail[];
-  handleChangeInputSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeInputSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeChecked?: (
     filedTitle: string,
     filedChecked: string
@@ -97,6 +98,13 @@ export enum ItemFilter {
   CLIENT = "client_status",
   GYMS = "gyms_status",
   PACKAGE = "package_status",
+  ORDER = "order_status",
+}
+
+export enum ORDER_STATUS_ITEM {
+  PENDING = 'pending',
+  CANCEL = 'cancel',
+  DONE = 'done',
 }
 
 export enum OWNER_STATUS_ITEM {

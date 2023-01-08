@@ -20,7 +20,7 @@ const MultiSelectInput = (props): JSX.Element => {
             case "gymId":
                 setFormInput({
                     ...formInput,
-                    gymIds: values.map((value: any) => value.value)
+                    gymId: values.map((value: any) => value.value)
                 });
                 break;
         }
@@ -31,7 +31,7 @@ const MultiSelectInput = (props): JSX.Element => {
             case "gymId":
                 setFormInput({
                     ...formInput,
-                    gymIds: values.map((value: any) => value.value)
+                    gymId: values.map((value: any) => value.value)
                 });
                 break;
         }

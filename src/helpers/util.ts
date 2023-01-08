@@ -12,6 +12,7 @@ import {
   OWNER_STATUS_FILTER,
   ItemFilter,
   OWNER_STATUS_ITEM,
+  ORDER_STATUS_ITEM,
 } from "components/Filter/types";
 import { CURRENCY_SYMBOL_WEB, TESTNET_WEB } from "config/environments";
 import { STATUS_EVENT, STATUS_REFERRAL_CODE } from "components/Status/types";
@@ -249,12 +250,20 @@ export const getTitleFilterFitness = (filed: string): string => {
       return "Gyms Status";
     case ItemFilter.PACKAGE:
       return "Package Status";
+    case ItemFilter.ORDER:
+      return "Order Status";
     case OWNER_STATUS_ITEM.ACTIVE:
       return "Active";
     case OWNER_STATUS_ITEM.IN_ACTIVE:
       return "No Active";
     case OWNER_STATUS_ITEM.DISABLE:
       return "Disabled";
+    case ORDER_STATUS_ITEM.PENDING:
+      return "Pending";
+    case ORDER_STATUS_ITEM.CANCEL:
+      return "Cancel";
+    case ORDER_STATUS_ITEM.DONE:
+      return "Done";
     default:
       return filed;
   }

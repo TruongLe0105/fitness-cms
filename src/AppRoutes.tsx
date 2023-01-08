@@ -9,7 +9,6 @@ import LoginPage from "pages/auth/LoginPage";
 import { history, pushTo } from "helpers/history";
 import { subscribingWallet } from "helpers/blockchain";
 import NotFoundPage from "pages/layout/organisms/NotFoundPage";
-// import UserPage from "pages/user/UserPage";
 import UserPage from "pages/user-data/userPage";
 import GymPage from "pages/gym/gymPage";
 import MerchantPage from "pages/merchant/merchantPage";
@@ -18,6 +17,7 @@ import ConvenienPage from "pages/convenience/conveniencePage";
 import PackagePage from "pages/package/packagePage";
 import LegalPage from "pages/editors/legalPage";
 import MailboxPage from "pages/mailbox/mailboxPage";
+import OrderPage from "pages/order/orderPage";
 
 import './form.css';
 
@@ -54,6 +54,7 @@ const AppRoutes = (): JSX.Element => {
         <PrivateRoute exact path={PATH.convenience} component={<ConvenienPage />} />
         <PrivateRoute exact path={PATH.legal} component={<LegalPage />} />
         <PrivateRoute exact path={PATH.mailbox} component={<MailboxPage />} />
+        <PrivateRoute exact path={PATH.order} component={<OrderPage />} />
         <PublicRoute
           exact
           path={PATH.forgotPassword}

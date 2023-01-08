@@ -10,6 +10,7 @@ import { ReactComponent as IconMenuSubject } from "assets/images/icons/icon-subj
 import { ReactComponent as IconMenuConvenience } from "assets/images/icons/icon-convenience.svg";
 import { ReactComponent as IconMenuEditor } from "assets/images/icons/icon-editor.svg";
 import { ReactComponent as IconMenuMailbox } from "assets/images/icons/icon-mailbox.svg";
+import { ReactComponent as IconMenuOrder } from "assets/images/icons/icon-order.svg";
 import { PATH } from "helpers/constant";
 
 const MenuItemCard = (props: MenuItemCardProps): JSX.Element => {
@@ -39,6 +40,8 @@ const MenuItemCard = (props: MenuItemCardProps): JSX.Element => {
         return <IconMenuEditor width="25px" height="25px" />;
       case PATH.mailbox:
         return <IconMenuMailbox width="25px" height="25px" />;
+      case PATH.order:
+        return <IconMenuOrder width="25px" height="25px" />;
     }
   };
 

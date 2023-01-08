@@ -89,7 +89,7 @@ export function useDefault<T = any>(defaultValue: T) {
 export const useTable = (
   defaultOrderBy = "created_at",
   defaultOrderDirection = ORDER_DIRECTION.DESC,
-  defaultLimit = 5,
+  defaultLimit = 20,
   defaultPage = 1
 ) => {
   const limit = useNumber(defaultLimit);
@@ -250,12 +250,11 @@ export const useFilterFitness = (
     client_status: "",
     gyms_status: "",
     package_status: "",
+    order_status: "",
   });
 
   const handleChangeCheckedFilterFitness =
     (filedTitle: string, filedChecked: string) => () => {
-      console.log("filedTitle", filedTitle);
-      console.log("filedChecked", filedChecked);
 
       const newFilter = cloneDeep(filterFitness[filedTitle] ?? "");
 

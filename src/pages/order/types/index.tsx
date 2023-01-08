@@ -5,11 +5,11 @@ export interface ParamsRequest {
   orderDirection?: string;
   sort?: string;
   search?: string;
-  keyword?: string;
   point_level?: number;
   types?: string[];
   isSent?: boolean;
   pointLevel?: string;
+  status?: string;
 }
 
 export enum TYPE_NOTIFICATION {
@@ -27,6 +27,16 @@ export interface NotificationDetail {
   description: string;
   send: boolean;
   startDate: string;
+}
+export interface OrderDetail {
+  id: string;
+  client: string;
+  package: string;
+  gym: any;
+  price: number;
+  status: string;
+  createdAt: number;
+  updatedAt: number;
 }
 
 export const emptyNotificationDetail: NotificationDetail = {
@@ -150,70 +160,28 @@ export interface ViewDetailNotificationProps {
 
 export interface TypographyItemCardProps {
   title: string;
-  label: string;
+  label?: string;
   rootClass?: string;
 }
 
-export interface AddPackageInput {
-  name: string;
-  description: string;
-  price: number;
-  timePeriodType: string;
-  unitTime: number;
-  gymId: string[];
-  type: string;
-  benefit: string[];
-  rules: string[];
-  images?: string[];
+export interface AddOrderInput {
+  OrderName: string;
+  phone: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
 }
 
-export interface UpdatePackageInput {
-  id: string;
-  name?: string;
-  description?: string;
-  price?: number;
-  gymId?: string[];
-  type?: string;
-  benefit?: string[];
-  rules?: string[];
-  images?: string[];
-}
-
-export interface FormInputPackage {
+export interface FormInputOrder {
   openFormChange?: boolean;
   onClose: () => void;
-  merchant?: AddPackageInput;
-  handleUpdateList: () => void;
+  client?: AddOrderInput;
+  onRefetch: () => void;
 }
 
-// export interface PackageDetail {
-//   id: string;
-//   name: string;
-//   description: string;
-//   timePeriodType: string;
-//   price: number;
-//   unitTime: number;
-//   gymId: string;
-//   type: string;
-//   benefit: string[];
-//   rule: string[];
-// }
-
-export interface PackageDetail {
-  name: string;
-  description: string;
-  price: number;
-  timePeriodType: string;
-  unitTime: 1;
-  status: string;
-  gym: [{
-    name: string;
-    id: string;
-  }];
-  type: string;
-  benefit: string[];
-  rules: string[];
-  createdAt: number;
-  updatedAt: number;
-  id: string;
+export interface FormUpdate {
+  openFormChange?: boolean;
+  onClose: () => void;
+  item?: OrderDetail;
+  onRefetch: () => void;
 }

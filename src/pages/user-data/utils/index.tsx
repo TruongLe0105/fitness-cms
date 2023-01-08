@@ -11,7 +11,7 @@ import {
 import DefaultButtonIcon from "components/ButtonIcon/DefaultButtonIcon";
 import StatusCard from "components/Status/StatusCard";
 import { BSC_SCAN_URL } from "config/environments";
-import { FilterItemDetail, ItemFilter, OWNER_STATUS_ITEM, OWNER_STATUS_ITEM_FITNESS } from "components/Filter/types";
+import { FilterItemDetail, ItemFilter, ORDER_STATUS_ITEM, OWNER_STATUS_ITEM, OWNER_STATUS_ITEM_FITNESS } from "components/Filter/types";
 
 export function dataHeaderUser(
   // handleOpenUpdateList: (
